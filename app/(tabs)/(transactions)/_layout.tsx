@@ -5,7 +5,7 @@ export default () => {
 
     return (
         <Stack>
-            <Stack.Screen name="index" options={{ title: "New subscription" }} />
+            <Stack.Screen name="index" options={{ title: "Transactions" }} />
         </Stack>
     );
 };
