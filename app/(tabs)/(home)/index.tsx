@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from '@/components/Themed';
+import { Link } from 'expo-router';
 
 export default () => {
     return (
@@ -9,7 +10,7 @@ export default () => {
                     <Text>Financial snapshot</Text>
                 </View>
                 <View>
-                    <Text>Recent transactions</Text>
+                    <Link href='/(transactions)'>Recent transactions</Link>
                 </View>
                 <View>
                     <Text>Quick actions snapshot</Text>
