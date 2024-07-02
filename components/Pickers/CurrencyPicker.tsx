@@ -13,7 +13,7 @@ export const CurrencyPicker = ({ currency, setCurrency }: Props) => (
     onValueChange={(chosen) => setCurrency(chosen)}
   >
     {Currencies.map(({ code, symbol }) => (
-      <Picker.Item key={code} label={`${code} - ${symbol}`} value={code} />
+      <Picker.Item key={code} label={symbol} value={code} />
     ))}
   </Picker>
 );

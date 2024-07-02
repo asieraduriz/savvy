@@ -6,7 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useToggle } from "@/hooks";
 
 type Props = {
-  occurrence?: Date;
+  occurrence: Date;
   setRecurrence: (date: Date) => void;
 };
 
@@ -27,7 +27,7 @@ export const SingleTransactionPicker: React.FC<Props> = ({
     <View style={styles.container}>
       <Pressable style={styles.pressableDateContainer} onPress={toggle.on}>
         <Text style={styles.dateText}>
-          {occurrence ? format(occurrence, 'MMM do') : "Set a date"}
+          {format(occurrence, 'MMM do')}
         </Text>
         <MaterialIcons name="event" size={24} color="black" />
       </Pressable>

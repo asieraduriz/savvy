@@ -16,15 +16,29 @@ export enum TransactionRecurrenceTypes {
   frequency = "frequency",
 }
 
-type IntervalRecurrence = {
+export enum TimespanIntervalRecurrence {
+  days = "days",
+  weeks = "weeks",
+  months = "months",
+  years = "years",
+}
+
+export type IntervalRecurrence = {
+  frequency: TimespanIntervalRecurrence;
   every: number;
-  frequency: "days" | "weeks" | "months" | "years";
   startDate: Date;
   type: TransactionRecurrenceTypes.interval;
 };
 
-type FrequencyRecurrence = {
-  frequency: "daily" | "weekly" | "monthly" | "yearly";
+export enum TimespanFrequencyRecurrence {
+  daily = "daily",
+  weekly = "weekly",
+  monthly = "monthly",
+  yearly = "yearly",
+};
+
+export type FrequencyRecurrence = {
+  frequency: TimespanFrequencyRecurrence;
   startDate: Date;
   type: TransactionRecurrenceTypes.frequency;
 };

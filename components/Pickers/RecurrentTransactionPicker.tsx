@@ -6,4 +6,11 @@ type Props = {
   setRecurrence: (recurrence: RecurrentTransaction["recurrence"]) => void;
 };
 
-export const RecurrentTransactionPicker = ({}: Props) => <View />;
+export const RecurrentTransactionPicker = ({ }: Props) => {
+
+  return (
+    <View>
+
+    </View>
+  )
+}
