@@ -1,14 +1,9 @@
-import { Text, View } from "@/components/Themed";
+import { EditTransactionForm } from "@/components/EditTransactionForm";
 import { useLocalSearchParams } from "expo-router";
-import { ScrollView } from "react-native";
 
 export default () => {
-  const { id } = useLocalSearchParams();
-  return (
-    <View>
-      <ScrollView>
-        <Text>Id view {id}</Text>
-      </ScrollView>
-    </View>
-  );
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  if (!id) throw new Error("No id in edit/[id]");
+  return <EditTransactionForm id={id} />;
 };
