@@ -1,3 +1,10 @@
-import { BaseTransaction, RecurrentBaseTransaction, SingleBaseTransaction } from "./Transaction.type";
+import {
+  BaseTransaction,
+  RecurrentBaseTransaction,
+  SingleBaseTransaction,
+} from "./Transaction.type";
 
-export type UnifiedAddTransaction = BaseTransaction & { otherCategory: string } & SingleBaseTransaction & RecurrentBaseTransaction;
+export type UnifiedAddTransaction = BaseTransaction & {
+  otherCategory: string;
+} & SingleBaseTransaction &
+  RecurrentBaseTransaction;

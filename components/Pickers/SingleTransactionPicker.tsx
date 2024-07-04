@@ -2,7 +2,7 @@ import { Pressable, StyleSheet } from "react-native";
 import { Text, View } from "../Themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { format } from "date-fns";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from "@expo/vector-icons";
 import { useToggle } from "@/hooks";
 
 type Props = {
@@ -18,7 +18,7 @@ export const SingleTransactionPicker: React.FC<Props> = ({
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
     toggle.off();
-    if (event.type === 'set' && selectedDate) {
+    if (event.type === "set" && selectedDate) {
       setRecurrence(selectedDate);
     }
   };
@@ -26,9 +26,7 @@ export const SingleTransactionPicker: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <Pressable style={styles.pressableDateContainer} onPress={toggle.on}>
-        <Text style={styles.dateText}>
-          {format(occurrence, 'MMM do')}
-        </Text>
+        <Text style={styles.dateText}>{format(occurrence, "MMM do yyyy")}</Text>
         <MaterialIcons name="event" size={24} color="black" />
       </Pressable>
       {showDatePicker && (
@@ -48,16 +46,16 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   dateContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   dateText: {
     fontSize: 16,
     marginRight: 10,
   },
   pressableDateContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  }
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });

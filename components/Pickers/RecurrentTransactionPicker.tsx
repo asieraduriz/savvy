@@ -12,7 +12,10 @@ type Props = {
   setTransaction: React.Dispatch<React.SetStateAction<UnifiedAddTransaction>>;
 };
 
-export const RecurrentTransactionPicker = ({ transaction: recurrence, setTransaction: setRecurrence }: Props) => {
+export const RecurrentTransactionPicker = ({
+  transaction: recurrence,
+  setTransaction: setRecurrence,
+}: Props) => {
   const [showDatePicker, toggle] = useToggle(false);
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
@@ -25,24 +28,40 @@ export const RecurrentTransactionPicker = ({ transaction: recurrence, setTransac
   return (
     <View style={styles.container}>
       <Pressable style={styles.pressableDateContainer} onPress={toggle.on}>
-        <Text style={styles.dateText}>Starting {format(recurrence.startDate, "MMM do")}</Text>
+        <Text style={styles.dateText}>
+          Starting {format(recurrence.startDate, "MMM do yyyy")}
+        </Text>
         <MaterialIcons name="event" size={24} color="black" />
       </Pressable>
       <View>
         <Text>Every</Text>
         <TextInput
           value={`${recurrence.every}`}
-          onChangeText={(every) => setRecurrence({ ...recurrence, every: Number(every) })}
+          onChangeText={(every) =>
+            setRecurrence({ ...recurrence, every: Number(every) })
+          }
           placeholder="Amount"
           keyboardType="numeric"
         />
-        <Picker selectedValue={recurrence.frequency} onValueChange={(frequency: RecurrentTransactionFrequency) => setRecurrence({ ...recurrence, frequency })}>
+        <Picker
+          selectedValue={recurrence.frequency}
+          onValueChange={(frequency: RecurrentTransactionFrequency) =>
+            setRecurrence({ ...recurrence, frequency })
+          }
+        >
           {Object.values(RecurrentTransactionFrequency).map((item) => (
             <Picker.Item key={item} label={item} value={item} />
           ))}
         </Picker>
       </View>
-      {showDatePicker && <DateTimePicker value={recurrence.startDate} mode="date" display="default" onChange={handleDateChange} />}
+      {showDatePicker && (
+        <DateTimePicker
+          value={recurrence.startDate}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
     </View>
   );
 };
