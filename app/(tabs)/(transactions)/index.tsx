@@ -1,9 +1,8 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { Link } from "expo-router";
-import { withSafeArea } from "@/components/HOC";
 
-export default withSafeArea(() => {
+export default () => {
     return (
         <View style={styles.container}>
             <ScrollView>
@@ -19,7 +18,7 @@ export default withSafeArea(() => {
             </ScrollView>
         </View>
     );
-});
+};
 
 const styles = StyleSheet.create({
     container: {

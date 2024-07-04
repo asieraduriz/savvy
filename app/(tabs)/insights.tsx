@@ -1,11 +1,10 @@
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
-import { withSafeArea } from "@/components/HOC";
 
 //// IDEAS ////
 ///////////////
-export default withSafeArea(() => {
+export default () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
@@ -16,7 +15,7 @@ export default withSafeArea(() => {
       />
     </View>
   );
-});
+};
 
 const styles = StyleSheet.create({
   container: {
