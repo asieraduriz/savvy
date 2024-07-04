@@ -8,7 +8,7 @@ export type BaseTransaction = {
   created: Date;
 };
 
-export type SingleBaseTransaction = { date: Date };
+export type SingleBaseTransaction = { when: Date };
 export type SingleTransaction = BaseTransaction & SingleBaseTransaction;
 
 export enum RecurrentTransactionFrequency {

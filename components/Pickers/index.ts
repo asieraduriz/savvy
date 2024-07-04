@@ -3,7 +3,7 @@ import { SingleTransactionPicker } from "./SingleTransactionPicker";
 
 export * from "./CurrencyPicker";
 
-export const RecurrencyPickers = {
+export const OccurrencyPickers = {
   Single: SingleTransactionPicker,
   Recurrent: RecurrentTransactionPicker,
 };

@@ -4,7 +4,6 @@ import {
   SingleBaseTransaction,
 } from "./Transaction.type";
 
-export type UnifiedAddTransaction = BaseTransaction & {
-  otherCategory: string;
-} & SingleBaseTransaction &
+export type UnifiedAddTransaction = Omit<BaseTransaction, "created"> &
+  SingleBaseTransaction &
   RecurrentBaseTransaction;
