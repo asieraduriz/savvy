@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
+import { withSafeArea } from "@/components/HOC";
 
 //// IDEAS ////
 // Add an option for budget/month
 ///////////////
-export default () => {
+export default withSafeArea(() => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
@@ -16,7 +17,7 @@ export default () => {
       />
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

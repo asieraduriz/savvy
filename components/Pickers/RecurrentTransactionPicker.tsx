@@ -1,5 +1,5 @@
 import { useToggle } from "@/hooks";
-import { RecurrentTransaction, RecurrentTransactionFrequency } from "@/types";
+import { RecurrentTransactionFrequency, UnifiedAddTransaction } from "@/types";
 import { Pressable, StyleSheet } from "react-native";
 import { Text, TextInput, View } from "../Themed";
 import { format } from "date-fns";
@@ -8,11 +8,11 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 
 type Props = {
-  recurrence: RecurrentTransaction;
-  setRecurrence: React.Dispatch<React.SetStateAction<RecurrentTransaction>>;
+  transaction: UnifiedAddTransaction;
+  setTransaction: React.Dispatch<React.SetStateAction<UnifiedAddTransaction>>;
 };
 
-export const RecurrentTransactionPicker = ({ recurrence, setRecurrence }: Props) => {
+export const RecurrentTransactionPicker = ({ transaction: recurrence, setTransaction: setRecurrence }: Props) => {
   const [showDatePicker, toggle] = useToggle(false);
 
   const handleDateChange = (event: any, selectedDate?: Date) => {

@@ -1,28 +1,23 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "../Themed";
 import { Button, StyleSheet, Switch } from "react-native";
-import { RecurrentTransaction, SingleTransaction, Transaction } from "@/types";
+import { UnifiedAddTransaction } from "@/types";
 import { Picker } from "@react-native-picker/picker";
 import { CurrencyPicker, RecurrencyPickers } from "../Pickers";
 import { Defaults } from "@/constants";
 import { useToggle } from "@/hooks";
 
+const toNumber = (input: string, fallback: number) => Number.isNaN(Number(input)) ? fallback : Number(input);
+
 export const AddTransactionForm = () => {
     const [isRecurring, recurringToggle] = useToggle(false);
+    const [transaction, setTransaction] = useState<UnifiedAddTransaction>(Defaults.TransactionForm);
 
-    const [singleTransaction, setSingleTransaction] = useState<SingleTransaction>(Defaults.SingleTransactionDate);
-    const [recurrentTransaction, setRecurrentTransaction] = useState<RecurrentTransaction>(Defaults.RecurrentTransaction);
-
-    const set = (key: keyof SingleTransaction | keyof RecurrentTransaction, value: any) => {
-        if (isRecurring) {
-            setRecurrentTransaction((prev) => ({ ...prev, [key]: value }))
-        } else {
-            setSingleTransaction((prev) => ({ ...prev, [key]: value }))
-        }
+    const set = (key: keyof UnifiedAddTransaction, value: any) => {
+        setTransaction((prev) => ({ ...prev, [key]: value }));
     }
 
-    const { title, currency, amount, category } = isRecurring ? recurrentTransaction : singleTransaction;
-    const [otherCategory, setOtherCategory] = useState<Transaction["category"]>("");
+    const { title, currency, amount, category, otherCategory, date } = transaction;
 
     return (
         <View style={styles.container}>
@@ -34,7 +29,7 @@ export const AddTransactionForm = () => {
                 <TextInput
                     style={{ ...styles.input, flex: 1 }}
                     value={`${amount}`}
-                    onChangeText={(value) => set('amount', Number(value))}
+                    onChangeText={(value) => set('amount', toNumber(value, amount))}
                     placeholder="Amount"
                     keyboardType="numeric"
                 />
@@ -46,7 +41,7 @@ export const AddTransactionForm = () => {
                 <Picker.Item label="Other" value="other" />
             </Picker>
             {category === "other" && (
-                <TextInput style={styles.input} value={otherCategory} onChangeText={setOtherCategory} placeholder="Please add a new category" />
+                <TextInput style={styles.input} value={otherCategory} onChangeText={(otherCategory) => set('otherCategory', otherCategory)} placeholder="Please add a new category" />
             )}
             <View style={styles.switchContainer}>
                 <Text style={isRecurring ? styles.disabledRecurrenceText : undefined}>One-time</Text>
@@ -54,9 +49,9 @@ export const AddTransactionForm = () => {
                 <Text style={isRecurring ? undefined : styles.disabledRecurrenceText}>Recurrent</Text>
             </View>
             {isRecurring ? (
-                <RecurrencyPickers.Recurrent recurrence={recurrentTransaction} setRecurrence={setRecurrentTransaction} />
+                <RecurrencyPickers.Recurrent transaction={transaction} setTransaction={setTransaction} />
             ) : (
-                <RecurrencyPickers.Single occurrence={singleTransaction.date} setRecurrence={(date) => setSingleTransaction((prev) => ({ ...prev, date }))} />
+                <RecurrencyPickers.Single occurrence={date} setRecurrence={(date) => set('date', date)} />
             )}
 
             <Button title="Add Transaction" onPress={() => { }} />

@@ -1,4 +1,4 @@
-type BaseTransaction = {
+export type BaseTransaction = {
   id: string;
   amount: number;
   currency: string;
@@ -7,9 +7,8 @@ type BaseTransaction = {
   description?: string;
 };
 
-export type SingleTransaction = {
-  date: Date;
-} & BaseTransaction;
+export type SingleBaseTransaction = { date: Date; }
+export type SingleTransaction = BaseTransaction & SingleBaseTransaction;
 
 export enum RecurrentTransactionFrequency {
   days = "days",
@@ -18,11 +17,12 @@ export enum RecurrentTransactionFrequency {
   years = "years",
 }
 
-export type RecurrentTransaction = {
+export type RecurrentBaseTransaction = {
   frequency: RecurrentTransactionFrequency;
   every: number;
   startDate: Date;
-} & BaseTransaction;
+}
+export type RecurrentTransaction = BaseTransaction & RecurrentBaseTransaction;
 
 export type Transaction = SingleTransaction | RecurrentTransaction;
 
