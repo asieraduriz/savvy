@@ -10,6 +10,7 @@ import { CurrencyPicker, OccurrencyPickers } from "../Pickers";
 import { Defaults } from "@/constants";
 import { useToggle } from "@/hooks";
 import { useAddTransaction } from "@/contexts";
+import { randomUUID } from "expo-crypto";
 
 const toNumber = (input: string, fallback: number) =>
   Number.isNaN(Number(input)) ? fallback : Number(input);
@@ -89,6 +90,7 @@ export const AddTransactionForm = () => {
             const recurrentTransaction: RecurrentTransaction = {
               ...newTransaction,
               created,
+              id: randomUUID(),
             };
 
             addTransaction(recurrentTransaction);
@@ -104,6 +106,7 @@ export const AddTransactionForm = () => {
             const singleTransaction: SingleTransaction = {
               ...newTransaction,
               created,
+              id: randomUUID(),
             };
 
             addTransaction(singleTransaction);

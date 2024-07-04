@@ -1,3 +1,4 @@
+import { Defaults } from "@/constants";
 import { Transaction } from "@/types";
 import React, {
   createContext,
@@ -17,7 +18,9 @@ const TransactionContext = createContext<
 type Props = PropsWithChildren;
 
 export const TransactionsProvider = ({ children }: Props) => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>(
+    Defaults.Starters
+  );
 
   const addTransaction = (transaction: Transaction) => {
     setTransactions((prevTransactions) => [...prevTransactions, transaction]);
