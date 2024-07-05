@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "../Themed";
 import { Button, StyleSheet, Switch } from "react-native";
-import {
-  RecurrentTransaction,
-  SingleTransaction,
-  UnifiedAddTransaction,
-} from "@/types";
+import { Transaction, UnifiedAddTransaction } from "@/types";
 import { CurrencyPicker, OccurrencyPickers } from "../Pickers";
 import { Defaults } from "@/constants";
 import { useToggle } from "@/hooks";
@@ -87,10 +83,11 @@ export const AddTransactionForm = () => {
 
           if (isRecurring) {
             const { when: date, ...newTransaction } = transaction;
-            const recurrentTransaction: RecurrentTransaction = {
+            const recurrentTransaction: Transaction = {
               ...newTransaction,
               created,
               id: randomUUID(),
+              type: "recurrent",
             };
 
             addTransaction(recurrentTransaction);
@@ -103,10 +100,11 @@ export const AddTransactionForm = () => {
             const { every, startDate, frequency, ...newTransaction } =
               transaction;
 
-            const singleTransaction: SingleTransaction = {
+            const singleTransaction: Transaction = {
               ...newTransaction,
               created,
               id: randomUUID(),
+              type: "single",
             };
 
             addTransaction(singleTransaction);
