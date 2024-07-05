@@ -8,8 +8,10 @@ export type BaseTransaction = {
   created: Date;
 };
 
-export type SingleBaseTransaction = { when: Date };
-export type SingleTransaction = BaseTransaction & SingleBaseTransaction;
+export type SingleBaseTransaction = {
+  when: Date;
+  type: 'single';
+};
 
 export enum RecurrentTransactionFrequency {
   days = "days",
@@ -22,10 +24,12 @@ export type RecurrentBaseTransaction = {
   frequency: RecurrentTransactionFrequency;
   every: number;
   startDate: Date;
+  type: 'recurrent';
 };
-export type RecurrentTransaction = BaseTransaction & RecurrentBaseTransaction;
 
-export type Transaction = SingleTransaction | RecurrentTransaction;
+export type SingleTransaction = BaseTransaction & SingleBaseTransaction;
+export type RecurrentTransaction = BaseTransaction & RecurrentBaseTransaction;
+export type Transaction = BaseTransaction & (SingleBaseTransaction | RecurrentBaseTransaction);
 
 type Group = {
   title: string;

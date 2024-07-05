@@ -14,6 +14,12 @@ export const TransactionsList: FC<Props> = ({ transactions }) => {
           key={transaction.id}
           style={{ display: "flex", flexDirection: "row" }}
         >
+          {
+            {
+              'single': <Text>It's single</Text>,
+              'recurrent': <Text>It's recurrent</Text>
+            }[transaction.type]
+          }
           <Text>{transaction.title}</Text>
           <Link href={`/edit/${transaction.id}`}>
             <FontAwesome name="edit" size={24} color="black" />

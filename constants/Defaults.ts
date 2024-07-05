@@ -1,7 +1,6 @@
 import {
-  RecurrentTransaction,
   RecurrentTransactionFrequency,
-  SingleTransaction,
+  Transaction,
   UnifiedAddTransaction,
 } from "@/types";
 import { randomUUID } from "expo-crypto";
@@ -17,7 +16,7 @@ const transactionForm: UnifiedAddTransaction = {
   when: new Date(),
 };
 
-const starterSingleTransaction: SingleTransaction = {
+const starterSingleTransaction: Transaction = {
   id: randomUUID(),
   amount: 1375.4,
   currency: "€",
@@ -25,9 +24,10 @@ const starterSingleTransaction: SingleTransaction = {
   category: "Life therapy",
   when: new Date("2024-07-01"),
   created: new Date("2024-07-03"),
+  type: 'single',
 };
 
-const starterRecurrentTransaction: RecurrentTransaction = {
+const starterRecurrentTransaction: Transaction = {
   id: randomUUID(),
   amount: 203.14,
   currency: "€",
@@ -37,6 +37,7 @@ const starterRecurrentTransaction: RecurrentTransaction = {
   frequency: RecurrentTransactionFrequency.weeks,
   startDate: new Date("2024-04-14"),
   created: new Date("2024-04-20"),
+  type: 'recurrent'
 };
 
 export const Defaults = {
