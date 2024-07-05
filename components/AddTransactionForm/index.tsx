@@ -1,23 +1,20 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "../Themed";
-import { Button, StyleSheet, Switch } from "react-native";
-import { Transaction, UnifiedAddTransaction } from "@/types";
+import { StyleSheet, Switch } from "react-native";
+import { UnifiedAddTransaction } from "@/types";
 import { CurrencyPicker, OccurrencyPickers } from "../Pickers";
 import { Defaults } from "@/constants";
-import { useToggle } from "@/hooks";
-import { useAddTransaction } from "@/contexts";
-import { randomUUID } from "expo-crypto";
+import { AddTransactionButton } from "./AddTransactionButton";
 
 const toNumber = (input: string, fallback: number) =>
   Number.isNaN(Number(input)) ? fallback : Number(input);
 
 export const AddTransactionForm = () => {
-  const addTransaction = useAddTransaction();
-  const [isRecurring, recurringToggle] = useToggle(false);
   const [transaction, setTransaction] = useState<UnifiedAddTransaction>(
     Defaults.TransactionForm
   );
 
+  const isRecurring = transaction.type === "recurrent";
   const set = (key: keyof UnifiedAddTransaction, value: any) => {
     setTransaction((prev) => ({ ...prev, [key]: value }));
   };
@@ -59,7 +56,10 @@ export const AddTransactionForm = () => {
         <Text style={isRecurring ? styles.disabledRecurrenceText : undefined}>
           One-time
         </Text>
-        <Switch value={isRecurring} onValueChange={recurringToggle.flip} />
+        <Switch
+          value={isRecurring}
+          onValueChange={(value) => set("type", value ? "single" : "recurrent")}
+        />
         <Text style={isRecurring ? undefined : styles.disabledRecurrenceText}>
           Recurrent
         </Text>
@@ -76,47 +76,7 @@ export const AddTransactionForm = () => {
         />
       )}
 
-      <Button
-        title="Add Transaction"
-        onPress={() => {
-          const created = new Date();
-
-          if (isRecurring) {
-            const { when: date, ...newTransaction } = transaction;
-            const recurrentTransaction: Transaction = {
-              ...newTransaction,
-              created,
-              id: randomUUID(),
-              type: "recurrent",
-            };
-
-            addTransaction(recurrentTransaction);
-            alert(
-              `Recurrent transaction id: ${
-                recurrentTransaction.id
-              } - ${JSON.stringify(recurrentTransaction)}`
-            );
-          } else {
-            const { every, startDate, frequency, ...newTransaction } =
-              transaction;
-
-            const singleTransaction: Transaction = {
-              ...newTransaction,
-              created,
-              id: randomUUID(),
-              type: "single",
-            };
-
-            addTransaction(singleTransaction);
-
-            alert(
-              `Single transaction id: ${
-                singleTransaction.id
-              } - ${JSON.stringify(singleTransaction)}`
-            );
-          }
-        }}
-      />
+      <AddTransactionButton transaction={transaction} />
     </View>
   );
 };

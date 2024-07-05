@@ -4,7 +4,9 @@ import {
   SingleBaseTransaction,
 } from "./Transaction.type";
 
-export type UnifiedAddTransaction =
-  Pick<BaseTransaction, "title" | "amount" | "category" | "currency" | "description"> &
-  Omit<SingleBaseTransaction, 'type'> &
-  Omit<RecurrentBaseTransaction, 'type'>;
+export type UnifiedAddTransaction = Pick<
+  BaseTransaction,
+  "title" | "amount" | "category" | "currency" | "description"
+> &
+  Omit<SingleBaseTransaction, "type"> &
+  Omit<RecurrentBaseTransaction, "type"> & { type: "single" | "recurrent" };
