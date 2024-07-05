@@ -1,21 +1,21 @@
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
 
 //// IDEAS ////
 ///////////////
-export default () => {
-  return (
-    <View style={styles.container}>
+export default () => (
+  <View style={styles.container}>
+    <ScrollView>
       <Text style={styles.title}>Tab Two</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-    </View>
-  );
-};
+    </ScrollView>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {

@@ -1,10 +1,11 @@
-import { AddTransactionForm } from "@/components/AddTransactionForm"
-import { View } from "@/components/Themed"
+import { View } from "@/components/Themed";
+import { Pages } from "@/pages";
+import { ScrollView } from "react-native";
 
-export default () => {
-    return (
-        <View>
-            <AddTransactionForm />
-        </View>
-    )
-}
+export default () => (
+  <View>
+    <ScrollView>
+      <Pages.AddTransactions />
+    </ScrollView>
+  </View>
+);

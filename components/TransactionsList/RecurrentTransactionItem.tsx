@@ -23,7 +23,6 @@ export const RecurrentTransactionItem: FC<Props> = ({ transaction }) => {
   return (
     <View style={styles.transactionCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.dateText}>-</Text>
         <Text style={styles.amountText}>{formattedAmount}</Text>
       </View>
       <View style={styles.cardBody}>
@@ -37,7 +36,7 @@ export const RecurrentTransactionItem: FC<Props> = ({ transaction }) => {
         )}
         <View style={styles.recurringDetails}>
           <Text style={styles.recurringText}>
-            Recurring: {frequency} every {every}
+            Recurring: every {every} {frequency}
           </Text>
           <Text style={styles.recurringText}>
             Starts: {formatDate(startDate, "do MMM yyyy")}
@@ -45,7 +44,7 @@ export const RecurrentTransactionItem: FC<Props> = ({ transaction }) => {
         </View>
       </View>
       <View style={styles.cardFooter}>
-        <Text style={styles.detailsText}>Details</Text>
+        <Text style={styles.detailsText}></Text>
       </View>
     </View>
   );
