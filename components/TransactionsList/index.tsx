@@ -1,29 +1,29 @@
 import { Transaction } from "@/types";
-import { Link } from "expo-router";
 import { FC } from "react";
-import { Text, View } from "../Themed";
-import { FontAwesome } from "@expo/vector-icons";
+import { View } from "../Themed";
+import { SingleTransactionItem } from "./SingleTransactionItem";
+import { RecurrentTransactionItem } from "./RecurrentTransactionItem";
 
 type Props = { transactions: Transaction[] };
 
 export const TransactionsList: FC<Props> = ({ transactions }) => {
+  const sortTransaction = (transaction: Transaction) => {
+    switch (transaction.type) {
+      case "single":
+        return <SingleTransactionItem transaction={transaction} />;
+      case "recurrent":
+        return <RecurrentTransactionItem transaction={transaction} />;
+    }
+  };
+
   return (
     <View>
       {transactions.map((transaction) => (
         <View
           key={transaction.id}
-          style={{ display: "flex", flexDirection: "row" }}
+          style={{ display: "flex", flexDirection: "row", gap: 8 }}
         >
-          {
-            {
-              'single': <Text>It's single</Text>,
-              'recurrent': <Text>It's recurrent</Text>
-            }[transaction.type]
-          }
-          <Text>{transaction.title}</Text>
-          <Link href={`/edit/${transaction.id}`}>
-            <FontAwesome name="edit" size={24} color="black" />
-          </Link>
+          {sortTransaction(transaction)}
         </View>
       ))}
     </View>

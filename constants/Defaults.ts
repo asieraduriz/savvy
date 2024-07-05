@@ -14,6 +14,7 @@ const transactionForm: UnifiedAddTransaction = {
   frequency: RecurrentTransactionFrequency.days,
   startDate: new Date(),
   when: new Date(),
+  type: "single",
 };
 
 const starterSingleTransaction: Transaction = {
@@ -24,20 +25,20 @@ const starterSingleTransaction: Transaction = {
   category: "Life therapy",
   when: new Date("2024-07-01"),
   created: new Date("2024-07-03"),
-  type: 'single',
+  type: "single",
 };
 
 const starterRecurrentTransaction: Transaction = {
   id: randomUUID(),
   amount: 203.14,
   currency: "€",
-  title: "Recurrent transaction",
-  category: "Massage",
+  title: "Mental therapy",
+  category: "Psychology",
   every: 3,
   frequency: RecurrentTransactionFrequency.weeks,
   startDate: new Date("2024-04-14"),
   created: new Date("2024-04-20"),
-  type: 'recurrent'
+  type: "recurrent",
 };
 
 export const Defaults = {
