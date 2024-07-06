@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Text, TextInput, View } from "../Themed";
 import { StyleSheet, Switch } from "react-native";
 import { UnifiedAddTransaction } from "@/types";
-import { CurrencyPicker, OccurrencyPickers } from "../Pickers";
+import { CurrencyPicker, Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
 import { AddTransactionButton } from "./AddTransactionButton";
 
@@ -65,12 +65,12 @@ export const AddTransactionForm = () => {
         </Text>
       </View>
       {isRecurring ? (
-        <OccurrencyPickers.Recurrent
+        <Pickers.Recurrent
           transaction={transaction}
           setTransaction={setTransaction}
         />
       ) : (
-        <OccurrencyPickers.Single
+        <Pickers.Single
           occurrence={date}
           setRecurrence={(when) => set("when", when)}
         />

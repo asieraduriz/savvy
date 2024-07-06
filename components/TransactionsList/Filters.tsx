@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Pressable, Text, StyleSheet, Modal } from 'react-native';
+import { Pickers } from '../Pickers';
 
 type FilterOptions = {
     dateRange: 'all' | 'today' | 'week' | 'month' | 'custom';
@@ -56,7 +57,7 @@ export const Filters: React.FC<Props> = ({ onFilterChange }) => {
             >
                 <View style={styles.modalView}>
                     <Text style={styles.modalTitle}>Advanced Filters</Text>
-                    {/* Add more complex filter options here */}
+                    <Pickers.DateRange />
                     <Pressable
                         style={styles.closeButton}
                         onPress={() => setModalVisible(false)}
@@ -103,7 +104,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5
+        elevation: 5,
+        height: 500
     },
     modalTitle: {
         fontSize: 18,
