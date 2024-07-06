@@ -50,3 +50,20 @@ export const toOccurrence = (transaction: Transaction): Occurrence[] => {
 }
 
 export const toOccurrences = (transactions: Transaction[]): Occurrence[] => transactions.flatMap(toOccurrence)
+
+export const toGroupedByDateOccurences = (transactions: Transaction[]): { when: Date; occurences: Occurrence[] }[] => {
+    const allOccurrences = toOccurrences(transactions);
+
+    const groupedOccurences: ReturnType<typeof toGroupedByDateOccurences> = [];
+    allOccurrences.forEach((occurrence) => {
+        const group = groupedOccurences.find((group) => group.when === occurrence.when);
+
+        if (group) {
+            group.occurences.push(occurrence)
+        } else {
+            groupedOccurences.push({ when: occurrence.when, occurences: [occurrence] })
+        }
+    })
+
+    return groupedOccurences;
+}

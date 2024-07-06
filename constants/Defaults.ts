@@ -3,7 +3,10 @@ import {
   Transaction,
   UnifiedAddTransaction,
 } from "@/types";
+import { subDays } from "date-fns";
 import { randomUUID } from "expo-crypto";
+
+const today = new Date();
 
 const transactionForm: UnifiedAddTransaction = {
   amount: 0,
@@ -17,31 +20,64 @@ const transactionForm: UnifiedAddTransaction = {
   type: "single",
 };
 
-const starterSingleTransaction: Transaction = {
+const starterWeeklyTennis: Transaction = {
   id: randomUUID(),
-  amount: 1375.4,
+  amount: 22,
   currency: "€",
-  title: "Trip to Japan",
-  category: "Life therapy",
-  when: new Date("2024-07-01"),
-  created: new Date("2024-07-03"),
-  type: "single",
-};
-
-const starterRecurrentTransaction: Transaction = {
-  id: randomUUID(),
-  amount: 203.14,
-  currency: "€",
-  title: "Mental therapy",
-  category: "Psychology",
-  every: 3,
+  title: "Tennis",
+  category: "Sport",
+  created: subDays(today, 17),
+  startDate: subDays(today, 22),
+  every: 1,
   frequency: RecurrentTransactionFrequency.weeks,
-  startDate: new Date("2024-04-14"),
-  created: new Date("2024-04-20"),
   type: "recurrent",
 };
 
+const starterFirstCoffee: Transaction = {
+  type: 'single',
+  id: randomUUID(),
+  amount: 5,
+  currency: '€',
+  title: 'Coffee',
+  category: 'Cafe',
+  created: subDays(today, 13),
+  when: subDays(today, 13)
+}
+
+const starterSecondCoffee: Transaction = {
+  type: 'single',
+  id: randomUUID(),
+  amount: 7,
+  currency: '€',
+  title: 'Coffee',
+  category: 'Cafe',
+  created: subDays(today, 7),
+  when: subDays(today, 6)
+}
+
+const starterGroceriesFirst: Transaction = {
+  type: 'single',
+  id: randomUUID(),
+  amount: 87,
+  currency: '€',
+  title: 'Glories',
+  category: 'Grocieres',
+  created: subDays(today, 7),
+  when: subDays(today, 6)
+}
+
+const starterGroceriesSecond: Transaction = {
+  type: 'single',
+  id: randomUUID(),
+  amount: 87,
+  currency: '€',
+  title: 'Glories',
+  category: 'Grocieres',
+  created: subDays(today, 4),
+  when: subDays(today, 4)
+}
+
 export const Defaults = {
   TransactionForm: transactionForm,
-  Starters: [starterRecurrentTransaction, starterSingleTransaction],
+  Starters: [starterFirstCoffee, starterWeeklyTennis, starterSecondCoffee, starterGroceriesFirst, starterGroceriesSecond],
 };

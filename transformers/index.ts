@@ -1,6 +1,7 @@
-import { toOccurrence, toOccurrences } from "./Occurrence";
+import { toGroupedByDateOccurences, toOccurrence, toOccurrences } from "./Occurrence";
 
 export const Transformers = {
     toOccurrence,
-    toOccurrences
+    toOccurrences,
+    toGroupedByDateOccurences
 }
