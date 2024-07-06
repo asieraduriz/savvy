@@ -48,3 +48,5 @@ export const toOccurrence = (transaction: Transaction): Occurrence[] => {
 
     return occurrences;
 }
+
+export const toOccurrences = (transactions: Transaction[]): Occurrence[] => transactions.flatMap(toOccurrence)

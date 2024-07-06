@@ -1,5 +1,6 @@
-import { toOccurrence } from "./Occurrence";
+import { toOccurrence, toOccurrences } from "./Occurrence";
 
 export const Transformers = {
-    Occurrence: toOccurrence,
+    toOccurrence,
+    toOccurrences
 }
