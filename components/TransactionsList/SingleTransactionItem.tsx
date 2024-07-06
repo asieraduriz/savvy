@@ -7,7 +7,7 @@ import { formatDate } from "date-fns";
 type Props = { transaction: SingleTransaction };
 
 export const SingleTransactionItem: FC<Props> = ({ transaction }) => {
-  const { when, amount, currency, category, title, description } = transaction;
+  const { when, amount, currency, category, title } = transaction;
   const formattedAmount = `${amount} ${currency}`;
 
   return (
@@ -22,9 +22,6 @@ export const SingleTransactionItem: FC<Props> = ({ transaction }) => {
           <Text style={styles.categoryText}>{category}</Text>
         </View>
         {title && <Text style={styles.titleText}>{title}</Text>}
-        {description && (
-          <Text style={styles.descriptionText}>{description}</Text>
-        )}
       </View>
       <View style={styles.cardFooter}>
         <Text style={styles.detailsText}>Details</Text>

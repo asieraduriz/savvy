@@ -15,7 +15,6 @@ export const RecurrentTransactionItem: FC<Props> = ({ transaction }) => {
     currency,
     category,
     title,
-    description,
   } = transaction;
 
   const formattedAmount = `${amount} ${currency}`;
@@ -31,9 +30,6 @@ export const RecurrentTransactionItem: FC<Props> = ({ transaction }) => {
           <Text style={styles.categoryText}>{category}</Text>
         </View>
         {title && <Text style={styles.titleText}>{title}</Text>}
-        {description && (
-          <Text style={styles.descriptionText}>{description}</Text>
-        )}
         <View style={styles.recurringDetails}>
           <Text style={styles.recurringText}>
             Recurring: every {every} {frequency}

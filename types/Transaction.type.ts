@@ -4,7 +4,6 @@ export type BaseTransaction = {
   currency: string;
   category: string;
   title: string;
-  description?: string;
   created: Date;
 };
 

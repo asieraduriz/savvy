@@ -6,7 +6,7 @@ import {
 
 export type UnifiedAddTransaction = Pick<
   BaseTransaction,
-  "title" | "amount" | "category" | "currency" | "description"
+  "title" | "amount" | "category" | "currency"
 > &
   Omit<SingleBaseTransaction, "type"> &
   Omit<RecurrentBaseTransaction, "type"> & { type: "single" | "recurrent" };
