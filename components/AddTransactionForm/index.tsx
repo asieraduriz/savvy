@@ -58,7 +58,7 @@ export const AddTransactionForm = () => {
         </Text>
         <Switch
           value={isRecurring}
-          onValueChange={(value) => set("type", value ? "single" : "recurrent")}
+          onValueChange={(value) => set("type", value ? "recurrent" : "single")}
         />
         <Text style={isRecurring ? undefined : styles.disabledRecurrenceText}>
           Recurrent
