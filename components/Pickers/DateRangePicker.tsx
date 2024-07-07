@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import CalendarPicker, { ChangedDate } from "react-native-calendar-picker";
-import { Text, View } from "../Themed";
+import { View } from "../Themed";
 
 type Props = {
     start: Date;
-    end: Date;
+    end?: Date;
     onStartChange: (start: Date) => void
     onEndChange: (end?: Date) => void
 }
@@ -20,16 +20,21 @@ export const DateRangePicker: React.FC<Props> = ({ start, end, onStartChange, on
     };
 
     return (
-        <View style={styles.container}>
-            <CalendarPicker
-                startFromMonday
-                allowRangeSelection
-                todayBackgroundColor="#f2e6ff"
-                selectedDayColor="#7300e6"
-                selectedDayTextColor="#FFFFFF"
-                onDateChange={onDateChange}
-            />
-        </View>
+        <ScrollView>
+            <View style={styles.container}>
+                <CalendarPicker
+                    startFromMonday
+                    allowRangeSelection
+                    todayBackgroundColor="#f2e6ff"
+                    selectedDayColor="#7300e6"
+                    selectedDayTextColor="#FFFFFF"
+                    onDateChange={onDateChange}
+                    selectedStartDate={start}
+                    selectedEndDate={end}
+                />
+            </View>
+
+        </ScrollView>
     );
 };
 
@@ -37,7 +42,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#FFFFFF",
-        marginTop: 100,
-        height: 250
     },
 });

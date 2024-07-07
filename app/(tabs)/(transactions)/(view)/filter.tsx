@@ -1,11 +1,10 @@
-import { ScrollView, StyleSheet } from "react-native";
-import { Text, View } from "@/components/Themed";
+import { StyleSheet } from "react-native";
+import { View } from "@/components/Themed";
+import { Pages } from "@/pages";
 
 export default () => (
     <View style={styles.container}>
-        <ScrollView>
-            <View><Text>Filter page</Text></View>
-        </ScrollView>
+        <Pages.Filter />
     </View>
 );
 
