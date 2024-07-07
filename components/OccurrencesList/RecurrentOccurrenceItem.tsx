@@ -2,7 +2,6 @@ import { FC } from "react";
 import { StyleSheet } from "react-native";
 import { RecurrentOccurrence } from "@/types";
 import { Text, View } from "../Themed";
-import { formatDate } from "date-fns";
 
 type Props = { occurrence: RecurrentOccurrence };
 
@@ -10,7 +9,6 @@ export const RecurrentOccurrenceItem: FC<Props> = ({ occurrence }) => {
   const {
     frequency,
     every,
-    when,
     amount,
     currency,
     category,
@@ -22,7 +20,6 @@ export const RecurrentOccurrenceItem: FC<Props> = ({ occurrence }) => {
   return (
     <View style={styles.transactionCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.dateText}>{formatDate(when, "do MMM yyyy")}</Text>
         <Text style={styles.amountText}>{formattedAmount}</Text>
       </View>
       <View style={styles.cardBody}>
@@ -36,9 +33,6 @@ export const RecurrentOccurrenceItem: FC<Props> = ({ occurrence }) => {
             Recurring: every {every} {frequency}
           </Text>
         </View>
-      </View>
-      <View style={styles.cardFooter}>
-        <Text style={styles.detailsText}></Text>
       </View>
     </View>
   );
@@ -100,10 +94,6 @@ const styles = StyleSheet.create({
   recurringText: {
     fontSize: 12,
     color: "#ccc",
-  },
-  cardFooter: {
-    marginTop: 8,
-    alignItems: "flex-end",
   },
   detailsText: {
     fontSize: 14,

@@ -1,24 +1,33 @@
-import { Occurrence } from "@/types"
-import { View } from "../Themed"
-import { FlatList } from "react-native"
-import { useCallback } from "react"
-import { SingleOccurrenceItem } from "./SingleTransactionItem"
-import { RecurrentOccurrenceItem } from "./RecurrentTransactionItem"
+import { GroupedOccurrence } from "@/types";
+import { Text, View } from "../Themed";
+import { FlatList } from "react-native";
+import { SingleOccurrenceItem } from "./SingleOccurrenceItem";
+import { RecurrentOccurrenceItem } from "./RecurrentOccurrenceItem";
+import { format } from "date-fns";
 
 type Props = {
-    occurrences: Occurrence[]
-}
+    occurrences: GroupedOccurrence[];
+};
 
 export const OccurrencesList: React.FC<Props> = ({ occurrences }) => {
-    const renderItem = useCallback(({ item }: { item: Occurrence }) => (
-        item.type === 'single' ? <SingleOccurrenceItem occurrence={item} /> : <RecurrentOccurrenceItem occurrence={item} />
-    ), []);
+    const renderItem = ({ item }: { item: GroupedOccurrence }) => {
+        return (
+            <View>
+                <Text>{format(new Date(item.when), "MMM do yyyy")}</Text>
+                {item.occurrences.map((occurrence) =>
+                    occurrence.type === "single" ? (
+                        <SingleOccurrenceItem key={occurrence.id} occurrence={occurrence} />
+                    ) : (
+                        <RecurrentOccurrenceItem key={occurrence.id} occurrence={occurrence} />
+                    )
+                )}
+            </View>
+        );
+    };
 
-    return (<View>
-        <FlatList
-            data={occurrences}
-            renderItem={renderItem}
-            keyExtractor={(item) => `${item.when.getTime()}`}
-        />
-    </View>)
-}
+    return (
+        <View>
+            <FlatList data={occurrences} renderItem={renderItem} keyExtractor={(item) => `${item.when}`} />
+        </View>
+    );
+};

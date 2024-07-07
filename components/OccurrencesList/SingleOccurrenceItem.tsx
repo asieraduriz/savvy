@@ -2,18 +2,16 @@ import { FC } from "react";
 import { StyleSheet } from "react-native";
 import { SingleOccurrence } from "@/types";
 import { Text, View } from "../Themed";
-import { formatDate } from "date-fns";
 
 type Props = { occurrence: SingleOccurrence };
 
 export const SingleOccurrenceItem: FC<Props> = ({ occurrence }) => {
-  const { when, amount, currency, category, title } = occurrence;
+  const { amount, currency, category, title } = occurrence;
   const formattedAmount = `${amount} ${currency}`;
 
   return (
     <View style={styles.transactionCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.dateText}>{formatDate(when, "do MMM yyyy")}</Text>
         <Text style={styles.amountText}>{formattedAmount}</Text>
       </View>
       <View style={styles.cardBody}>
@@ -22,9 +20,6 @@ export const SingleOccurrenceItem: FC<Props> = ({ occurrence }) => {
           <Text style={styles.categoryText}>{category}</Text>
         </View>
         {title && <Text style={styles.titleText}>{title}</Text>}
-      </View>
-      <View style={styles.cardFooter}>
-        <Text style={styles.detailsText}>Details</Text>
       </View>
     </View>
   );
@@ -86,10 +81,6 @@ const styles = StyleSheet.create({
   recurringText: {
     fontSize: 12,
     color: "#ccc",
-  },
-  cardFooter: {
-    marginTop: 8,
-    alignItems: "flex-end",
   },
   detailsText: {
     fontSize: 14,

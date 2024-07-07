@@ -1,6 +1,6 @@
-import { RecurrentTransaction, RecurrentTransactionFrequency, Transaction } from "@/types";
+import { GroupedOccurrence, RecurrentTransaction, RecurrentTransactionFrequency, Transaction } from "@/types";
 import { Occurrence, RecurrentOccurrence, SingleOccurrence } from "@/types";
-import { addDays, addMonths, addWeeks, addYears, isBefore } from "date-fns";
+import { addDays, addMonths, addWeeks, addYears, getTime, isBefore, startOfDay } from "date-fns";
 
 const occurrenceDatesIn = (transaction: RecurrentTransaction): Date[] => {
     const now = new Date();
@@ -49,21 +49,29 @@ export const toOccurrence = (transaction: Transaction): Occurrence[] => {
     return occurrences;
 }
 
-export const toOccurrences = (transactions: Transaction[]): Occurrence[] => transactions.flatMap(toOccurrence)
+export const toGroupedByDateOccurences = (transactions: Transaction[]): GroupedOccurrence[] => {
+    const occurrences = transactions.flatMap(toOccurrence);
+    occurrences.sort((a, b) => b.when.getTime() - a.when.getTime());
 
-export const toGroupedByDateOccurences = (transactions: Transaction[]): { when: Date; occurences: Occurrence[] }[] => {
-    const allOccurrences = toOccurrences(transactions);
+    const groups: GroupedOccurrence[] = [];
+    let currentGroup: GroupedOccurrence | null = null;
 
-    const groupedOccurences: ReturnType<typeof toGroupedByDateOccurences> = [];
-    allOccurrences.forEach((occurrence) => {
-        const group = groupedOccurences.find((group) => group.when === occurrence.when);
+    for (const occurrence of occurrences) {
+        const when = getTime(startOfDay(occurrence.when));
 
-        if (group) {
-            group.occurences.push(occurrence)
-        } else {
-            groupedOccurences.push({ when: occurrence.when, occurences: [occurrence] })
+        if (!currentGroup || currentGroup.when !== when) {
+            if (currentGroup) {
+                groups.push(currentGroup);
+            }
+            currentGroup = { when, occurrences: [] };
         }
-    })
 
-    return groupedOccurences;
+        currentGroup.occurrences.push(occurrence);
+    }
+
+    if (currentGroup) {
+        groups.push(currentGroup);
+    }
+
+    return groups;
 }

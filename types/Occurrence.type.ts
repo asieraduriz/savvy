@@ -11,3 +11,4 @@ type RecurrentBaseOccurrence = Pick<RecurrentBaseTransaction, "every" | "frequen
 export type SingleOccurrence = BaseOccurrence & SingleBaseOccurrence;
 export type RecurrentOccurrence = BaseOccurrence & RecurrentBaseOccurrence;
 export type Occurrence = BaseOccurrence & (SingleBaseOccurrence | RecurrentBaseOccurrence);
+export type GroupedOccurrence = { when: number; occurrences: Occurrence[] };
