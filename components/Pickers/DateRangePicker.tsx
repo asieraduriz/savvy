@@ -3,7 +3,7 @@ import CalendarPicker, { ChangedDate } from "react-native-calendar-picker";
 import { View } from "../Themed";
 
 type Props = {
-    start: Date;
+    start?: Date;
     end?: Date;
     onStartChange: (start: Date) => void
     onEndChange: (end?: Date) => void
@@ -33,7 +33,6 @@ export const DateRangePicker: React.FC<Props> = ({ start, end, onStartChange, on
                     selectedEndDate={end}
                 />
             </View>
-
         </ScrollView>
     );
 };

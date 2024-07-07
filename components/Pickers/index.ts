@@ -1,4 +1,5 @@
 import { DateRangePicker } from "./DateRangePicker";
+import { DatePresetPicker } from "./DatePresetPicker";
 import { RecurrentTransactionPicker } from "./RecurrentTransactionPicker";
 import { SingleTransactionPicker } from "./SingleTransactionPicker";
 
@@ -8,4 +9,5 @@ export const Pickers = {
   Single: SingleTransactionPicker,
   Recurrent: RecurrentTransactionPicker,
   DateRange: DateRangePicker,
+  DatePreset: DatePresetPicker,
 };
