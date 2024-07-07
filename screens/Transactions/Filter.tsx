@@ -3,7 +3,7 @@ import { Text, View } from "@/components/Themed";
 import { useState } from "react";
 import { Button } from "react-native";
 
-export const FilterPage: React.FC = () => {
+export const FilterScreen: React.FC = () => {
     const [startDate, setStartDate] = useState<Date>(new Date());
     const [endDate, setEndDate] = useState<Date>();
 

@@ -4,10 +4,8 @@ import { useTransactions } from "@/contexts";
 import { Transformers } from "@/transformers";
 import { FC, useMemo } from "react";
 
-export const TransactionsPage: FC = () => {
+export const TransactionsScreen: FC = () => {
   const transactions = useTransactions();
-
-
   const occurrences = useMemo(() => Transformers.toOccurrences(transactions), [transactions]);
 
   return (

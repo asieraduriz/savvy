@@ -1,11 +1,11 @@
 import { View } from "@/components/Themed";
-import { Pages } from "@/pages";
+import { Screens } from "@/screens";
 import { ScrollView } from "react-native";
 
 export default () => (
   <View>
     <ScrollView>
-      <Pages.AddTransactions />
+      <Screens.AddTransactions />
     </ScrollView>
   </View>
 );

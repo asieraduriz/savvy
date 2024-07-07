@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 import { View } from "@/components/Themed";
-import { Pages } from "@/pages";
+import { Screens } from "@/screens";
 
 export default () => (
     <View style={styles.container}>
-        <Pages.Filter />
+        <Screens.Filter />
     </View>
 );
 

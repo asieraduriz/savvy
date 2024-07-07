@@ -6,7 +6,7 @@ type Props = {
   id: string;
 };
 
-export const EditTransactionsPage: FC<Props> = ({ id }) => {
+export const EditTransactionsScreen: FC<Props> = ({ id }) => {
   return (
     <View>
       <EditTransactionForm id={id} />
