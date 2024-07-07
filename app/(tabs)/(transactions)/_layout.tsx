@@ -6,8 +6,8 @@ export default () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{
-        title: "Transactions", headerRight: () => <Link href="/add">
-          <MaterialCommunityIcons name="wallet-plus" size={24} color="white" />
+        title: "Transactions", headerRight: ({ tintColor }) => <Link href="/add">
+          <MaterialCommunityIcons name="wallet-plus" size={24} color={tintColor} />
         </Link>
 
       }} />
