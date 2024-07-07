@@ -4,6 +4,8 @@ import { Pickers } from '../Pickers';
 
 type FilterOptions = {
     dateRange: 'all' | 'today' | 'week' | 'month' | 'custom';
+    start: Date;
+    end: Date;
 }
 
 type Props = {
@@ -15,6 +17,8 @@ export const Filters: React.FC<Props> = ({ onFilterChange }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [filters, setFilters] = useState<FilterOptions>({
         dateRange: 'all',
+        start: new Date(),
+        end: new Date(),
     });
 
     const applyFilters = (newFilters: Partial<FilterOptions>) => {
@@ -57,7 +61,12 @@ export const Filters: React.FC<Props> = ({ onFilterChange }) => {
             >
                 <View style={styles.modalView}>
                     <Text style={styles.modalTitle}>Advanced Filters</Text>
-                    <Pickers.DateRange />
+                    <Pickers.DateRange
+                        start={filters.start}
+                        end={filters.end}
+                        onStartChange={(start) => applyFilters({ start })}
+                        onEndChange={(end) => applyFilters({ end })}
+                    />
                     <Pressable
                         style={styles.closeButton}
                         onPress={() => setModalVisible(false)}
@@ -105,7 +114,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-        height: 500
+        height: 800
     },
     modalTitle: {
         fontSize: 18,

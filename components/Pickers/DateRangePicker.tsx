@@ -1,17 +1,21 @@
-import { useState } from "react";
 import { StyleSheet } from "react-native";
 import CalendarPicker, { ChangedDate } from "react-native-calendar-picker";
 import { Text, View } from "../Themed";
 
-export const DateRangePicker = () => {
-    const [startDate, setStartDate] = useState<Date>();
-    const [endDate, setEndDate] = useState<Date>();
+type Props = {
+    start: Date;
+    end: Date;
+    onStartChange: (start: Date) => void
+    onEndChange: (end?: Date) => void
+}
+
+export const DateRangePicker: React.FC<Props> = ({ start, end, onStartChange, onEndChange }) => {
     const onDateChange = (date: Date, type: ChangedDate) => {
         if (type === "END_DATE") {
-            setEndDate(date);
+            onEndChange(date);
         } else {
-            setStartDate(date);
-            setEndDate(undefined);
+            onStartChange(date);
+            onEndChange(undefined);
         }
     };
 
@@ -25,10 +29,6 @@ export const DateRangePicker = () => {
                 selectedDayTextColor="#FFFFFF"
                 onDateChange={onDateChange}
             />
-            <View>
-                <Text>SELECTED START DATE:{`${startDate}`}</Text>
-                <Text>SELECTED END DATE:{`${endDate}`}</Text>
-            </View>
         </View>
     );
 };
