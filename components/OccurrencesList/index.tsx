@@ -7,6 +7,8 @@ import { format } from "date-fns";
 import SearchBox from "../Filters/SearchBox";
 import { useCallback, useMemo, useState } from "react";
 import { Transformers } from "@/transformers";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 
 type Props = {
     occurrences: Occurrence[];
@@ -43,6 +45,9 @@ export const OccurrencesList: React.FC<Props> = ({ occurrences }) => {
     return (
         <View>
             <SearchBox onSearch={onSearchBoxQueryChange} terms={Array.from(occurrenceTitles)} />
+            <Link href="/filter">
+                <MaterialCommunityIcons name="filter-variant" size={24} color="black" />
+            </Link>
             <FlatList data={groupedOccurrences} renderItem={renderItem} keyExtractor={(item) => `${item.when}`} />
         </View>
     );
