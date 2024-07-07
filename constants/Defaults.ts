@@ -1,4 +1,5 @@
 import {
+  OccurrencesFilter,
   RecurrentTransactionFrequency,
   Transaction,
   UnifiedAddTransaction,
@@ -77,7 +78,13 @@ const starterGroceriesSecond: Transaction = {
   when: subDays(today, 4)
 }
 
+const starterFilter: OccurrencesFilter = {
+  start: undefined,
+  end: undefined,
+}
+
 export const Defaults = {
   TransactionForm: transactionForm,
   Starters: [starterFirstCoffee, starterWeeklyTennis, starterSecondCoffee, starterGroceriesFirst, starterGroceriesSecond],
+  Filter: starterFilter,
 };
