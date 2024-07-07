@@ -1,4 +1,5 @@
 import { Pickers } from "@/components/Pickers";
+import { DualSlider } from "@/components/Slider";
 import { Text, View } from "@/components/Themed";
 import { useApplyFilter, useFilter } from "@/contexts";
 import { format } from "date-fns";
@@ -18,6 +19,7 @@ export const FilterScreen: React.FC = () => {
                 <Pickers.DatePreset onStartChange={setStartDate} onEndChange={setEndDate} />
                 <Button title="Reset" onPress={() => { setStartDate(new Date()); setEndDate(undefined) }} />
                 <Text>Filterss page</Text>
+                <DualSlider min={1} max={150} step={5} onValuesChange={console.log} />
                 <Text>{format(startDate, 'MMM do yyyy')}</Text>
                 <Text>{endDate ? format(endDate, 'MMM do yyyy') : "No date"}</Text>
                 <Button title="Apply" onPress={() => applyFilter(filter)} />
