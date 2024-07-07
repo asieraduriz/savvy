@@ -6,11 +6,13 @@ import { FC, useMemo } from "react";
 
 export const TransactionsPage: FC = () => {
   const transactions = useTransactions();
-  const groupedOccurrences = useMemo(() => Transformers.toGroupedByDateOccurences(transactions), [transactions]);
+
+
+  const occurrences = useMemo(() => Transformers.toOccurrences(transactions), [transactions]);
 
   return (
     <View>
-      <OccurrencesList occurrences={groupedOccurrences} />
+      <OccurrencesList occurrences={occurrences} />
     </View>
   );
 };

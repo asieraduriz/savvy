@@ -49,8 +49,9 @@ export const toOccurrence = (transaction: Transaction): Occurrence[] => {
     return occurrences;
 }
 
-export const toGroupedByDateOccurences = (transactions: Transaction[]): GroupedOccurrence[] => {
-    const occurrences = transactions.flatMap(toOccurrence);
+export const toOccurrences = (transactions: Transaction[]) => transactions.flatMap(toOccurrence);
+
+export const toGroupedByDateOccurences = (occurrences: Occurrence[]): GroupedOccurrence[] => {
     occurrences.sort((a, b) => b.when.getTime() - a.when.getTime());
 
     const groups: GroupedOccurrence[] = [];

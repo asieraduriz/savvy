@@ -38,7 +38,7 @@ const starterFirstCoffee: Transaction = {
   id: randomUUID(),
   amount: 5,
   currency: '€',
-  title: 'Coffee',
+  title: 'Tennesee',
   category: 'Cafe',
   created: subDays(today, 13),
   when: subDays(today, 13)
