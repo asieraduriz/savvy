@@ -1,5 +1,4 @@
 import { Pickers } from "@/components/Pickers";
-import { DualSlider } from "@/components/Slider";
 import { Text, View } from "@/components/Themed";
 import { useApplyFilter, useFilter } from "@/contexts";
 import { Transformers } from "@/transformers";
@@ -33,7 +32,12 @@ export const FilterScreen: React.FC = () => {
           }}
         />
         <Text>Filterss page</Text>
-        <DualSlider min={1} max={150} step={5} onValuesChange={console.log} />
+        <Pickers.RangeSlider
+          min={1}
+          max={150}
+          step={5}
+          onValuesChange={console.log}
+        />
         <Text>{Transformers.toFormattedDate(startDate)}</Text>
         <Text>
           {endDate ? Transformers.toFormattedDate(endDate) : "No date"}
