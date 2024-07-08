@@ -1,25 +1,23 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "../Themed";
 import { StyleSheet, Switch } from "react-native";
-import { UnifiedAddTransaction } from "@/types";
+import { ExpenseToAdd } from "@/types";
 import { CurrencyPicker, Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
-import { AddTransactionButton } from "./AddTransactionButton";
+import { Submit } from "./Submit";
 
 const toNumber = (input: string, fallback: number) =>
   Number.isNaN(Number(input)) ? fallback : Number(input);
 
-export const AddTransactionForm = () => {
-  const [transaction, setTransaction] = useState<UnifiedAddTransaction>(
-    Defaults.TransactionForm
-  );
+export const AddExpenseForm = () => {
+  const [expenseToAdd, setExpense] = useState<ExpenseToAdd>(Defaults.AddExpenseForm);
 
-  const isRecurring = transaction.type === "recurrent";
-  const set = (key: keyof UnifiedAddTransaction, value: any) => {
-    setTransaction((prev) => ({ ...prev, [key]: value }));
+  const isOneTime = expenseToAdd.type === "onetime";
+  const set = (key: keyof ExpenseToAdd, value: any) => {
+    setExpense((prev) => ({ ...prev, [key]: value }));
   };
 
-  const { title, currency, amount, category, when: date } = transaction;
+  const { title, currency, amount, category, when: date } = expenseToAdd;
 
   return (
     <View style={styles.container}>
@@ -53,30 +51,30 @@ export const AddTransactionForm = () => {
         placeholder="Which category?"
       />
       <View style={styles.switchContainer}>
-        <Text style={isRecurring ? styles.disabledRecurrenceText : undefined}>
+        <Text style={isOneTime ? styles.disabledRecurrenceText : undefined}>
           One-time
         </Text>
         <Switch
-          value={isRecurring}
+          value={isOneTime}
           onValueChange={(value) => set("type", value ? "recurrent" : "single")}
         />
-        <Text style={isRecurring ? undefined : styles.disabledRecurrenceText}>
+        <Text style={isOneTime ? undefined : styles.disabledRecurrenceText}>
           Recurrent
         </Text>
       </View>
-      {isRecurring ? (
-        <Pickers.Recurrent
-          transaction={transaction}
-          setTransaction={setTransaction}
+      {isOneTime ? (
+        <Pickers.Subscription
+          expenseToAdd={expenseToAdd}
+          updateExpense={setExpense}
         />
       ) : (
-        <Pickers.Single
+        <Pickers.OneTime
           occurrence={date}
           setRecurrence={(when) => set("when", when)}
         />
       )}
 
-      <AddTransactionButton transaction={transaction} />
+      <Submit expenseToAdd={expenseToAdd} />
     </View>
   );
 };

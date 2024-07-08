@@ -10,7 +10,7 @@ export default () => {
                     <Text>Financial snapshot</Text>
                 </View>
                 <View>
-                    <Link href='/(transactions)'>Recent transactions</Link>
+                    <Link href='/(expenses)'>Recent expenses</Link>
                 </View>
                 <View>
                     <Text>Quick actions snapshot</Text>

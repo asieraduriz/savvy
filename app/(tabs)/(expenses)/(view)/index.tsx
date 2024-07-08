@@ -5,7 +5,7 @@ import { Screens } from "@/screens";
 export default () => (
     <View style={styles.container}>
         <ScrollView>
-            <Screens.Transactions />
+            <Screens.Expenses />
         </ScrollView>
     </View>
 );

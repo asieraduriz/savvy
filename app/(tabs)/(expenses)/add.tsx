@@ -5,7 +5,7 @@ import { ScrollView } from "react-native";
 export default () => (
   <View>
     <ScrollView>
-      <Screens.AddTransactions />
+      <Screens.AddExpense />
     </ScrollView>
   </View>
 );

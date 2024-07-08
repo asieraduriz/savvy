@@ -1,11 +1,11 @@
-import { AddTransactionsScreen } from "./Transactions/Add";
-import { EditTransactionsScreen } from "./Transactions/Edit";
-import { TransactionsScreen } from "./Transactions/View";
-import { FilterScreen } from "./Transactions/View/Filter";
+import { AddExpenseScreen } from "./Expenses/Add";
+import { EditExpenseScreen } from "./Expenses/Edit";
+import { ExpensesScreen } from "./Expenses/View";
+import { FilterScreen } from "./Expenses/View/Filter";
 
 export const Screens = {
-  Transactions: TransactionsScreen,
+  Expenses: ExpensesScreen,
   Filter: FilterScreen,
-  AddTransactions: AddTransactionsScreen,
-  EditTransaction: EditTransactionsScreen,
+  AddExpense: AddExpenseScreen,
+  EditExpense: EditExpenseScreen,
 };

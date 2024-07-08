@@ -5,13 +5,13 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "react-native";
-import { TransactionsProvider } from "@/contexts";
+import { ExpensesProvider } from "@/contexts";
 
 export default () => {
   const colorScheme = useColorScheme();
 
   return (
-    <TransactionsProvider>
+    <ExpensesProvider>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
@@ -33,10 +33,10 @@ export default () => {
           }}
         />
         <Tabs.Screen
-          name="(transactions)"
+          name="(expenses)"
           options={{
-            title: "Transactions",
             headerShown: false,
+            title: "Expenses",
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons name="transfer" size={28} color={color} />
             ),
@@ -61,6 +61,6 @@ export default () => {
           }}
         />
       </Tabs>
-    </TransactionsProvider>
+    </ExpensesProvider>
   );
 };

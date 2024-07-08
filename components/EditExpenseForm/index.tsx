@@ -5,7 +5,7 @@ type Props = {
   id: string;
 };
 
-export const EditTransactionForm = ({ id }: Props) => {
+export const EditExpenseForm = ({ id }: Props) => {
   return (
     <View>
       <ScrollView>

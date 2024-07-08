@@ -18,7 +18,7 @@ export const RecurrentOccurrenceItem: FC<Props> = ({ occurrence }) => {
   const formattedAmount = `${amount} ${currency}`;
 
   return (
-    <View style={styles.transactionCard}>
+    <View style={styles.expenseCard}>
       <View style={styles.cardHeader}>
         <Text style={styles.amountText}>{formattedAmount}</Text>
       </View>
@@ -39,7 +39,7 @@ export const RecurrentOccurrenceItem: FC<Props> = ({ occurrence }) => {
 };
 
 const styles = StyleSheet.create({
-  transactionCard: {
+  expenseCard: {
     backgroundColor: "#fff",
     borderRadius: 8,
     padding: 16,

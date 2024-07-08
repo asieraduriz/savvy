@@ -1,3 +1,9 @@
+
+type OneTimeExpenseType = 'onetime';
+type SubscriptionExpenseType = 'subscription';
+
+export type ExpenseType = OneTimeExpenseType | SubscriptionExpenseType;
+
 export type ExpenseBase = {
     id: string;
     amount: number;
@@ -9,7 +15,7 @@ export type ExpenseBase = {
 
 export type OneTimeExpenseBase = {
     when: Date;
-    type: 'onetime'
+    type: OneTimeExpenseType
 };
 
 export enum SubscriptionExpenseFrequency {
@@ -23,7 +29,7 @@ export type SubscriptionExpenseBase = {
     frequency: SubscriptionExpenseFrequency;
     every: number;
     startDate: Date;
-    type: 'subscription';
+    type: SubscriptionExpenseType;
 };
 
 export type OneTimeExpense = ExpenseBase & OneTimeExpenseBase;

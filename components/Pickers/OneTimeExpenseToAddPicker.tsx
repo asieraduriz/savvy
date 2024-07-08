@@ -10,7 +10,7 @@ type Props = {
   setRecurrence: (date: Date) => void;
 };
 
-export const SingleTransactionPicker: React.FC<Props> = ({
+export const OneTimeExpenseToAddPicker: React.FC<Props> = ({
   occurrence,
   setRecurrence,
 }) => {

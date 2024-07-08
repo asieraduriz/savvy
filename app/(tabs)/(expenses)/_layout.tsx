@@ -6,13 +6,13 @@ export default () => {
   return (
     <Stack>
       <Stack.Screen name="(view)" options={{
-        title: "Transactions", headerRight: ({ tintColor }) => <Link href="/add">
+        title: "Expenses", headerRight: ({ tintColor }) => <Link href="/add">
           <MaterialCommunityIcons name="wallet-plus" size={24} color={tintColor} />
         </Link>
 
       }} />
-      <Stack.Screen name="add" options={{ title: "Add transaction" }} />
-      <Stack.Screen name="edit/[id]" options={{ title: "Edit transaction" }} />
+      <Stack.Screen name="add" options={{ title: "Add expense" }} />
+      <Stack.Screen name="edit/[id]" options={{ title: "Edit expense" }} />
     </Stack>
   );
 };

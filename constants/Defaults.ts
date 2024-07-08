@@ -1,27 +1,27 @@
 import {
+  Expense,
+  ExpenseToAdd,
   OccurrencesFilter,
-  RecurrentTransactionFrequency,
-  Transaction,
-  UnifiedAddTransaction,
+  SubscriptionExpenseFrequency,
 } from "@/types";
 import { subDays } from "date-fns";
 import { randomUUID } from "expo-crypto";
 
 const today = new Date();
 
-const transactionForm: UnifiedAddTransaction = {
+const addExpenseFormStarter: ExpenseToAdd = {
   amount: 0,
   currency: "€",
   title: "",
   category: "",
   every: 1,
-  frequency: RecurrentTransactionFrequency.days,
+  frequency: SubscriptionExpenseFrequency.days,
   startDate: new Date(),
   when: new Date(),
-  type: "single",
+  type: "onetime",
 };
 
-const starterWeeklyTennis: Transaction = {
+const starterWeeklyTennis: Expense = {
   id: randomUUID(),
   amount: 22,
   currency: "€",
@@ -30,12 +30,12 @@ const starterWeeklyTennis: Transaction = {
   created: subDays(today, 17),
   startDate: subDays(today, 22),
   every: 1,
-  frequency: RecurrentTransactionFrequency.weeks,
-  type: "recurrent",
+  frequency: SubscriptionExpenseFrequency.weeks,
+  type: "subscription",
 };
 
-const starterFirstCoffee: Transaction = {
-  type: 'single',
+const starterFirstCoffee: Expense = {
+  type: 'onetime',
   id: randomUUID(),
   amount: 5,
   currency: '€',
@@ -45,8 +45,8 @@ const starterFirstCoffee: Transaction = {
   when: subDays(today, 13)
 }
 
-const starterSecondCoffee: Transaction = {
-  type: 'single',
+const starterSecondCoffee: Expense = {
+  type: 'onetime',
   id: randomUUID(),
   amount: 7,
   currency: '€',
@@ -56,8 +56,8 @@ const starterSecondCoffee: Transaction = {
   when: subDays(today, 6)
 }
 
-const starterGroceriesFirst: Transaction = {
-  type: 'single',
+const starterGroceriesFirst: Expense = {
+  type: 'onetime',
   id: randomUUID(),
   amount: 87,
   currency: '€',
@@ -67,8 +67,8 @@ const starterGroceriesFirst: Transaction = {
   when: subDays(today, 6)
 }
 
-const starterGroceriesSecond: Transaction = {
-  type: 'single',
+const starterGroceriesSecond: Expense = {
+  type: 'onetime',
   id: randomUUID(),
   amount: 87,
   currency: '€',
@@ -84,7 +84,7 @@ const starterFilter: OccurrencesFilter = {
 }
 
 export const Defaults = {
-  TransactionForm: transactionForm,
+  AddExpenseForm: addExpenseFormStarter,
   Starters: [starterFirstCoffee, starterWeeklyTennis, starterSecondCoffee, starterGroceriesFirst, starterGroceriesSecond],
   Filter: starterFilter,
 };

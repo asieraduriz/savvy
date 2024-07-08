@@ -1,26 +1,26 @@
-import { GroupedOccurrence, RecurrentTransaction, RecurrentTransactionFrequency, Transaction } from "@/types";
+import { GroupedOccurrence, SubscriptionExpense, Expense, SubscriptionExpenseFrequency } from "@/types";
 import { Occurrence, RecurrentOccurrence, SingleOccurrence } from "@/types";
 import { addDays, addMonths, addWeeks, addYears, getTime, isBefore, startOfDay } from "date-fns";
 
-const occurrenceDatesIn = (transaction: RecurrentTransaction): Date[] => {
+const occurrenceDatesIn = (expense: SubscriptionExpense): Date[] => {
     const now = new Date();
-    const { startDate, every, frequency } = transaction;
+    const { startDate, every, frequency } = expense;
     const repeatedDates: Date[] = [];
     let currentDate = startDate;
 
     while (isBefore(currentDate, now)) {
         repeatedDates.push(currentDate);
         switch (frequency) {
-            case RecurrentTransactionFrequency.days:
+            case SubscriptionExpenseFrequency.days:
                 currentDate = addDays(currentDate, every);
                 break;
-            case RecurrentTransactionFrequency.weeks:
+            case SubscriptionExpenseFrequency.weeks:
                 currentDate = addWeeks(currentDate, every);
                 break;
-            case RecurrentTransactionFrequency.months:
+            case SubscriptionExpenseFrequency.months:
                 currentDate = addMonths(currentDate, every);
                 break;
-            case RecurrentTransactionFrequency.years:
+            case SubscriptionExpenseFrequency.years:
                 currentDate = addYears(currentDate, every);
                 break;
             default:
@@ -31,9 +31,9 @@ const occurrenceDatesIn = (transaction: RecurrentTransaction): Date[] => {
     return repeatedDates;
 }
 
-export const toOccurrence = (transaction: Transaction): Occurrence[] => {
-    if (transaction.type === 'single') {
-        const { id, amount, category, title, currency, type, when } = transaction;
+export const toOccurrence = (expense: Expense): Occurrence[] => {
+    if (expense.type === 'onetime') {
+        const { id, amount, category, title, currency, type, when } = expense;
         const singleOccurrence: SingleOccurrence = {
             id, amount, category, title, currency, type, when
         }
@@ -41,15 +41,15 @@ export const toOccurrence = (transaction: Transaction): Occurrence[] => {
         return [singleOccurrence];
     }
 
-    const { id, amount, category, title, currency, type, every, frequency } = transaction;
-    const occurrences: RecurrentOccurrence[] = occurrenceDatesIn(transaction).map((when) =>
+    const { id, amount, category, title, currency, type, every, frequency } = expense;
+    const occurrences: RecurrentOccurrence[] = occurrenceDatesIn(expense).map((when) =>
         ({ id, amount, category, title, currency, type, when, every, frequency })
     );
 
     return occurrences;
 }
 
-export const toOccurrences = (transactions: Transaction[]) => transactions.flatMap(toOccurrence);
+export const toOccurrences = (expenses: Expense[]) => expenses.flatMap(toOccurrence);
 
 export const toGroupedByDateOccurences = (occurrences: Occurrence[]): GroupedOccurrence[] => {
     occurrences.sort((a, b) => b.when.getTime() - a.when.getTime());

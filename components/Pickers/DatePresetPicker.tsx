@@ -1,4 +1,4 @@
-import { RecurrentTransactionFrequency } from "@/types";
+import { SubscriptionExpenseFrequency } from "@/types";
 import { Picker } from "@react-native-picker/picker";
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { TextInput } from "../Themed";
@@ -10,7 +10,7 @@ enum DatePresetChoice {
     last = "Last...",
 }
 
-function getStartDate(last: number, frequency: RecurrentTransactionFrequency): Date {
+function getStartDate(last: number, frequency: SubscriptionExpenseFrequency): Date {
     const today = new Date();
     switch (frequency) {
         case "days":
@@ -26,7 +26,7 @@ function getStartDate(last: number, frequency: RecurrentTransactionFrequency): D
     }
 }
 
-const toStartAndEnd = (preset: DatePresetChoice, last: number, frequency: RecurrentTransactionFrequency): { start: Date; end: Date } => {
+const toStartAndEnd = (preset: DatePresetChoice, last: number, frequency: SubscriptionExpenseFrequency): { start: Date; end: Date } => {
     const today = new Date();
     switch (preset) {
         case DatePresetChoice.currentMonth:
@@ -47,7 +47,7 @@ export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
     const [choice, setChoice] = useState<DatePresetChoice>(DatePresetChoice.currentMonth);
 
     const [last, setLast] = useState<number>(2);
-    const [frequency, setFrequency] = useState<RecurrentTransactionFrequency>(RecurrentTransactionFrequency.months);
+    const [frequency, setFrequency] = useState<SubscriptionExpenseFrequency>(SubscriptionExpenseFrequency.months);
     const onDateUpdate = useMemo(() => toStartAndEnd(choice, last, frequency), [choice, last, frequency]);
 
     useEffect(() => {
@@ -69,7 +69,7 @@ export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
                 <Fragment>
                     <TextInput value={`${last}`} onChangeText={(value) => setLast(Number(value))} placeholder="Amount" keyboardType="numeric" />
                     <Picker selectedValue={frequency} onValueChange={setFrequency}>
-                        {Object.values(RecurrentTransactionFrequency).map((item) => (
+                        {Object.values(SubscriptionExpenseFrequency).map((item) => (
                             <Picker.Item key={item} label={item} value={item} />
                         ))}
                     </Picker>
