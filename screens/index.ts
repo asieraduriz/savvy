@@ -1,7 +1,7 @@
-import { TransactionsScreen } from "./Transactions";
 import { AddTransactionsScreen } from "./Transactions/Add";
 import { EditTransactionsScreen } from "./Transactions/Edit";
-import { FilterScreen } from "./Transactions/Filter";
+import { TransactionsScreen } from "./Transactions/View";
+import { FilterScreen } from "./Transactions/View/Filter";
 
 export const Screens = {
   Transactions: TransactionsScreen,

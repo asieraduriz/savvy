@@ -6,7 +6,10 @@ import { FC, useMemo } from "react";
 
 export const TransactionsScreen: FC = () => {
   const transactions = useTransactions();
-  const occurrences = useMemo(() => Transformers.toOccurrences(transactions), [transactions]);
+  const occurrences = useMemo(
+    () => Transformers.toOccurrences(transactions),
+    [transactions]
+  );
 
   return (
     <View>
