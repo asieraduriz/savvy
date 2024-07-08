@@ -1,9 +1,9 @@
 import { Pressable, StyleSheet } from "react-native";
 import { Text, View } from "../Themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { format } from "date-fns";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useToggle } from "@/hooks";
+import { Transformers } from "@/transformers";
 
 type Props = {
   occurrence: Date;
@@ -26,7 +26,9 @@ export const SingleTransactionPicker: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <Pressable style={styles.pressableDateContainer} onPress={toggle.on}>
-        <Text style={styles.dateText}>{format(occurrence, "MMM do yyyy")}</Text>
+        <Text style={styles.dateText}>
+          {Transformers.toFormattedDate(occurrence)}
+        </Text>
         <MaterialIcons name="event" size={24} color="black" />
       </Pressable>
       {showDatePicker && (

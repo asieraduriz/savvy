@@ -2,10 +2,10 @@ import { useToggle } from "@/hooks";
 import { RecurrentTransactionFrequency, UnifiedAddTransaction } from "@/types";
 import { Pressable, StyleSheet } from "react-native";
 import { Text, TextInput, View } from "../Themed";
-import { format } from "date-fns";
 import { MaterialIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
+import { Transformers } from "@/transformers";
 
 type Props = {
   transaction: UnifiedAddTransaction;
@@ -29,7 +29,7 @@ export const RecurrentTransactionPicker = ({
     <View style={styles.container}>
       <Pressable style={styles.pressableDateContainer} onPress={toggle.on}>
         <Text style={styles.dateText}>
-          Starting {format(recurrence.startDate, "MMM do yyyy")}
+          Starting {Transformers.toFormattedDate(recurrence.startDate)}
         </Text>
         <MaterialIcons name="event" size={24} color="black" />
       </Pressable>
