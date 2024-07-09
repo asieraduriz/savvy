@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
-import { SingleOccurrence } from "@/types";
+import { OneTimeEntry } from "@/types";
 import { Text, View } from "../Themed";
 
-type Props = { occurrence: SingleOccurrence };
+type Props = { entry: OneTimeEntry };
 
-export const SingleOccurrenceItem: FC<Props> = ({ occurrence }) => {
-  const { amount, category, title } = occurrence;
+export const OneTimeEntryItem: FC<Props> = ({ entry }) => {
+  const { amount, category, title } = entry;
 
   return (
     <View style={styles.expenseCard}>

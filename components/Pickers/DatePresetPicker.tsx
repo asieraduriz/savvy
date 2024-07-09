@@ -52,11 +52,11 @@ export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
 
     useEffect(() => {
         onStartChange(onDateUpdate.start)
-    }, [onDateUpdate.start])
+    }, [onStartChange, onDateUpdate.start])
 
     useEffect(() => {
         onEndChange(onDateUpdate.end)
-    }, [onDateUpdate.end])
+    }, [onEndChange, onDateUpdate.end])
 
     return (
         <Fragment>

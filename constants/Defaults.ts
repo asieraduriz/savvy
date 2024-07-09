@@ -1,7 +1,7 @@
 import {
   Expense,
   ExpenseToAdd,
-  OccurrencesFilter,
+  EntriesFilter,
   SubscriptionExpenseFrequency,
 } from "@/types";
 import { subDays } from "date-fns";
@@ -33,52 +33,58 @@ const starterWeeklyTennis: Expense = {
 };
 
 const starterFirstCoffee: Expense = {
-  type: 'onetime',
+  type: "onetime",
   id: randomUUID(),
   amount: 5,
-  title: 'Tennesee',
-  category: 'Cafe',
+  title: "Tennesee",
+  category: "Cafe",
   created: subDays(today, 13),
-  when: subDays(today, 13)
-}
+  when: subDays(today, 13),
+};
 
 const starterSecondCoffee: Expense = {
-  type: 'onetime',
+  type: "onetime",
   id: randomUUID(),
   amount: 7,
-  title: 'Coffee',
-  category: 'Cafe',
+  title: "Coffee",
+  category: "Cafe",
   created: subDays(today, 7),
-  when: subDays(today, 6)
-}
+  when: subDays(today, 6),
+};
 
 const starterGroceriesFirst: Expense = {
-  type: 'onetime',
+  type: "onetime",
   id: randomUUID(),
   amount: 87,
-  title: 'Glories',
-  category: 'Grocieres',
+  title: "Glories",
+  category: "Grocieres",
   created: subDays(today, 7),
-  when: subDays(today, 6)
-}
+  when: subDays(today, 6),
+};
 
 const starterGroceriesSecond: Expense = {
-  type: 'onetime',
+  type: "onetime",
   id: randomUUID(),
   amount: 87,
-  title: 'Glories',
-  category: 'Grocieres',
+  title: "Glories",
+  category: "Grocieres",
   created: subDays(today, 4),
-  when: subDays(today, 4)
-}
+  when: subDays(today, 4),
+};
 
-const starterFilter: OccurrencesFilter = {
+const starterFilter: EntriesFilter = {
   start: undefined,
   end: undefined,
-}
+};
 
 export const Defaults = {
   AddExpenseForm: addExpenseFormStarter,
-  Starters: [starterFirstCoffee, starterWeeklyTennis, starterSecondCoffee, starterGroceriesFirst, starterGroceriesSecond],
+  Starters: [
+    starterFirstCoffee,
+    starterWeeklyTennis,
+    starterSecondCoffee,
+    starterGroceriesFirst,
+    starterGroceriesSecond,
+  ],
   Filter: starterFilter,
 };

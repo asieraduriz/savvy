@@ -1,18 +1,12 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
-import { RecurrentOccurrence } from "@/types";
+import { SubscriptionEntry } from "@/types";
 import { Text, View } from "../Themed";
 
-type Props = { occurrence: RecurrentOccurrence };
+type Props = { entry: SubscriptionEntry };
 
-export const RecurrentOccurrenceItem: FC<Props> = ({ occurrence }) => {
-  const {
-    frequency,
-    every,
-    amount,
-    category,
-    title,
-  } = occurrence;
+export const SubscriptionEntryItem: FC<Props> = ({ entry }) => {
+  const { frequency, every, amount, category, title } = entry;
 
   return (
     <View style={styles.expenseCard}>

@@ -1,15 +1,11 @@
 import { toFormattedDate } from "./Date";
 import { toExpense } from "./Expense";
-import {
-  toGroupedByDateOccurences,
-  toOccurrence,
-  toOccurrences,
-} from "./Occurrence";
+import { toEntry, toEntries, toGroupedByDateEntries } from "./Entry";
 
 export const Transformers = {
-  toOccurrence,
-  toOccurrences,
-  toGroupedByDateOccurences,
+  toEntry: toEntry,
+  toEntries: toEntries,
   toFormattedDate,
   toExpense,
+  toGroupedByDateEntries: toGroupedByDateEntries,
 };

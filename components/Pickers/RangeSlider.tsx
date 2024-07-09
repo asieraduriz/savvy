@@ -8,7 +8,7 @@ import {
   LayoutChangeEvent,
 } from "react-native";
 
-interface RangeSliderProps {
+type RangeSliderProps = {
   min: number;
   max: number;
   step: number;
@@ -25,6 +25,12 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
   const [upperMark, setUpperMark] = useState(max);
   const sliderWidth = useRef(0);
   const [sliderMeasured, setSliderMeasured] = useState(false);
+
+  const valueFromPosition = useCallback((position: number) => {
+    const ratio = (position - 10) / (sliderWidth.current - 20);
+    const value = min + ratio * (max - min);
+    return Math.round(value / step) * step;
+  }, [sliderWidth, min, max, step]);
 
   const updateValue = useCallback(
     (gestureState: PanResponderGestureState, isFirstKnob: boolean) => {
@@ -45,7 +51,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
         onValuesChange([lowerKnob, updatedValue]);
       }
     },
-    [lowerKnob, upperMark, min, max, step, onValuesChange]
+    [lowerKnob, upperMark, min, max, step, onValuesChange, valueFromPosition]
   );
 
   const lowerKnobResponder = useRef(
@@ -61,12 +67,6 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
       onPanResponderMove: (_, gestureState) => updateValue(gestureState, false),
     })
   ).current;
-
-  const valueFromPosition = (position: number) => {
-    const ratio = (position - 10) / (sliderWidth.current - 20);
-    const value = min + ratio * (max - min);
-    return Math.round(value / step) * step;
-  };
 
   const positionFromValue = (value: number) => {
     const ratio = (value - min) / (max - min);
@@ -103,9 +103,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
           {...upperKnobResponder.panHandlers}
         />
       </View>
-      <Text style={styles.values}>{`${lowerKnob.toFixed(
-        1
-      )} - ${upperMark.toFixed(1)}`}</Text>
+      <Text style={styles.values}>{`${lowerKnob.toFixed(1)} - ${upperMark.toFixed(1)}`}</Text>
     </View>
   );
 };

@@ -1,6 +1,6 @@
 type DateRangeFilter = {
-    start?: Date;
-    end?: Date;
+  start?: Date;
+  end?: Date;
 };
 
-export type OccurrencesFilter = DateRangeFilter;
+export type EntriesFilter = DateRangeFilter;

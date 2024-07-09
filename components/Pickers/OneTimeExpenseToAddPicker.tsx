@@ -6,20 +6,20 @@ import { useToggle } from "@/hooks";
 import { Transformers } from "@/transformers";
 
 type Props = {
-  occurrence: Date;
-  setRecurrence: (date: Date) => void;
+  when: Date;
+  setDate: (date: Date) => void;
 };
 
 export const OneTimeExpenseToAddPicker: React.FC<Props> = ({
-  occurrence,
-  setRecurrence,
+  when,
+  setDate,
 }) => {
   const [showDatePicker, toggle] = useToggle(false);
 
   const handleDateChange = (event: any, selectedDate?: Date) => {
     toggle.off();
     if (event.type === "set" && selectedDate) {
-      setRecurrence(selectedDate);
+      setDate(selectedDate);
     }
   };
 
@@ -27,13 +27,13 @@ export const OneTimeExpenseToAddPicker: React.FC<Props> = ({
     <View style={styles.container}>
       <Pressable style={styles.pressableDateContainer} onPress={toggle.on}>
         <Text style={styles.dateText}>
-          {Transformers.toFormattedDate(occurrence)}
+          {Transformers.toFormattedDate(when)}
         </Text>
         <MaterialIcons name="event" size={24} color="black" />
       </Pressable>
       {showDatePicker && (
         <DateTimePicker
-          value={occurrence || new Date()}
+          value={when || new Date()}
           mode="date"
           display="default"
           onChange={handleDateChange}

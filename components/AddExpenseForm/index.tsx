@@ -10,7 +10,9 @@ const toNumber = (input: string, fallback: number) =>
   Number.isNaN(Number(input)) ? fallback : Number(input);
 
 export const AddExpenseForm = () => {
-  const [expenseToAdd, setExpense] = useState<ExpenseToAdd>(Defaults.AddExpenseForm);
+  const [expenseToAdd, setExpense] = useState<ExpenseToAdd>(
+    Defaults.AddExpenseForm
+  );
 
   const isOneTime = expenseToAdd.type === "onetime";
   const set = (key: keyof ExpenseToAdd, value: any) => {
@@ -46,25 +48,24 @@ export const AddExpenseForm = () => {
       />
       <View style={styles.switchContainer}>
         <Text style={isOneTime ? styles.disabledRecurrenceText : undefined}>
-          One-time
+          One time
         </Text>
         <Switch
           value={isOneTime}
-          onValueChange={(value) => set("type", value ? "recurrent" : "single")}
+          onValueChange={(value) =>
+            set("type", value ? "subscription" : "onetime")
+          }
         />
         <Text style={isOneTime ? undefined : styles.disabledRecurrenceText}>
-          Recurrent
+          Subscription
         </Text>
       </View>
       {isOneTime ? (
+        <Pickers.OneTime when={date} setDate={(when) => set("when", when)} />
+      ) : (
         <Pickers.Subscription
           expenseToAdd={expenseToAdd}
           updateExpense={setExpense}
-        />
-      ) : (
-        <Pickers.OneTime
-          occurrence={date}
-          setRecurrence={(when) => set("when", when)}
         />
       )}
 

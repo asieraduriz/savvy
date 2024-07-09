@@ -1,2 +1,2 @@
-export * from './OccurrencesFilter/Provider';
+export * from "./EntriesFilter/Provider";
 export * from "./Expenses/Provider";
