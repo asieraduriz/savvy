@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Text, TextInput, View } from "../Themed";
-import { StyleSheet, Switch } from "react-native";
+import { TextInput, View } from "../Themed";
+import { StyleSheet } from "react-native";
 import { ExpenseToAdd } from "@/types";
 import { Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
@@ -14,7 +14,6 @@ export const AddExpenseForm = () => {
     Defaults.AddExpenseForm
   );
 
-  const isOneTime = expenseToAdd.type === "onetime";
   const set = (key: keyof ExpenseToAdd, value: any) => {
     setExpense((prev) => ({ ...prev, [key]: value }));
   };
@@ -46,29 +45,7 @@ export const AddExpenseForm = () => {
         onChangeText={(category) => set("category", category)}
         placeholder="Which category?"
       />
-      <View style={styles.switchContainer}>
-        <Text style={isOneTime ? styles.disabledRecurrenceText : undefined}>
-          One time
-        </Text>
-        <Switch
-          value={isOneTime}
-          onValueChange={(value) =>
-            set("type", value ? "subscription" : "onetime")
-          }
-        />
-        <Text style={isOneTime ? undefined : styles.disabledRecurrenceText}>
-          Subscription
-        </Text>
-      </View>
-      {isOneTime ? (
-        <Pickers.OneTime when={date} setDate={(when) => set("when", when)} />
-      ) : (
-        <Pickers.Subscription
-          expenseToAdd={expenseToAdd}
-          updateExpense={setExpense}
-        />
-      )}
-
+      <Pickers.OneTime when={date} setDate={(when) => set("when", when)} />
       <Submit expenseToAdd={expenseToAdd} />
     </View>
   );

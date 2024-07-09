@@ -13,7 +13,7 @@ export const Submit: FC<Props> = ({ expenseToAdd }) => {
 
 
   const onPress = () => {
-    const newExpense = Transformers.toExpense(expenseToAdd)
+    const newExpense = Transformers.toExpense(expenseToAdd);
     addExpense(newExpense);
   };
 

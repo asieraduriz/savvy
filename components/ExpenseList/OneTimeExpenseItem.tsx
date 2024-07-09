@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
-import { SubscriptionEntry } from "@/types";
 import { Text, View } from "../Themed";
+import { Expense } from "@/types";
 
-type Props = { entry: SubscriptionEntry };
+type Props = { expense: Expense };
 
-export const SubscriptionEntryItem: FC<Props> = ({ entry }) => {
-  const { frequency, every, amount, category, title } = entry;
+export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
+  const { amount, category, title } = expense;
 
   return (
     <View style={styles.expenseCard}>
@@ -19,11 +19,6 @@ export const SubscriptionEntryItem: FC<Props> = ({ entry }) => {
           <Text style={styles.categoryText}>{category}</Text>
         </View>
         {title && <Text style={styles.titleText}>{title}</Text>}
-        <View style={styles.recurringDetails}>
-          <Text style={styles.recurringText}>
-            Recurring: every {every} {frequency}
-          </Text>
-        </View>
       </View>
     </View>
   );
@@ -39,7 +34,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.18,
     shadowRadius: 1.6,
-    elevation: 3,
+    elevation: 3, // For Android
   },
   cardHeader: {
     flexDirection: "row",

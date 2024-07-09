@@ -1,4 +1,4 @@
-import { EntriesList } from "@/components/EntriesList";
+import { ExpenseList } from "@/components/ExpenseList";
 import { View } from "@/components/Themed";
 import { useExpenses } from "@/contexts";
 import { Transformers } from "@/transformers";
@@ -10,7 +10,7 @@ export const ExpensesScreen: FC = () => {
 
   return (
     <View>
-      <EntriesList entries={entries} />
+      <ExpenseList expenses={entries} />
     </View>
   );
 };
