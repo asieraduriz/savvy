@@ -4,8 +4,6 @@ import { SubscriptionToAddPicker } from "./SubscriptionToAddPicker";
 import { OneTimeExpenseToAddPicker } from "./OneTimeExpenseToAddPicker";
 import { RangeSlider } from "./RangeSlider";
 
-export * from "./CurrencyPicker";
-
 export const Pickers = {
   OneTime: OneTimeExpenseToAddPicker,
   Subscription: SubscriptionToAddPicker,

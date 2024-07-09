@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Text, TextInput, View } from "../Themed";
 import { StyleSheet, Switch } from "react-native";
 import { ExpenseToAdd } from "@/types";
-import { CurrencyPicker, Pickers } from "../Pickers";
+import { Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
 import { Submit } from "./Submit";
 
@@ -17,7 +17,7 @@ export const AddExpenseForm = () => {
     setExpense((prev) => ({ ...prev, [key]: value }));
   };
 
-  const { title, currency, amount, category, when: date } = expenseToAdd;
+  const { title, amount, category, when: date } = expenseToAdd;
 
   return (
     <View style={styles.container}>
@@ -30,12 +30,6 @@ export const AddExpenseForm = () => {
       <View
         style={{ display: "flex", alignItems: "center", flexDirection: "row" }}
       >
-        <View style={{ width: 150, ...styles.input, flex: 1 }}>
-          <CurrencyPicker
-            currency={currency}
-            setCurrency={(currency) => set("currency", currency)}
-          />
-        </View>
         <TextInput
           style={{ ...styles.input, flex: 1 }}
           value={`${amount}`}

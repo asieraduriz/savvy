@@ -6,13 +6,12 @@ import { Text, View } from "../Themed";
 type Props = { occurrence: SingleOccurrence };
 
 export const SingleOccurrenceItem: FC<Props> = ({ occurrence }) => {
-  const { amount, currency, category, title } = occurrence;
-  const formattedAmount = `${amount} ${currency}`;
+  const { amount, category, title } = occurrence;
 
   return (
     <View style={styles.expenseCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.amountText}>{formattedAmount}</Text>
+        <Text style={styles.amountText}>{amount}</Text>
       </View>
       <View style={styles.cardBody}>
         <View style={styles.categoryRow}>

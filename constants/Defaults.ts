@@ -11,7 +11,6 @@ const today = new Date();
 
 const addExpenseFormStarter: ExpenseToAdd = {
   amount: 0,
-  currency: "€",
   title: "",
   category: "",
   every: 1,
@@ -24,7 +23,6 @@ const addExpenseFormStarter: ExpenseToAdd = {
 const starterWeeklyTennis: Expense = {
   id: randomUUID(),
   amount: 22,
-  currency: "€",
   title: "Tennis",
   category: "Sport",
   created: subDays(today, 17),
@@ -38,7 +36,6 @@ const starterFirstCoffee: Expense = {
   type: 'onetime',
   id: randomUUID(),
   amount: 5,
-  currency: '€',
   title: 'Tennesee',
   category: 'Cafe',
   created: subDays(today, 13),
@@ -49,7 +46,6 @@ const starterSecondCoffee: Expense = {
   type: 'onetime',
   id: randomUUID(),
   amount: 7,
-  currency: '€',
   title: 'Coffee',
   category: 'Cafe',
   created: subDays(today, 7),
@@ -60,7 +56,6 @@ const starterGroceriesFirst: Expense = {
   type: 'onetime',
   id: randomUUID(),
   amount: 87,
-  currency: '€',
   title: 'Glories',
   category: 'Grocieres',
   created: subDays(today, 7),
@@ -71,7 +66,6 @@ const starterGroceriesSecond: Expense = {
   type: 'onetime',
   id: randomUUID(),
   amount: 87,
-  currency: '€',
   title: 'Glories',
   category: 'Grocieres',
   created: subDays(today, 4),

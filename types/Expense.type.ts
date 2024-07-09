@@ -7,7 +7,6 @@ export type ExpenseType = OneTimeExpenseType | SubscriptionExpenseType;
 export type ExpenseBase = {
     id: string;
     amount: number;
-    currency: string;
     category: string;
     title: string;
     created: Date;

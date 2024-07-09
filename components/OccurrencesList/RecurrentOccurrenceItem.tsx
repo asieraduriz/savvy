@@ -10,17 +10,14 @@ export const RecurrentOccurrenceItem: FC<Props> = ({ occurrence }) => {
     frequency,
     every,
     amount,
-    currency,
     category,
     title,
   } = occurrence;
 
-  const formattedAmount = `${amount} ${currency}`;
-
   return (
     <View style={styles.expenseCard}>
       <View style={styles.cardHeader}>
-        <Text style={styles.amountText}>{formattedAmount}</Text>
+        <Text style={styles.amountText}>{amount}</Text>
       </View>
       <View style={styles.cardBody}>
         <View style={styles.categoryRow}>

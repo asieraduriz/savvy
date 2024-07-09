@@ -1,6 +1,6 @@
 import { ExpenseBase, OneTimeExpenseBase, SubscriptionExpenseBase } from "./Expense.type";
 
-type BaseOccurrence = Pick<ExpenseBase, "id" | "amount" | 'currency' | "category" | "title"> & {
+type BaseOccurrence = Pick<ExpenseBase, "id" | "amount" | "category" | "title"> & {
     when: Date;
 };
 

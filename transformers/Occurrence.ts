@@ -33,17 +33,17 @@ const occurrenceDatesIn = (expense: SubscriptionExpense): Date[] => {
 
 export const toOccurrence = (expense: Expense): Occurrence[] => {
     if (expense.type === 'onetime') {
-        const { id, amount, category, title, currency, type, when } = expense;
+        const { id, amount, category, title, type, when } = expense;
         const singleOccurrence: SingleOccurrence = {
-            id, amount, category, title, currency, type, when
+            id, amount, category, title, type, when
         }
 
         return [singleOccurrence];
     }
 
-    const { id, amount, category, title, currency, type, every, frequency } = expense;
+    const { id, amount, category, title, type, every, frequency } = expense;
     const occurrences: RecurrentOccurrence[] = occurrenceDatesIn(expense).map((when) =>
-        ({ id, amount, category, title, currency, type, when, every, frequency })
+        ({ id, amount, category, title, type, when, every, frequency })
     );
 
     return occurrences;
