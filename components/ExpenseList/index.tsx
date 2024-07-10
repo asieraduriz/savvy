@@ -6,6 +6,8 @@ import { Transformers } from "@/transformers";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { Expense } from "@/types";
+import SearchBox from "../Filters/SearchBox";
+import { useFilter } from "@/contexts";
 
 type Props = {
   expenses: Expense[];
@@ -23,11 +25,13 @@ const renderItem = ({ item }: { item: Expense }) => {
 export const ExpenseList: React.FC<Props> = ({ expenses }) => {
   const [filteredEntries, setFilteredEntries] = useState<Expense[]>(expenses);
 
-  const entryTitles = useMemo(
+  const filters = useFilter();
+
+  const expenseTitles = useMemo(
     () => new Set(filteredEntries.map((o) => o.title)),
     [filteredEntries]
   );
-  const entryCategories = useMemo(
+  const expenseCategories = useMemo(
     () => new Set(filteredEntries.map((o) => o.category)),
     [filteredEntries]
   );
@@ -44,6 +48,7 @@ export const ExpenseList: React.FC<Props> = ({ expenses }) => {
 
   return (
     <View>
+      <SearchBox onSearch={onSearchBoxQueryChange} terms={[...expenseTitles]} />
       <Link href="/filter">
         <MaterialCommunityIcons name="filter-variant" size={24} color="black" />
       </Link>

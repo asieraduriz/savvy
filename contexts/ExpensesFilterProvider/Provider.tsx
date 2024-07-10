@@ -1,4 +1,4 @@
-import { EntriesFilter } from "@/types";
+import { ExpensesFilter } from "@/types";
 import {
   createContext,
   useContext,
@@ -7,33 +7,33 @@ import {
   FC,
 } from "react";
 
-const EntriesFilterContext = createContext<
+const ExpensesFilterContext = createContext<
   | {
-      filter: EntriesFilter;
-      applyFilter: (filter: Partial<EntriesFilter>) => void;
-    }
+    filter: ExpensesFilter;
+    applyFilter: (filter: Partial<ExpensesFilter>) => void;
+  }
   | undefined
 >(undefined);
 
 type Props = PropsWithChildren;
 
-export const EntriesFilterProvider: FC<Props> = ({ children }) => {
-  const [filter, setFilter] = useState<EntriesFilter>({});
+export const ExpensesFilterProvider: FC<Props> = ({ children }) => {
+  const [filter, setFilter] = useState<ExpensesFilter>({});
 
-  const applyFilter = (newFilter: Partial<EntriesFilter>) => {
+  const applyFilter = (newFilter: Partial<ExpensesFilter>) => {
     const updatedFilter = { ...filter, ...newFilter };
     setFilter(updatedFilter);
   };
 
   return (
-    <EntriesFilterContext.Provider value={{ filter, applyFilter }}>
+    <ExpensesFilterContext.Provider value={{ filter, applyFilter }}>
       {children}
-    </EntriesFilterContext.Provider>
+    </ExpensesFilterContext.Provider>
   );
 };
 
 export const useFilter = () => {
-  const context = useContext(EntriesFilterContext);
+  const context = useContext(ExpensesFilterContext);
   if (context === undefined)
     throw new Error("useFilter must be used within EntriesFilterProvider");
 
@@ -41,7 +41,7 @@ export const useFilter = () => {
 };
 
 export const useApplyFilter = () => {
-  const context = useContext(EntriesFilterContext);
+  const context = useContext(ExpensesFilterContext);
   if (context === undefined)
     throw new Error("useApplyFilter must be used within EntriesFilterProvider");
 

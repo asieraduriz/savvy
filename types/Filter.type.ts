@@ -10,4 +10,4 @@ type DateRangeFilter = {
   end?: Date;
 };
 
-export type EntriesFilter = DateRangeFilter;
+export type ExpensesFilter = DateRangeFilter;
