@@ -1,8 +1,4 @@
-import {
-  Expense,
-  ExpenseToAdd,
-  ExpensesFilter,
-} from "@/types";
+import { Expense, ExpenseToAdd, ExpensesFilter } from "@/types";
 import { subDays } from "date-fns";
 import { randomUUID } from "expo-crypto";
 
@@ -54,6 +50,7 @@ const starterGroceriesSecond: Expense = {
 const starterFilter: ExpensesFilter = {
   start: undefined,
   end: undefined,
+  titleQuery: "",
 };
 
 export const Defaults = {

@@ -1,3 +1,4 @@
+import { Defaults } from "@/constants";
 import { ExpensesFilter } from "@/types";
 import {
   createContext,
@@ -9,16 +10,16 @@ import {
 
 const ExpensesFilterContext = createContext<
   | {
-    filter: ExpensesFilter;
-    applyFilter: (filter: Partial<ExpensesFilter>) => void;
-  }
+      filter: ExpensesFilter;
+      applyFilter: (filter: Partial<ExpensesFilter>) => void;
+    }
   | undefined
 >(undefined);
 
 type Props = PropsWithChildren;
 
 export const ExpensesFilterProvider: FC<Props> = ({ children }) => {
-  const [filter, setFilter] = useState<ExpensesFilter>({});
+  const [filter, setFilter] = useState<ExpensesFilter>(Defaults.Filter);
 
   const applyFilter = (newFilter: Partial<ExpensesFilter>) => {
     const updatedFilter = { ...filter, ...newFilter };

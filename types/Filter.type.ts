@@ -3,11 +3,15 @@ export enum Frequency {
   weeks = "weeks",
   months = "months",
   years = "years",
-};
+}
 
 type DateRangeFilter = {
   start?: Date;
   end?: Date;
 };
 
-export type ExpensesFilter = DateRangeFilter;
+type TitleSearchFilter = {
+  titleQuery: string;
+};
+
+export type ExpensesFilter = DateRangeFilter & TitleSearchFilter;
