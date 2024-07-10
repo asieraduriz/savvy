@@ -1,13 +1,8 @@
-export enum Frequencies {
+export enum Frequency {
   days = "days",
   weeks = "weeks",
   months = "months",
   years = "years",
-};
-
-export type SubscriptionExpenseBase = {
-  frequency: Frequencies;
-  every: number;
 };
 
 type DateRangeFilter = {

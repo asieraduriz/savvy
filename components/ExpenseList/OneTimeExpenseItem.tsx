@@ -77,15 +77,8 @@ const styles = StyleSheet.create({
     color: "#888",
     marginBottom: 4,
   },
-  recurringText: {
-    fontSize: 12,
-    color: "#ccc",
-  },
   detailsText: {
     fontSize: 14,
     color: "#000",
-  },
-  recurringDetails: {
-    marginTop: 8,
   },
 });

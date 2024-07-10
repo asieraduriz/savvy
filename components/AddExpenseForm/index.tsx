@@ -6,13 +6,10 @@ import { Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
 import { Submit } from "./Submit";
 
-const toNumber = (input: string, fallback: number) =>
-  Number.isNaN(Number(input)) ? fallback : Number(input);
+const toNumber = (input: string, fallback: number) => (Number.isNaN(Number(input)) ? fallback : Number(input));
 
 export const AddExpenseForm = () => {
-  const [expenseToAdd, setExpense] = useState<ExpenseToAdd>(
-    Defaults.AddExpenseForm
-  );
+  const [expenseToAdd, setExpense] = useState<ExpenseToAdd>(Defaults.AddExpenseForm);
 
   const set = (key: keyof ExpenseToAdd, value: any) => {
     setExpense((prev) => ({ ...prev, [key]: value }));
@@ -22,15 +19,8 @@ export const AddExpenseForm = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={title}
-        onChangeText={(title) => set("title", title)}
-        placeholder="Title"
-      />
-      <View
-        style={{ display: "flex", alignItems: "center", flexDirection: "row" }}
-      >
+      <TextInput style={styles.input} value={title} onChangeText={(title) => set("title", title)} placeholder="Title" />
+      <View style={{ display: "flex", alignItems: "center", flexDirection: "row" }}>
         <TextInput
           style={{ ...styles.input, flex: 1 }}
           value={`${amount}`}
@@ -65,8 +55,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
-  },
-  disabledRecurrenceText: {
-    color: "grey",
   },
 });

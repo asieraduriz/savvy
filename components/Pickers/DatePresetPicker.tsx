@@ -2,7 +2,7 @@ import { Picker } from "@react-native-picker/picker";
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
 import { TextInput } from "../Themed";
 import { endOfMonth, startOfMonth, subDays, subMonths, subWeeks, subYears } from "date-fns";
-import { Frequencies } from "@/types";
+import { Frequency } from "@/types";
 
 enum DatePresetChoice {
     currentMonth = "Current month",
@@ -10,7 +10,7 @@ enum DatePresetChoice {
     last = "Last...",
 }
 
-function getStartDate(last: number, frequency: Frequencies): Date {
+function getStartDate(last: number, frequency: Frequency): Date {
     const today = new Date();
     switch (frequency) {
         case "days":
@@ -26,7 +26,7 @@ function getStartDate(last: number, frequency: Frequencies): Date {
     }
 }
 
-const toStartAndEnd = (preset: DatePresetChoice, last: number, frequency: Frequencies): { start: Date; end: Date } => {
+const toStartAndEnd = (preset: DatePresetChoice, last: number, frequency: Frequency): { start: Date; end: Date } => {
     const today = new Date();
     switch (preset) {
         case DatePresetChoice.currentMonth:
@@ -47,7 +47,7 @@ export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
     const [choice, setChoice] = useState<DatePresetChoice>(DatePresetChoice.currentMonth);
 
     const [last, setLast] = useState<number>(2);
-    const [frequency, setFrequency] = useState<Frequencies>(Frequencies.months);
+    const [frequency, setFrequency] = useState<Frequency>(Frequency.months);
     const onDateUpdate = useMemo(() => toStartAndEnd(choice, last, frequency), [choice, last, frequency]);
 
     useEffect(() => {
@@ -69,7 +69,7 @@ export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
                 <Fragment>
                     <TextInput value={`${last}`} onChangeText={(value) => setLast(Number(value))} placeholder="Amount" keyboardType="numeric" />
                     <Picker selectedValue={frequency} onValueChange={setFrequency}>
-                        {Object.values(Frequencies).map((item) => (
+                        {Object.values(Frequency).map((item) => (
                             <Picker.Item key={item} label={item} value={item} />
                         ))}
                     </Picker>
