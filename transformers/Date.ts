@@ -9,3 +9,12 @@ export const toFormattedDate = (
   formatStr: keyof typeof DateFormats = "full"
 ): string =>
   format(date instanceof Date ? date : new Date(date), DateFormats[formatStr]);
+
+const ShowMonthFormats = {
+  short: "MMM",
+  long: "MMMM",
+};
+export const showMonth = (
+  date: Date,
+  formatStr: keyof typeof ShowMonthFormats = "short"
+) => format(date, ShowMonthFormats[formatStr]);
