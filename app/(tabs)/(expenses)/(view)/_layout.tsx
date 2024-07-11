@@ -8,6 +8,7 @@ export default () => {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="filter" options={{ headerShown: false }} />
+        <Stack.Screen name="dateFilter" options={{ headerShown: false }} />
       </Stack>
     </ExpensesFilterProvider>
   );

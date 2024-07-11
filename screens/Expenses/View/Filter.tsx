@@ -2,10 +2,26 @@ import { Pickers } from "@/components/Pickers";
 import { Text, View } from "@/components/Themed";
 import { useApplyFilter, useFilter } from "@/contexts";
 import { Transformers } from "@/transformers";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button, Pressable, ScrollView, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { subMonths } from "date-fns";
+import { DateRange } from "@/types";
+import { endOfMonth, startOfMonth, subMonths } from "date-fns";
+
+const useMonthPresets = (): { [key: string]: DateRange } => {
+  const now = new Date();
+
+  return {
+    [Transformers.showMonth(now, "short")]: {
+      start: startOfMonth(now),
+      end: endOfMonth(now),
+    },
+    [Transformers.showMonth(subMonths(now, 1))]: {
+      start: startOfMonth(subMonths(now, 1)),
+      end: endOfMonth(subMonths(now, 1)),
+    },
+  };
+};
 
 export const FilterScreen: React.FC = () => {
   const filter = useFilter();
@@ -13,34 +29,26 @@ export const FilterScreen: React.FC = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>();
 
+  const monthPresets = useMemo(useMonthPresets, []);
+
   return (
     <View>
       <ScrollView>
-        <Pressable onPress={console.log}>
-          <Text>1w</Text>
-        </Pressable>
-        <Pressable onPress={console.log}>
-          <Text>1m</Text>
-        </Pressable>
-        <Pressable onPress={console.log}>
-          <Text>2m</Text>
-        </Pressable>
-        <Pressable onPress={console.log}>
-          <Text>1y</Text>
-        </Pressable>
-        <Text>-----------------------</Text>
-        <Pressable onPress={console.log}>
-          <Text>{Transformers.showMonth(new Date(), "short")}</Text>
-        </Pressable>
-        <Pressable onPress={console.log}>
-          <Text>
-            {Transformers.showMonth(subMonths(new Date(), 1), "short")}
-          </Text>
-        </Pressable>
+        {Object.entries(monthPresets).map(([month, { start, end }]) => (
+          <Pressables.Toggle
+            key={month}
+            onPress={(isActive) => {
+              onStartChange(isActive ? start : new Date());
+              onEndChange(isActive ? end : undefined);
+            }}
+          >
+            <Text>{month}</Text>
+          </Pressables.Toggle>
+        ))}
         <Pressable
           style={({ pressed }) => [
             styles.pressable,
-            pressed && { backgroundColor: "#388E3C" }, // Darken on press
+            pressed && { backgroundColor: "#388E3C" },
           ]}
         >
           <FontAwesome name="calendar" size={24} color="black" />
@@ -52,10 +60,7 @@ export const FilterScreen: React.FC = () => {
           onStartChange={setStartDate}
           onEndChange={setEndDate}
         />
-        <Pickers.DatePreset
-          onStartChange={setStartDate}
-          onEndChange={setEndDate}
-        />
+
         <Button
           title="Reset"
           onPress={() => {

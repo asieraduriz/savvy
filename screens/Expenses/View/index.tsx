@@ -20,6 +20,9 @@ export const ExpensesScreen: FC = () => {
       <Link href="/filter">
         <MaterialCommunityIcons name="filter-variant" size={24} color="black" />
       </Link>
+      <Link href="/calendar">
+        <MaterialCommunityIcons name="calendar" size={24} color="black" />
+      </Link>
       <ExpenseList expenses={expenses} />
       <Text>{JSON.stringify(filter, null, 2)}</Text>
     </View>

@@ -5,10 +5,12 @@ export enum Frequency {
   years = "years",
 }
 
-type DateRangeFilter = {
-  start?: Date;
-  end?: Date;
+export type DateRange = {
+  start: Date;
+  end: Date;
 };
+
+type DateRangeFilter = Partial<DateRange>;
 
 type TitleSearchFilter = {
   titleQuery: string;

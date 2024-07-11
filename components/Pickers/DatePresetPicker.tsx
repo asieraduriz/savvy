@@ -1,6 +1,6 @@
 import { Picker } from "@react-native-picker/picker";
 import { FC, Fragment, useEffect, useMemo, useState } from "react";
-import { TextInput } from "../Themed";
+import { Text, TextInput } from "../Themed";
 import {
   endOfMonth,
   startOfMonth,
@@ -9,7 +9,9 @@ import {
   subWeeks,
   subYears,
 } from "date-fns";
-import { Frequency } from "@/types";
+import { DateRange, Frequency } from "@/types";
+import { Transformers } from "@/transformers";
+import { Pressables } from "../Pressables";
 
 enum DatePresetChoice {
   currentMonth = "Current month",
@@ -61,7 +63,6 @@ export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
   const [choice, setChoice] = useState<DatePresetChoice>(
     DatePresetChoice.currentMonth
   );
-
   const [last, setLast] = useState<number>(2);
   const [frequency, setFrequency] = useState<Frequency>(Frequency.months);
 
