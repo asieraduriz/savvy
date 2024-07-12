@@ -1,10 +1,16 @@
 import { Pickers } from "@/components/Pickers";
-import { Text, View } from "@/components/Themed";
+import { Text, TextInput, View } from "@/components/Themed";
 import { useApplyFilter, useFilter } from "@/contexts";
 import { Transformers } from "@/transformers";
-import { useMemo, useState } from "react";
-import { Button, Pressable, ScrollView, StyleSheet } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { useMemo, useRef, useState } from "react";
+import {
+  Animated,
+  Button,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { DateRange } from "@/types";
 import { endOfMonth, startOfMonth, subMonths } from "date-fns";
 
@@ -31,20 +37,41 @@ export const FilterScreen: React.FC = () => {
 
   const monthPresets = useMemo(useMonthPresets, []);
 
+  const [isExpanded, setIsExpanded] = useState(false);
+  const animatedWidth = useRef(new Animated.Value(40)).current;
+
+  const toggleSearch = () => {
+    const toValue = isExpanded ? 40 : 200;
+    Animated.spring(animatedWidth, {
+      toValue,
+      useNativeDriver: false,
+    }).start();
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <View>
       <ScrollView>
-        {Object.entries(monthPresets).map(([month, { start, end }]) => (
-          <Pressables.Toggle
-            key={month}
-            onPress={(isActive) => {
-              onStartChange(isActive ? start : new Date());
-              onEndChange(isActive ? end : undefined);
-            }}
+        <Animated.View style={[styles.searchBox, { width: animatedWidth }]}>
+          <Pressable
+            onPress={toggleSearch}
+            style={({ pressed }) => [
+              styles.iconContainer,
+              { opacity: pressed ? 0.5 : 1 },
+            ]}
           >
-            <Text>{month}</Text>
-          </Pressables.Toggle>
-        ))}
+            <Ionicons name="search" size={24} color="black" />
+          </Pressable>
+          {isExpanded && (
+            <TextInput
+              style={styles.input}
+              placeholder="Search..."
+              autoFocus
+              onBlur={toggleSearch}
+            />
+          )}
+        </Animated.View>
+
         <Pressable
           style={({ pressed }) => [
             styles.pressable,
@@ -95,5 +122,20 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 16,
     margin: 10,
+  },
+  searchBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    borderRadius: 20,
+    overflow: "hidden",
+  },
+  iconContainer: {
+    padding: 8,
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 8,
+    paddingRight: 8,
   },
 });

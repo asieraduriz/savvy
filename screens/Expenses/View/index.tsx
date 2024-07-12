@@ -20,7 +20,7 @@ export const ExpensesScreen: FC = () => {
       <Link href="/filter">
         <MaterialCommunityIcons name="filter-variant" size={24} color="black" />
       </Link>
-      <Link href="/calendar">
+      <Link href="/dateFilter">
         <MaterialCommunityIcons name="calendar" size={24} color="black" />
       </Link>
       <ExpenseList expenses={expenses} />
