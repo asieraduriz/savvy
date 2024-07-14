@@ -1,52 +1,138 @@
-import { FC } from "react";
-import { StyleSheet } from "react-native";
-import { Text, View } from "@/components/Themed";
+import React, { useMemo, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { Pickers } from "@/components/Pickers";
+import { useApplyFilter, useFilter } from "@/contexts";
 
-export const DateFilterScreen: FC = () => {
+type Tab = {
+  title: string;
+  content: React.ReactNode;
+};
+
+export const DateFilterScreen: React.FC = () => {
+  const { start, end } = useFilter();
+  const applyFilter = useApplyFilter();
+
+  const tabs: Tab[] = [
+    {
+      title: "Preset",
+      content: (
+        <View>
+          <Pickers.DatePreset
+            onStartChange={(start) => applyFilter({ start })}
+            onEndChange={(end) => applyFilter({ end })}
+          />
+        </View>
+      ),
+    },
+    {
+      title: "Since",
+      content: useMemo(
+        () => (
+          <View>
+            <Pickers.Date
+              when={start || new Date()}
+              set={(startDate: Date) => {
+                applyFilter({ start: startDate });
+              }}
+            />
+          </View>
+        ),
+        [start]
+      ),
+    },
+    {
+      title: "Between",
+      content: (
+        <View style={styles.pickerContainer}>
+          <Pickers.DateRange
+            start={start}
+            end={end}
+            onStartChange={(start) => applyFilter({ start })}
+            onEndChange={(end) => applyFilter({ end })}
+          />
+        </View>
+      ),
+    },
+  ];
+
+  const [activeTab, setActiveTab] = useState<Tab>(tabs[0]);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.tabsContainer}>
-        <Text style={styles.tab}>Tab 1</Text>
-        <Text style={styles.tab}>Tab 2</Text>
-        <Text style={styles.tab}>Tab 3</Text>
+    <View style={styles.layout}>
+      <View>
+        <Text>Main content</Text>
       </View>
-      <View style={styles.contentWithTabs}>
-        {/* Your main content components go here */}
-        <Text>Main Content Area</Text>
+      <View style={styles.container}>
+        <View style={styles.tabList}>
+          <ScrollView>
+            {tabs.map((tab, index) => (
+              <Pressable
+                key={index}
+                style={[
+                  styles.tab,
+                  activeTab.title === tab.title && styles.activeTab,
+                ]}
+                onPress={() => setActiveTab(tab)}
+              >
+                <Text
+                  style={[
+                    styles.tabText,
+                    activeTab.title === tab.title && styles.activeTabText,
+                  ]}
+                >
+                  {tab.title}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+        <View style={styles.content}>{activeTab.content}</View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  layout: {
+    flex: 1,
+    flexDirection: "column",
+  },
   container: {
     flex: 1,
     flexDirection: "row",
   },
-  tabsContainer: {
-    width: 100,
-    backgroundColor: "#ccc",
-    justifyContent: "space-around",
+  tabList: {
+    backgroundColor: "#f0f0f0",
   },
   tab: {
-    padding: 16,
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
-  contentWithTabs: {
-    flex: 1,
-    padding: 16,
+  activeTab: {
+    backgroundColor: "#fff",
   },
-  contentWithoutTabs: {
+  tabText: {
+    fontSize: 16,
+  },
+  activeTabText: {
+    fontWeight: "bold",
+  },
+  content: {
     flex: 1,
-    padding: 16,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#fff",
   },
-  toggleButton: {
-    position: "absolute",
-    bottom: 16,
-    right: 16,
-    padding: 8,
-    backgroundColor: "#eee",
-    borderRadius: 4,
+  pickerContainer: {
+    width: "80%",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 5,
+    overflow: "hidden",
+  },
+  picker: {
+    width: "100%",
+    height: 50,
   },
 });

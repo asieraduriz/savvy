@@ -1,105 +1,120 @@
-import { Picker } from "@react-native-picker/picker";
-import { FC, Fragment, useEffect, useMemo, useState } from "react";
-import { Text, TextInput } from "../Themed";
-import {
-  endOfMonth,
-  startOfMonth,
-  subDays,
-  subMonths,
-  subWeeks,
-  subYears,
-} from "date-fns";
-import { DateRange, Frequency } from "@/types";
+import { FC, useState } from "react";
+import { Text, View } from "../Themed";
+import { endOfMonth, startOfMonth, subDays, subMonths } from "date-fns";
+import { Pressable, StyleSheet } from "react-native";
 import { Transformers } from "@/transformers";
-import { Pressables } from "../Pressables";
-
-enum DatePresetChoice {
-  currentMonth = "Current month",
-  previousMonth = "Previous month",
-  last = "Last...",
-}
-
-function getStartDate(last: number, frequency: Frequency): Date {
-  const today = new Date();
-  switch (frequency) {
-    case "days":
-      return subDays(today, last);
-    case "weeks":
-      return subWeeks(today, last);
-    case "months":
-      return subMonths(today, last);
-    case "years":
-      return subYears(today, last);
-    default:
-      throw new Error(`Invalid unit type: ${frequency}`);
-  }
-}
-
-const toStartAndEnd = (
-  preset: DatePresetChoice,
-  last: number,
-  frequency: Frequency
-): { start: Date; end: Date } => {
-  const today = new Date();
-  switch (preset) {
-    case DatePresetChoice.currentMonth:
-      return { end: today, start: startOfMonth(new Date()) };
-    case DatePresetChoice.previousMonth:
-      return {
-        end: endOfMonth(subMonths(today, 1)),
-        start: startOfMonth(subMonths(today, 1)),
-      };
-    case DatePresetChoice.last:
-      return { end: today, start: getStartDate(last, frequency) };
-  }
-};
 
 type Props = {
   onStartChange: (start: Date) => void;
   onEndChange: (end?: Date) => void;
 };
 
+type TimePeriod = "7d" | "30d" | "60d" | "90d" | string;
+type Period = {
+  title: TimePeriod;
+  start: Date;
+  end: Date;
+};
+
+const now = new Date();
+
+const periods: Period[] = [
+  {
+    title: "7d",
+    start: subDays(now, 7),
+    end: now,
+  },
+  {
+    title: "30d",
+    start: subDays(now, 30),
+    end: now,
+  },
+  {
+    title: "60d",
+    start: subDays(now, 60),
+    end: now,
+  },
+  {
+    title: "90d",
+    start: subDays(now, 90),
+    end: now,
+  },
+  {
+    title: Transformers.toMonth(now, "short"),
+    start: startOfMonth(now),
+    end: now,
+  },
+  {
+    title: Transformers.toMonth(subMonths(now, 1), "short"),
+    start: startOfMonth(subMonths(now, 1)),
+    end: endOfMonth(subMonths(now, 1)),
+  },
+];
+
 export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
-  const [choice, setChoice] = useState<DatePresetChoice>(
-    DatePresetChoice.currentMonth
-  );
-  const [last, setLast] = useState<number>(2);
-  const [frequency, setFrequency] = useState<Frequency>(Frequency.months);
-
-  const onDateUpdate = useMemo(
-    () => toStartAndEnd(choice, last, frequency),
-    [choice, last, frequency]
-  );
-  useEffect(() => {
-    onStartChange(onDateUpdate.start);
-  }, [onStartChange, onDateUpdate.start]);
-
-  useEffect(() => {
-    onEndChange(onDateUpdate.end);
-  }, [onEndChange, onDateUpdate.end]);
+  const [selectedPeriod, onSelectPeriod] = useState<Period>();
 
   return (
-    <Fragment>
-      <Picker selectedValue={choice} onValueChange={setChoice}>
-        {Object.values(DatePresetChoice).map((preset) => (
-          <Picker.Item key={preset} value={preset} label={preset} />
-        ))}
-      </Picker>
-      {choice === DatePresetChoice.last ? (
-        <Fragment>
-          <TextInput
-            value={`${last}`}
-            onChangeText={(value) => setLast(Number(value))}
-            placeholder="Amount"
-            keyboardType="numeric"
-          />
-          <Picker selectedValue={frequency} onValueChange={setFrequency}>
-            {Object.values(Frequency).map((item) => (
-              <Picker.Item key={item} label={item} value={item} />
-            ))}
-          </Picker>
-        </Fragment>
-      ) : null}
-    </Fragment>
+    <View>
+      <View style={styles.timePeriodContainer}>
+        <View>
+          {periods.map((period) => (
+            <Pressable
+              key={period.title}
+              style={[
+                styles.timePeriodButton,
+                selectedPeriod?.title === period.title &&
+                  styles.selectedTimePeriod,
+              ]}
+              onPress={() => onSelectPeriod(period)}
+            >
+              <Text
+                style={[
+                  styles.timePeriodText,
+                  selectedPeriod?.title === period.title &&
+                    styles.selectedTimePeriodText,
+                ]}
+              >
+                {period.title}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+      {selectedPeriod?.start && selectedPeriod?.end ? (
+        <View>
+          <Text>
+            From: {Transformers.toFormattedDate(selectedPeriod.start)}
+          </Text>
+          <Text>To: {Transformers.toFormattedDate(selectedPeriod.end)}</Text>
+        </View>
+      ) : undefined}
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  timePeriodContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  },
+  timePeriodButton: {
+    padding: 10,
+    margin: 5,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 5,
+  },
+  selectedTimePeriod: {
+    backgroundColor: "#007AFF",
+  },
+  timePeriodText: {
+    fontSize: 16,
+  },
+  selectedTimePeriodText: {
+    color: "#fff",
+  },
+});

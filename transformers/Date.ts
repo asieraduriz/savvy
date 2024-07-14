@@ -2,6 +2,7 @@ import { format } from "date-fns";
 
 const DateFormats = {
   full: "MMM do yyyy",
+  ymd: "yyyy-MM-dd",
 };
 
 export const toFormattedDate = (
@@ -10,11 +11,11 @@ export const toFormattedDate = (
 ): string =>
   format(date instanceof Date ? date : new Date(date), DateFormats[formatStr]);
 
-const ShowMonthFormats = {
+const toMonthFormats = {
   short: "MMM",
   long: "MMMM",
 };
-export const showMonth = (
+export const toMonth = (
   date: Date,
-  formatStr: keyof typeof ShowMonthFormats = "short"
-) => format(date, ShowMonthFormats[formatStr]);
+  formatStr: keyof typeof toMonthFormats = "short"
+) => format(date, toMonthFormats[formatStr]);

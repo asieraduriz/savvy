@@ -18,11 +18,11 @@ const useMonthPresets = (): { [key: string]: DateRange } => {
   const now = new Date();
 
   return {
-    [Transformers.showMonth(now, "short")]: {
+    [Transformers.toMonth(now, "short")]: {
       start: startOfMonth(now),
       end: endOfMonth(now),
     },
-    [Transformers.showMonth(subMonths(now, 1))]: {
+    [Transformers.toMonth(subMonths(now, 1))]: {
       start: startOfMonth(subMonths(now, 1)),
       end: endOfMonth(subMonths(now, 1)),
     },
