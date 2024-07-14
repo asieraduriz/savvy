@@ -1,10 +1,18 @@
 import React, { useMemo, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  LayoutChangeEvent,
+  Dimensions,
+} from "react-native";
 import { Pickers } from "@/components/Pickers";
 import { useApplyFilter, useFilter } from "@/contexts";
 
 type Tab = {
-  title: string;
+  title: "Since" | "Between";
   content: React.ReactNode;
 };
 
@@ -12,28 +20,27 @@ export const DateFilterScreen: React.FC = () => {
   const { start, end } = useFilter();
   const applyFilter = useApplyFilter();
 
+  const [contentWidth, setContentWidth] = useState(
+    Dimensions.get("screen").width
+  );
+
+  const onSinceLayout = (event: LayoutChangeEvent) => {
+    const layout = event.nativeEvent.layout;
+    setContentWidth(layout.width);
+  };
+
   const tabs: Tab[] = [
-    {
-      title: "Preset",
-      content: (
-        <View>
-          <Pickers.DatePreset
-            onStartChange={(start) => applyFilter({ start })}
-            onEndChange={(end) => applyFilter({ end })}
-          />
-        </View>
-      ),
-    },
     {
       title: "Since",
       content: useMemo(
         () => (
-          <View>
+          <View onLayout={onSinceLayout}>
             <Pickers.Date
               when={start || new Date()}
               set={(startDate: Date) => {
                 applyFilter({ start: startDate });
               }}
+              calendarWidth={contentWidth}
             />
           </View>
         ),
@@ -59,9 +66,19 @@ export const DateFilterScreen: React.FC = () => {
 
   return (
     <View style={styles.layout}>
-      <View>
-        <Text>Main content</Text>
-      </View>
+      <Pickers.DatePreset
+        onStartChange={(start) => applyFilter({ start })}
+        onEndChange={(end) => applyFilter({ end })}
+      />
+      <View
+        style={{
+          borderBottomWidth: 1,
+          borderColor: "#ccc",
+          marginLeft: 12,
+          marginRight: 12,
+        }}
+      />
+
       <View style={styles.container}>
         <View style={styles.tabList}>
           <ScrollView>
@@ -96,6 +113,7 @@ const styles = StyleSheet.create({
   layout: {
     flex: 1,
     flexDirection: "column",
+    gap: 12,
   },
   container: {
     flex: 1,

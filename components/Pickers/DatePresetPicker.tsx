@@ -9,7 +9,7 @@ type Props = {
   onEndChange: (end?: Date) => void;
 };
 
-type TimePeriod = "7d" | "30d" | "60d" | "90d" | string;
+type TimePeriod = "7d" | "30d" | "60d" | string;
 type Period = {
   title: TimePeriod;
   start: Date;
@@ -35,11 +35,6 @@ const periods: Period[] = [
     end: now,
   },
   {
-    title: "90d",
-    start: subDays(now, 90),
-    end: now,
-  },
-  {
     title: Transformers.toMonth(now, "short"),
     start: startOfMonth(now),
     end: now,
@@ -56,30 +51,26 @@ export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
 
   return (
     <View>
-      <View style={styles.timePeriodContainer}>
-        <View>
-          {periods.map((period) => (
-            <Pressable
-              key={period.title}
+      <View style={{ display: "flex", flexDirection: "row", gap: 12 }}>
+        {periods.map((period) => (
+          <Pressable
+            key={period.title}
+            style={[
+              selectedPeriod?.title === period.title &&
+                styles.selectedTimePeriod,
+            ]}
+            onPress={() => onSelectPeriod(period)}
+          >
+            <Text
               style={[
-                styles.timePeriodButton,
                 selectedPeriod?.title === period.title &&
-                  styles.selectedTimePeriod,
+                  styles.selectedTimePeriodText,
               ]}
-              onPress={() => onSelectPeriod(period)}
             >
-              <Text
-                style={[
-                  styles.timePeriodText,
-                  selectedPeriod?.title === period.title &&
-                    styles.selectedTimePeriodText,
-                ]}
-              >
-                {period.title}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
+              {period.title}
+            </Text>
+          </Pressable>
+        ))}
       </View>
       {selectedPeriod?.start && selectedPeriod?.end ? (
         <View>
@@ -94,25 +85,8 @@ export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
 };
 
 const styles = StyleSheet.create({
-  timePeriodContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-  },
-  timePeriodButton: {
-    padding: 10,
-    margin: 5,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 5,
-  },
   selectedTimePeriod: {
     backgroundColor: "#007AFF",
-  },
-  timePeriodText: {
-    fontSize: 16,
   },
   selectedTimePeriodText: {
     color: "#fff",

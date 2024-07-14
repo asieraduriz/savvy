@@ -1,13 +1,14 @@
 import { Transformers } from "@/transformers";
 import { FC, useMemo } from "react";
-import { CalendarList } from "react-native-calendars";
+import { CalendarList, CalendarListProps } from "react-native-calendars";
 
 type Props = {
   when: Date;
   set: (date: Date) => void;
+  calendarWidth?: CalendarListProps["calendarWidth"];
 };
 
-export const DatePicker: FC<Props> = ({ when, set }) => {
+export const DatePicker: FC<Props> = ({ when, set, calendarWidth }) => {
   const marked = useMemo(() => {
     return {
       [Transformers.toFormattedDate(when, "ymd")]: {
@@ -20,10 +21,10 @@ export const DatePicker: FC<Props> = ({ when, set }) => {
 
   return (
     <CalendarList
-      enableSwipeMonths
       onDayPress={({ timestamp }) => set(new Date(timestamp))}
       futureScrollRange={0}
       markedDates={marked}
+      calendarWidth={calendarWidth}
     />
   );
 };
