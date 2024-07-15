@@ -1,5 +1,5 @@
+import { Dates } from "@/datastructures";
 import { Expense, ExpenseToAdd, ExpensesFilter } from "@/types";
-import { subDays } from "date-fns";
 import { randomUUID } from "expo-crypto";
 
 const today = new Date();
@@ -16,8 +16,8 @@ const starterFirstCoffee: Expense = {
   amount: 5,
   title: "Tennesee",
   category: "Cafe",
-  created: subDays(today, 13),
-  when: subDays(today, 13),
+  created: Dates.subDays(today, 13),
+  when: Dates.subDays(today, 13),
 };
 
 const starterSecondCoffee: Expense = {
@@ -25,8 +25,8 @@ const starterSecondCoffee: Expense = {
   amount: 7,
   title: "Coffee",
   category: "Cafe",
-  created: subDays(today, 7),
-  when: subDays(today, 6),
+  created: Dates.subDays(today, 7),
+  when: Dates.subDays(today, 6),
 };
 
 const starterGroceriesFirst: Expense = {
@@ -34,8 +34,8 @@ const starterGroceriesFirst: Expense = {
   amount: 87,
   title: "Glories",
   category: "Grocieres",
-  created: subDays(today, 7),
-  when: subDays(today, 6),
+  created: Dates.subDays(today, 7),
+  when: Dates.subDays(today, 6),
 };
 
 const starterGroceriesSecond: Expense = {
@@ -43,8 +43,8 @@ const starterGroceriesSecond: Expense = {
   amount: 87,
   title: "Glories",
   category: "Grocieres",
-  created: subDays(today, 4),
-  when: subDays(today, 4),
+  created: Dates.subDays(today, 4),
+  when: Dates.subDays(today, 4),
 };
 
 const starterFilter: ExpensesFilter = {

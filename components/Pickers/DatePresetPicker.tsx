@@ -1,13 +1,7 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Text, View } from "../Themed";
-import { endOfMonth, startOfMonth, subDays, subMonths } from "date-fns";
 import { Pressable, StyleSheet } from "react-native";
-import { Transformers } from "@/transformers";
-
-type Props = {
-  onStartChange: (start: Date) => void;
-  onEndChange: (end?: Date) => void;
-};
+import { Dates } from "@/datastructures";
 
 type TimePeriod = "7d" | "30d" | "60d" | string;
 type Period = {
@@ -16,68 +10,79 @@ type Period = {
   end: Date;
 };
 
-const now = new Date();
+type Props = {
+  onStartChange: (start: Date) => void;
+  onEndChange: (end?: Date) => void;
+  start?: Date;
+  end?: Date;
+};
 
-const periods: Period[] = [
-  {
-    title: "7d",
-    start: subDays(now, 7),
-    end: now,
-  },
-  {
-    title: "30d",
-    start: subDays(now, 30),
-    end: now,
-  },
-  {
-    title: "60d",
-    start: subDays(now, 60),
-    end: now,
-  },
-  {
-    title: Transformers.toMonth(now, "short"),
-    start: startOfMonth(now),
-    end: now,
-  },
-  {
-    title: Transformers.toMonth(subMonths(now, 1), "short"),
-    start: startOfMonth(subMonths(now, 1)),
-    end: endOfMonth(subMonths(now, 1)),
-  },
-];
+export const DatePresetPicker: FC<Props> = ({
+  start,
+  end,
+  onStartChange,
+  onEndChange,
+}) => {
+  const now = Dates.UTC();
 
-export const DatePresetPicker: FC<Props> = ({ onStartChange, onEndChange }) => {
-  const [selectedPeriod, onSelectPeriod] = useState<Period>();
+  const periods: Period[] = [
+    {
+      title: "7d",
+      start: Dates.subDays(now, 7),
+      end: now,
+    },
+    {
+      title: "30d",
+      start: Dates.subDays(now, 30),
+      end: now,
+    },
+    {
+      title: "60d",
+      start: Dates.subDays(now, 60),
+      end: now,
+    },
+    {
+      title: Dates.toMonth(now),
+      start: Dates.startOfMonth(now),
+      end: now,
+    },
+    {
+      title: Dates.toMonth(Dates.subMonths(now, 1)),
+      start: Dates.startOfMonth(Dates.subMonths(now, 1)),
+      end: Dates.endOfMonth(Dates.subMonths(now, 1)),
+    },
+  ];
 
   return (
     <View>
       <View style={{ display: "flex", flexDirection: "row", gap: 12 }}>
-        {periods.map((period) => (
-          <Pressable
-            key={period.title}
-            style={[
-              selectedPeriod?.title === period.title &&
-                styles.selectedTimePeriod,
-            ]}
-            onPress={() => onSelectPeriod(period)}
-          >
-            <Text
-              style={[
-                selectedPeriod?.title === period.title &&
-                  styles.selectedTimePeriodText,
-              ]}
+        {periods.map((period) => {
+          const isSelected =
+            start &&
+            end &&
+            Dates.isSameDay(period.start, start) &&
+            Dates.isSameDay(period.end, end);
+
+          return (
+            <Pressable
+              key={period.title}
+              style={[isSelected && styles.selectedTimePeriod]}
+              onPress={() => {
+                onStartChange(period.start);
+                onEndChange(period.end);
+              }}
             >
-              {period.title}
-            </Text>
-          </Pressable>
-        ))}
+              <Text style={[isSelected && styles.selectedTimePeriodText]}>
+                {period.title}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
-      {selectedPeriod?.start && selectedPeriod?.end ? (
+      {start && end ? (
         <View>
-          <Text>
-            From: {Transformers.toFormattedDate(selectedPeriod.start)}
-          </Text>
-          <Text>To: {Transformers.toFormattedDate(selectedPeriod.end)}</Text>
+          <Text>From: {Dates.readable(start)}</Text>
+          <Text>To: {Dates.readable(end)}</Text>
         </View>
       ) : undefined}
     </View>

@@ -1,4 +1,4 @@
-import { Transformers } from "@/transformers";
+import { Dates } from "@/datastructures";
 import { FC, useMemo } from "react";
 import { CalendarList, CalendarListProps } from "react-native-calendars";
 
@@ -11,7 +11,7 @@ type Props = {
 export const DatePicker: FC<Props> = ({ when, set, calendarWidth }) => {
   const marked = useMemo(() => {
     return {
-      [Transformers.toFormattedDate(when, "ymd")]: {
+      [Dates.toFormat(when)]: {
         selected: true,
         disableTouchEvent: true,
         selectedTextColor: "#FF0000",
@@ -21,7 +21,7 @@ export const DatePicker: FC<Props> = ({ when, set, calendarWidth }) => {
 
   return (
     <CalendarList
-      onDayPress={({ timestamp }) => set(new Date(timestamp))}
+      onDayPress={({ year, month, day, timestamp }) => set(new Date(timestamp))}
       futureScrollRange={0}
       markedDates={marked}
       calendarWidth={calendarWidth}

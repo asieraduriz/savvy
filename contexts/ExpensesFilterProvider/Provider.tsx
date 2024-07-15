@@ -22,8 +22,7 @@ export const ExpensesFilterProvider: FC<Props> = ({ children }) => {
   const [filter, setFilter] = useState<ExpensesFilter>(Defaults.Filter);
 
   const applyFilter = (newFilter: Partial<ExpensesFilter>) => {
-    const updatedFilter = { ...filter, ...newFilter };
-    setFilter(updatedFilter);
+    setFilter((previous) => ({ ...previous, ...newFilter }));
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useToggle } from "@/hooks";
 import { FC, PropsWithChildren } from "react";
-import { StyleSheet, Text, Pressable } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 
 type Props = PropsWithChildren<{
   onPress: (isActive: boolean) => void;

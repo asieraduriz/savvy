@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Pickers } from "@/components/Pickers";
 import { useApplyFilter, useFilter } from "@/contexts";
+import { Dates } from "@/datastructures";
 
 type Tab = {
   title: "Since" | "Between";
@@ -32,19 +33,16 @@ export const DateFilterScreen: React.FC = () => {
   const tabs: Tab[] = [
     {
       title: "Since",
-      content: useMemo(
-        () => (
-          <View onLayout={onSinceLayout}>
-            <Pickers.Date
-              when={start || new Date()}
-              set={(startDate: Date) => {
-                applyFilter({ start: startDate });
-              }}
-              calendarWidth={contentWidth}
-            />
-          </View>
-        ),
-        [start]
+      content: (
+        <View onLayout={onSinceLayout}>
+          <Pickers.Date
+            when={start || new Date()}
+            set={(startDate: Date) => {
+              applyFilter({ start: startDate, end: new Date() });
+            }}
+            calendarWidth={contentWidth}
+          />
+        </View>
       ),
     },
     {
@@ -66,7 +64,10 @@ export const DateFilterScreen: React.FC = () => {
 
   return (
     <View style={styles.layout}>
+      <Text>Quick actions</Text>
       <Pickers.DatePreset
+        start={start}
+        end={end}
         onStartChange={(start) => applyFilter({ start })}
         onEndChange={(end) => applyFilter({ end })}
       />

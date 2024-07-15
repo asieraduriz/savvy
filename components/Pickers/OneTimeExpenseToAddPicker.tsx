@@ -3,7 +3,7 @@ import { Text, View } from "../Themed";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useToggle } from "@/hooks";
-import { Transformers } from "@/transformers";
+import { Dates } from "@/datastructures";
 
 type Props = {
   when: Date;
@@ -26,9 +26,7 @@ export const OneTimeExpenseToAddPicker: React.FC<Props> = ({
   return (
     <View style={styles.container}>
       <Pressable style={styles.pressableDateContainer} onPress={toggle.on}>
-        <Text style={styles.dateText}>
-          {Transformers.toFormattedDate(when)}
-        </Text>
+        <Text style={styles.dateText}>{Dates.readable(when)}</Text>
         <MaterialIcons name="event" size={24} color="black" />
       </Pressable>
       {showDatePicker && (

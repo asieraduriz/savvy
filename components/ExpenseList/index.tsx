@@ -1,8 +1,8 @@
 import { Text, View } from "../Themed";
 import { FlatList } from "react-native";
 import { OneTimeExpenseItem } from "./OneTimeExpenseItem";
-import { Transformers } from "@/transformers";
 import { Expense } from "@/types";
+import { Dates } from "@/datastructures";
 
 type Props = {
   expenses: Expense[];
@@ -11,7 +11,7 @@ type Props = {
 const renderItem = ({ item }: { item: Expense }) => {
   return (
     <View>
-      <Text>{Transformers.toFormattedDate(item.when)}</Text>
+      <Text>{Dates.readable(item.when)}</Text>
       <OneTimeExpenseItem expense={item} />
     </View>
   );
