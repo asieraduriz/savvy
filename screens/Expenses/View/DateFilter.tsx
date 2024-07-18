@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
   View,
   Text,
@@ -7,60 +7,56 @@ import {
   Pressable,
   LayoutChangeEvent,
   Dimensions,
+  Button,
 } from "react-native";
 import { Pickers } from "@/components/Pickers";
 import { useApplyFilter, useFilter } from "@/contexts";
+import { Calendar } from "react-native-calendars";
 import { Dates } from "@/datastructures";
 
-type Tab = {
-  title: "Since" | "Between";
-  content: React.ReactNode;
-};
+type Tab = "Since" | "Between";
 
 export const DateFilterScreen: React.FC = () => {
+  const [initialCalendarDate, sendCalendarToDate] = useState(
+    Dates.toFormat(Dates.Now())
+  );
   const { start, end } = useFilter();
   const applyFilter = useApplyFilter();
+  const [calendarMonth, setCalendarMonth] = useState<number>(0);
 
   const [contentWidth, setContentWidth] = useState(
     Dimensions.get("screen").width
   );
 
-  const onSinceLayout = (event: LayoutChangeEvent) => {
+  const onTabLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout;
     setContentWidth(layout.width);
   };
 
-  const tabs: Tab[] = [
-    {
-      title: "Since",
-      content: (
-        <View onLayout={onSinceLayout}>
-          <Pickers.Date
-            when={start || new Date()}
-            set={(startDate: Date) => {
-              applyFilter({ start: startDate, end: new Date() });
-            }}
-            calendarWidth={contentWidth}
-          />
-        </View>
-      ),
-    },
-    {
-      title: "Between",
-      content: (
-        <View style={styles.pickerContainer}>
-          <Pickers.DateRange
-            start={start}
-            end={end}
-            onStartChange={(start) => applyFilter({ start })}
-            onEndChange={(end) => applyFilter({ end })}
-          />
-        </View>
-      ),
-    },
-  ];
+  const [activeTab, setActiveTab] = useState<Tab>("Between");
 
-  const [activeTab, setActiveTab] = useState<Tab>(tabs[0]);
+  const onDayPressed = (date: Date) => {
+    if (activeTab === "Since") {
+      applyFilter({ start: date, end: Dates.Now() });
+
+      // updateMarkedDates(selectedDate, formatDate(new Date()));
+    } else {
+      if (!start || (start && end)) {
+        applyFilter({ start: date, end: undefined });
+
+        // updateMarkedDates(selectedDate, null);
+      } else {
+        if (Dates.isAfter(date, start)) {
+          applyFilter({ end: date });
+          // updateMarkedDates(start, selectedDate);
+        } else {
+          applyFilter({ start: date, end: start });
+
+          // updateMarkedDates(selectedDate, start);
+        }
+      }
+    }
+  };
 
   return (
     <View style={styles.layout}>
@@ -68,9 +64,15 @@ export const DateFilterScreen: React.FC = () => {
       <Pickers.DatePreset
         start={start}
         end={end}
-        onStartChange={(start) => applyFilter({ start })}
-        onEndChange={(end) => applyFilter({ end })}
+        onDateChange={(startDate, endDate) =>
+          applyFilter({ start: startDate, end: endDate })
+        }
       />
+      {start && end && (
+        <Text>
+          {Dates.toFormat(start)} - {Dates.toFormat(end)}
+        </Text>
+      )}
       <View
         style={{
           borderBottomWidth: 1,
@@ -81,34 +83,55 @@ export const DateFilterScreen: React.FC = () => {
       />
 
       <View style={styles.container}>
-        <View style={styles.tabList}>
-          <ScrollView>
-            {tabs.map((tab, index) => (
-              <Pressable
-                key={index}
-                style={[
-                  styles.tab,
-                  activeTab.title === tab.title && styles.activeTab,
-                ]}
-                onPress={() => setActiveTab(tab)}
-              >
-                <Text
-                  style={[
-                    styles.tabText,
-                    activeTab.title === tab.title && styles.activeTabText,
-                  ]}
-                >
-                  {tab.title}
-                </Text>
-              </Pressable>
-            ))}
-          </ScrollView>
+        <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <View style={styles.content}>
+          <Button
+            title="Now"
+            onPress={() => {
+              const now = Dates.Now();
+              const tomorrow = sendCalendarToDate(
+                Dates.toFormat(Dates.Tomorrow())
+              );
+            }}
+          />
+          <Calendar
+            showSixWeeks
+            maxDate={Dates.toFormat(Dates.Now())}
+            initialDate={initialCalendarDate}
+            enableSwipeMonths
+            onMonthChange={({ month }) => setCalendarMonth(month)}
+            onDayPress={({ dateString }) => onDayPressed(Dates.At(dateString))}
+          />
         </View>
-        <View style={styles.content}>{activeTab.content}</View>
       </View>
     </View>
   );
 };
+
+const tabTitles: Tab[] = ["Between", "Since"];
+
+const Tabs: FC<{
+  activeTab: Tab;
+  setActiveTab: (tab: Tab) => void;
+}> = ({ activeTab, setActiveTab }) => (
+  <View style={styles.tabList}>
+    <ScrollView>
+      {tabTitles.map((title) => (
+        <Pressable
+          key={title}
+          style={[styles.tab, activeTab === title && styles.activeTab]}
+          onPress={() => setActiveTab(title)}
+        >
+          <Text
+            style={[styles.tabText, title === title && styles.activeTabText]}
+          >
+            {title}
+          </Text>
+        </Pressable>
+      ))}
+    </ScrollView>
+  </View>
+);
 
 const styles = StyleSheet.create({
   layout: {

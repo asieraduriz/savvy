@@ -11,19 +11,13 @@ type Period = {
 };
 
 type Props = {
-  onStartChange: (start: Date) => void;
-  onEndChange: (end?: Date) => void;
   start?: Date;
   end?: Date;
+  onDateChange: (start: Date, end?: Date) => void;
 };
 
-export const DatePresetPicker: FC<Props> = ({
-  start,
-  end,
-  onStartChange,
-  onEndChange,
-}) => {
-  const now = Dates.UTC();
+export const DatePresetPicker: FC<Props> = ({ start, end, onDateChange }) => {
+  const now = Dates.Now();
 
   const periods: Period[] = [
     {
@@ -68,8 +62,7 @@ export const DatePresetPicker: FC<Props> = ({
               key={period.title}
               style={[isSelected && styles.selectedTimePeriod]}
               onPress={() => {
-                onStartChange(period.start);
-                onEndChange(period.end);
+                onDateChange(period.start, period.end);
               }}
             >
               <Text style={[isSelected && styles.selectedTimePeriodText]}>
@@ -79,12 +72,6 @@ export const DatePresetPicker: FC<Props> = ({
           );
         })}
       </View>
-      {start && end ? (
-        <View>
-          <Text>From: {Dates.readable(start)}</Text>
-          <Text>To: {Dates.readable(end)}</Text>
-        </View>
-      ) : undefined}
     </View>
   );
 };
