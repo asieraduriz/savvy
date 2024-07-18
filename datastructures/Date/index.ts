@@ -3,15 +3,18 @@ const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 const toStart = [0, 0, 0, 0];
 const toEnd = [23, 59, 59, 999];
 
-export const At = (timestamp: number | string) =>
+export const At = (timestampOrYear: number | string | Date) =>
   new Date(
     Date.UTC(
-      new Date(timestamp).getUTCFullYear(),
-      new Date(timestamp).getUTCMonth(),
-      new Date(timestamp).getUTCDate(),
+      new Date(timestampOrYear).getUTCFullYear(),
+      new Date(timestampOrYear).getUTCMonth(),
+      new Date(timestampOrYear).getUTCDate(),
       ...toStart
     )
   );
+
+const On = (year: number, month: number = 0, day: number = 1) =>
+  new Date(Date.UTC(year, month, day));
 
 export const Now = () =>
   new Date(
@@ -22,6 +25,9 @@ export const Now = () =>
       ...toStart
     )
   );
+
+export const CurrentYear = () => Now().getUTCFullYear();
+export const CurrentMonth = () => Now().getUTCMonth() + 1;
 
 export const Tomorrow = () => {
   const now = Now();
@@ -46,7 +52,7 @@ export const subMonths = (date: Date, months: number): Date =>
 
 export const addDays = (date: Date, days: number): Date => {
   const newDate = new Date(date.getTime());
-  newDate.setUTCDate(newDate.getUTCDate() - days);
+  newDate.setUTCDate(newDate.getUTCDate() + days);
   return newDate;
 };
 
@@ -67,7 +73,7 @@ export const differenceInDays = (left: Date, right: Date): number => {
 };
 
 export const toFormat = (date: Date, format: "ymd" = "ymd") => {
-  const year = date.getUTCFullYear().toString().padStart(4, "0");
+  const year = date.getUTCFullYear();
   const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
   const day = date.getUTCDate().toString().padStart(2, "0");
 
@@ -96,10 +102,50 @@ export const toMonth = (date: Date): string => {
 
 export const readable = (date: Date): string => date.toLocaleDateString();
 
-export const isSameDay = (left: Date, right: Date): boolean =>
+export const isSameDay = (left: Date, right: Date) =>
   left.getUTCFullYear() === right.getUTCFullYear() &&
   left.getUTCMonth() === right.getUTCMonth() &&
   left.getUTCDate() === right.getUTCDate();
 
-export const isAfter = (laterDate: Date, earlierDate: Date): boolean =>
+export const isAfter = (laterDate: Date, earlierDate: Date) =>
   laterDate.getTime() > earlierDate.getTime();
+
+export const isBefore = (earlierDate: Date, laterDate: Date) =>
+  laterDate.getTime() > earlierDate.getTime();
+
+export const isNotAfter = (earlierDate: Date, laterDate: Date) =>
+  laterDate.getTime() >= earlierDate.getTime();
+
+export const isBetweenDays = (target: Date, rangeStart: Date, rangeEnd: Date) =>
+  At(target.getTime()) >= At(rangeStart.getTime()) &&
+  At(target.getTime()) <= At(rangeEnd.getTime());
+
+export const daysBetween = ({
+  start,
+  end,
+  year,
+  month,
+}: {
+  start: Date;
+  end: Date;
+  year: number;
+  month: number;
+}): string[] => {
+  const zeroBasedMonth = month - 1;
+
+  const monthStart = startOfMonth(On(year, zeroBasedMonth));
+  const monthEnd = endOfMonth(On(year, zeroBasedMonth));
+
+  const rangeStart = isAfter(start, monthStart) ? start : monthStart;
+  const rangeEnd = isBefore(end, monthEnd) ? end : monthEnd;
+
+  let currentDate = At(rangeStart);
+
+  const days: string[] = [];
+  while (isNotAfter(currentDate, rangeEnd)) {
+    days.push(toFormat(currentDate));
+    currentDate = addDays(currentDate, 1);
+  }
+
+  return days;
+};

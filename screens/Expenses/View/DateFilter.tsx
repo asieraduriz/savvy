@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import {
   View,
   Text,
@@ -22,8 +22,17 @@ export const DateFilterScreen: React.FC = () => {
   );
   const { start, end } = useFilter();
   const applyFilter = useApplyFilter();
-  const [calendarMonth, setCalendarMonth] = useState<number>(0);
+  const [calendarDate, setCalendarDate] = useState<{
+    year: number;
+    month: number;
+  }>({ year: Dates.CurrentYear(), month: Dates.CurrentMonth() });
 
+  const markedDates = useMemo(() => {
+    if (!start || !end) return [];
+    return Dates.daysBetween({ start, end, ...calendarDate });
+  }, [start, end, calendarDate]);
+
+  console.log("🚀 ~ markedDates ~ markedDates:", markedDates);
   const [contentWidth, setContentWidth] = useState(
     Dimensions.get("screen").width
   );
@@ -95,11 +104,13 @@ export const DateFilterScreen: React.FC = () => {
             }}
           />
           <Calendar
-            showSixWeeks
+            hideExtraDays
             maxDate={Dates.toFormat(Dates.Now())}
             initialDate={initialCalendarDate}
             enableSwipeMonths
-            onMonthChange={({ month }) => setCalendarMonth(month)}
+            onMonthChange={({ year, month }) =>
+              setCalendarDate({ year, month })
+            }
             onDayPress={({ dateString }) => onDayPressed(Dates.At(dateString))}
           />
         </View>
