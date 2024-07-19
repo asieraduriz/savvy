@@ -3,27 +3,30 @@ const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 const toStart = [0, 0, 0, 0];
 const toEnd = [23, 59, 59, 999];
 
-export const At = (timestampOrYear: number | string | Date) =>
-  new Date(
-    Date.UTC(
-      new Date(timestampOrYear).getUTCFullYear(),
-      new Date(timestampOrYear).getUTCMonth(),
-      new Date(timestampOrYear).getUTCDate(),
-      ...toStart
-    )
+const UTC = (date: Date) =>
+  Date.UTC(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCMilliseconds()
   );
+
+const toUTC = (date: Date) => new Date(UTC(date));
+
+export const At = (timestampOrYear: number | string | Date) => {
+  const date = new Date(timestampOrYear);
+  return toUTC(date);
+};
 
 const On = (year: number, month: number = 0, day: number = 1) =>
   new Date(Date.UTC(year, month, day));
 
-export const Now = () =>
-  new Date(
-    Date.UTC(
-      new Date().getUTCFullYear(),
-      new Date().getUTCMonth(),
-      new Date().getUTCDate()
-    )
-  );
+export const Now = () => {
+  const date = new Date();
+  return toUTC(date);
+};
 
 export const Today = () =>
   new Date(
