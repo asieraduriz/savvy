@@ -36,6 +36,7 @@ export const DateFilterScreen: React.FC = () => {
     Dimensions.get("screen").width
   );
 
+  console.log("🚀 ~ markedDates ~ markedDates:", markedDates);
   const onTabLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout;
     setContentWidth(layout.width);
@@ -110,7 +111,7 @@ export const DateFilterScreen: React.FC = () => {
             onMonthChange={({ year, month }) =>
               setCalendarDate({ year, month })
             }
-            onDayPress={({ dateString }) => onDayPressed(Dates.At(dateString))}
+            onDayPress={({ dateString }) => onDayPressed(new Date(dateString))}
           />
         </View>
       </View>

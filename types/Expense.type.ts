@@ -10,7 +10,6 @@ export type ExpenseBase = {
 
 export type OneTimeExpenseBase = {
   when: Date;
-  day: ReturnType<typeof toFormat>;
 };
 
 export type Expense = ExpenseBase & OneTimeExpenseBase;

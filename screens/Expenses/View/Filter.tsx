@@ -62,29 +62,7 @@ export const FilterScreen: React.FC = () => {
           <FontAwesome name="calendar" size={24} color="black" />
           <FontAwesome name="chevron-down" size={12} color="black" />
         </Pressable>
-        <Pickers.DateRange
-          start={filter.start}
-          end={filter.end}
-          onStartChange={setStartDate}
-          onEndChange={setEndDate}
-        />
 
-        <Button
-          title="Reset"
-          onPress={() => {
-            setStartDate(new Date());
-            setEndDate(undefined);
-          }}
-        />
-        <Text>Filterss page</Text>
-        <Pickers.RangeSlider
-          min={1}
-          max={150}
-          step={5}
-          onValuesChange={console.log}
-        />
-        <Text>{Dates.readable(startDate)}</Text>
-        <Text>{endDate ? Dates.readable(endDate) : "No date"}</Text>
         <Button title="Apply" onPress={() => applyFilter(filter)} />
       </ScrollView>
     </View>

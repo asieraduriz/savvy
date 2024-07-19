@@ -1,96 +1,74 @@
 const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
-const toStart = [0, 0, 0, 0];
-const toEnd = [23, 59, 59, 999];
-
-const UTC = (date: Date) =>
-  Date.UTC(
-    date.getUTCFullYear(),
-    date.getUTCMonth(),
-    date.getUTCDate(),
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCMilliseconds()
-  );
-
-const toUTC = (date: Date) => new Date(UTC(date));
-
-export const At = (timestampOrYear: number | string | Date) => {
-  const date = new Date(timestampOrYear);
-  return toUTC(date);
-};
-
-const On = (year: number, month: number = 0, day: number = 1) =>
-  new Date(Date.UTC(year, month, day));
-
-export const Now = () => {
+/* PRECISE DATE METHODS */
+export const Now = (): Date => {
   const date = new Date();
-  return toUTC(date);
+  return date;
 };
 
-export const Today = () =>
-  new Date(
-    Date.UTC(
-      new Date().getUTCFullYear(),
-      new Date().getUTCMonth(),
-      new Date().getUTCDate(),
-      ...toStart
-    )
-  );
+export const Today = (): Date => {
+  const now = Now();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+};
 
-export const CurrentYear = () => Today().getUTCFullYear();
-export const CurrentMonth = () => Today().getUTCMonth() + 1;
+export const On = (year: number, month: number, day: number = 1): Date => {
+  const paddedMonth = month.toString().padStart(2, "0");
+  const paddedDay = day.toString().padStart(2, "0");
+  return new Date(`${year}-${paddedMonth}-${paddedDay}`);
+};
 
-export const Tomorrow = () => {
-  const now = Today();
+export const CurrentYear = (): number => Today().getFullYear();
+export const CurrentMonth = (): number => Today().getMonth() + 1;
+
+export const Tomorrow = (): Date => {
+  const now = Now();
   return addDays(now, 1);
 };
 
-export const startOfMonth = (date: Date) =>
-  new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
+/* START METHODS */
+export const startOfDay = (date: Date): Date =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-export const endOfMonth = (date: Date) =>
-  new Date(
-    Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0, ...toEnd)
-  );
+export const startOfMonth = (date: Date): Date =>
+  new Date(date.getFullYear(), date.getMonth(), 1);
+
+/* END METHODS */
+export const endOfMonth = (date: Date): Date =>
+  new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+/* ADD METHODS */
+export const addDays = (date: Date, days: number): Date => {
+  const newDate = new Date(date.getTime());
+  newDate.setDate(newDate.getDate() + days);
+  return newDate;
+};
 
 export const addMonths = (date: Date, months: number): Date => {
   const newDate = new Date(date.getTime());
-  newDate.setUTCMonth(date.getUTCMonth() + months);
+  newDate.setMonth(date.getMonth() + months);
   return newDate;
 };
+
+/* SUBTRACT METHODS */
+export const subDays = (date: Date, days: number): Date => addDays(date, -days);
 
 export const subMonths = (date: Date, months: number): Date =>
   addMonths(date, -months);
 
-export const addDays = (date: Date, days: number): Date => {
-  const newDate = new Date(date.getTime());
-  newDate.setUTCDate(newDate.getUTCDate() + days);
-  return newDate;
-};
-
-export const subDays = (date: Date, days: number): Date => addDays(date, -days);
-
+/* DIFF METHODS */
 export const differenceInDays = (left: Date, right: Date): number => {
-  const leftUtc = Date.UTC(
-    left.getUTCFullYear(),
-    left.getUTCMonth(),
-    left.getUTCDate()
-  );
-  const rightUtc = Date.UTC(
-    right.getUTCFullYear(),
-    right.getUTCMonth(),
-    right.getUTCDate()
-  );
-  return Math.floor((rightUtc - leftUtc) / MILLISECONDS_IN_A_DAY);
+  const leftDate = (left.getFullYear(), left.getMonth(), left.getDate());
+  const rightDate = (right.getFullYear(), right.getMonth(), right.getDate());
+  return Math.floor((rightDate - leftDate) / MILLISECONDS_IN_A_DAY);
 };
 
-export const toFormat = (date: Date, format: "ymd" = "ymd") => {
-  const year = date.getUTCFullYear();
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-  const day = date.getUTCDate().toString().padStart(2, "0");
+/* FORMAT METHODS */
+export const toFormat = (date: Date, format: string = "yyyy-MM-dd"): string => {
+  const year = date.getFullYear().toString();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
+  return format.replace("yyyy", year).replace("MM", month).replace("dd", day);
 };
 
 const monthNames = [
@@ -113,25 +91,38 @@ export const toMonth = (date: Date): string => {
   return monthNames[monthIndex];
 };
 
-export const readable = (date: Date): string => date.toLocaleDateString();
+export const readable = (date: Date, locale: string = "en-US"): string =>
+  date.toLocaleDateString(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
-export const isSameDay = (left: Date, right: Date) =>
-  left.getUTCFullYear() === right.getUTCFullYear() &&
-  left.getUTCMonth() === right.getUTCMonth() &&
-  left.getUTCDate() === right.getUTCDate();
+/* BOOLEAN METHODS */
 
-export const isAfter = (laterDate: Date, earlierDate: Date) =>
+export const isSameDay = (left: Date, right: Date): boolean =>
+  left.getFullYear() === right.getFullYear() &&
+  left.getMonth() === right.getMonth() &&
+  left.getDate() === right.getDate();
+
+export const isAfter = (laterDate: Date, earlierDate: Date): boolean =>
   laterDate.getTime() > earlierDate.getTime();
 
-export const isBefore = (earlierDate: Date, laterDate: Date) =>
-  laterDate.getTime() > earlierDate.getTime();
+export const isBefore = (earlierDate: Date, laterDate: Date): boolean =>
+  earlierDate.getTime() < laterDate.getTime();
 
-export const isNotAfter = (earlierDate: Date, laterDate: Date) =>
-  laterDate.getTime() >= earlierDate.getTime();
+export const isNotAfter = (earlierDate: Date, laterDate: Date): boolean =>
+  earlierDate.getTime() <= laterDate.getTime();
 
-export const isBetweenDays = (target: Date, rangeStart: Date, rangeEnd: Date) =>
-  At(target.getTime()) >= At(rangeStart.getTime()) &&
-  At(target.getTime()) <= At(rangeEnd.getTime());
+export const isBetweenDays = (
+  target: Date,
+  rangeStart: Date,
+  rangeEnd: Date
+): boolean =>
+  target.getTime() >= rangeStart.getTime() &&
+  target.getTime() <= rangeEnd.getTime();
+
+/* CALCULATION METHODS */
 
 export const daysBetween = ({
   start,
@@ -144,17 +135,15 @@ export const daysBetween = ({
   year: number;
   month: number;
 }): string[] => {
-  const zeroBasedMonth = month - 1;
-
-  const monthStart = startOfMonth(On(year, zeroBasedMonth));
-  const monthEnd = endOfMonth(On(year, zeroBasedMonth));
+  const monthStart = startOfMonth(On(year, month));
+  const monthEnd = endOfMonth(On(year, month));
 
   const rangeStart = isAfter(start, monthStart) ? start : monthStart;
   const rangeEnd = isBefore(end, monthEnd) ? end : monthEnd;
 
-  let currentDate = At(rangeStart);
-
+  console.log("content", { monthStart, monthEnd, rangeStart, rangeEnd });
   const days: string[] = [];
+  let currentDate = new Date(rangeStart);
   while (isNotAfter(currentDate, rangeEnd)) {
     days.push(toFormat(currentDate));
     currentDate = addDays(currentDate, 1);
