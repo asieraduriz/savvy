@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const DatePresetPicker: FC<Props> = ({ start, end, onDateChange }) => {
-  const now = Dates.Now();
+  const now = Dates.Today();
 
   const periods: Period[] = [
     {

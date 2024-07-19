@@ -31,7 +31,7 @@ export const OneTimeExpenseToAddPicker: React.FC<Props> = ({
       </Pressable>
       {showDatePicker && (
         <DateTimePicker
-          value={when || new Date()}
+          value={when || Dates.Today()}
           mode="date"
           display="default"
           onChange={handleDateChange}

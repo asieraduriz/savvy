@@ -18,7 +18,7 @@ type Tab = "Since" | "Between";
 
 export const DateFilterScreen: React.FC = () => {
   const [initialCalendarDate, sendCalendarToDate] = useState(
-    Dates.toFormat(Dates.Now())
+    Dates.toFormat(Dates.Today())
   );
   const { start, end } = useFilter();
   const applyFilter = useApplyFilter();
@@ -32,7 +32,6 @@ export const DateFilterScreen: React.FC = () => {
     return Dates.daysBetween({ start, end, ...calendarDate });
   }, [start, end, calendarDate]);
 
-  console.log("🚀 ~ markedDates ~ markedDates:", markedDates);
   const [contentWidth, setContentWidth] = useState(
     Dimensions.get("screen").width
   );
@@ -46,7 +45,7 @@ export const DateFilterScreen: React.FC = () => {
 
   const onDayPressed = (date: Date) => {
     if (activeTab === "Since") {
-      applyFilter({ start: date, end: Dates.Now() });
+      applyFilter({ start: date, end: Dates.Today() });
 
       // updateMarkedDates(selectedDate, formatDate(new Date()));
     } else {
@@ -97,7 +96,7 @@ export const DateFilterScreen: React.FC = () => {
           <Button
             title="Now"
             onPress={() => {
-              const now = Dates.Now();
+              const now = Dates.Today();
               const tomorrow = sendCalendarToDate(
                 Dates.toFormat(Dates.Tomorrow())
               );
@@ -105,7 +104,7 @@ export const DateFilterScreen: React.FC = () => {
           />
           <Calendar
             hideExtraDays
-            maxDate={Dates.toFormat(Dates.Now())}
+            maxDate={Dates.toFormat(Dates.Today())}
             initialDate={initialCalendarDate}
             enableSwipeMonths
             onMonthChange={({ year, month }) =>

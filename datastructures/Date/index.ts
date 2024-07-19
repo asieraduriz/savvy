@@ -21,16 +21,25 @@ export const Now = () =>
     Date.UTC(
       new Date().getUTCFullYear(),
       new Date().getUTCMonth(),
+      new Date().getUTCDate()
+    )
+  );
+
+export const Today = () =>
+  new Date(
+    Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
       new Date().getUTCDate(),
       ...toStart
     )
   );
 
-export const CurrentYear = () => Now().getUTCFullYear();
-export const CurrentMonth = () => Now().getUTCMonth() + 1;
+export const CurrentYear = () => Today().getUTCFullYear();
+export const CurrentMonth = () => Today().getUTCMonth() + 1;
 
 export const Tomorrow = () => {
-  const now = Now();
+  const now = Today();
   return addDays(now, 1);
 };
 
@@ -41,6 +50,7 @@ export const endOfMonth = (date: Date) =>
   new Date(
     Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0, ...toEnd)
   );
+
 export const addMonths = (date: Date, months: number): Date => {
   const newDate = new Date(date.getTime());
   newDate.setUTCMonth(date.getUTCMonth() + months);

@@ -6,16 +6,16 @@ import { Button } from "react-native";
 
 type Props = {
   expenseToAdd: ExpenseToAdd;
+  onPress: () => void;
 };
 
-export const Submit: FC<Props> = ({ expenseToAdd }) => {
+export const Submit: FC<Props> = ({ expenseToAdd, onPress }) => {
   const addExpense = useAddExpense();
 
-
-  const onPress = () => {
+  const onPressHandle = () => {
     const newExpense = Transformers.toExpense(expenseToAdd);
     addExpense(newExpense);
   };
 
-  return <Button title="Add expense" onPress={onPress} />;
+  return <Button title="Add expense" onPress={onPressHandle} />;
 };
