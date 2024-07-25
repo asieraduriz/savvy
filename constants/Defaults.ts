@@ -10,6 +10,15 @@ const addExpenseFormStarter: ExpenseToAdd = {
   when: today,
 };
 
+const addRandomStarter = (): Expense => ({
+  id: randomUUID(),
+  amount: 5,
+  title: "Tennesee",
+  category: "Cafe",
+  created: Dates.subDays(today, 13),
+  when: Dates.subDays(today, 13),
+});
+
 const starterFirstCoffee: Expense = {
   id: randomUUID(),
   amount: 5,
@@ -55,6 +64,12 @@ const starterFilter: ExpensesFilter = {
 export const Defaults = {
   AddExpenseForm: addExpenseFormStarter,
   Starters: [
+    addRandomStarter(),
+    addRandomStarter(),
+    addRandomStarter(),
+    addRandomStarter(),
+    addRandomStarter(),
+    addRandomStarter(),
     starterFirstCoffee,
     starterSecondCoffee,
     starterGroceriesFirst,

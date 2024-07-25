@@ -1,6 +1,11 @@
 const MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 /* PRECISE DATE METHODS */
+
+export const At = (date: string) => {
+  const dateAt = new Date(date);
+  return dateAt;
+}
 export const Now = (): Date => {
   const date = new Date();
   return date;
