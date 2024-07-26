@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet } from "react-native";
 import { Text, View } from "../Themed";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useToggle } from "@/hooks";
 import { Dates } from "@/datastructures";
@@ -16,7 +16,7 @@ export const OneTimeExpenseToAddPicker: React.FC<Props> = ({
 }) => {
   const [showDatePicker, toggle] = useToggle(false);
 
-  const handleDateChange = (event: any, selectedDate?: Date) => {
+  const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     toggle.off();
     if (event.type === "set" && selectedDate) {
       setDate(selectedDate);

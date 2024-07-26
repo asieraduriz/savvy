@@ -2,12 +2,12 @@ import { Dates } from "@/datastructures";
 import { Expense, ExpenseToAdd, ExpensesFilter } from "@/types";
 import { randomUUID } from "expo-crypto";
 
-const today = Dates.Now();
+const now = Dates.Now();
 const addExpenseFormStarter: ExpenseToAdd = {
   amount: 0,
   title: "",
   category: "",
-  when: today,
+  when: now,
 };
 
 const addRandomStarter = (): Expense => ({
@@ -15,8 +15,8 @@ const addRandomStarter = (): Expense => ({
   amount: 5,
   title: "Tennesee",
   category: "Cafe",
-  created: Dates.subDays(today, 13),
-  when: Dates.subDays(today, 13),
+  created: Dates.subDays(now, 13),
+  when: Dates.subDays(now, 13),
 });
 
 const starterFirstCoffee: Expense = {
@@ -24,8 +24,8 @@ const starterFirstCoffee: Expense = {
   amount: 5,
   title: "Tennesee",
   category: "Cafe",
-  created: Dates.subDays(today, 13),
-  when: Dates.subDays(today, 13),
+  created: Dates.subDays(now, 13),
+  when: Dates.subDays(now, 13),
 };
 
 const starterSecondCoffee: Expense = {
@@ -33,8 +33,8 @@ const starterSecondCoffee: Expense = {
   amount: 7,
   title: "Coffee",
   category: "Cafe",
-  created: Dates.subDays(today, 7),
-  when: Dates.subDays(today, 6),
+  created: Dates.subDays(now, 7),
+  when: Dates.subDays(now, 6),
 };
 
 const starterGroceriesFirst: Expense = {
@@ -42,8 +42,8 @@ const starterGroceriesFirst: Expense = {
   amount: 87,
   title: "Glories",
   category: "Grocieres",
-  created: Dates.subDays(today, 7),
-  when: Dates.subDays(today, 6),
+  created: Dates.subDays(now, 7),
+  when: Dates.subDays(now, 6),
 };
 
 const starterGroceriesSecond: Expense = {
@@ -51,8 +51,8 @@ const starterGroceriesSecond: Expense = {
   amount: 87,
   title: "Glories",
   category: "Grocieres",
-  created: Dates.subDays(today, 4),
-  when: Dates.subDays(today, 4),
+  created: Dates.subDays(now, 4),
+  when: Dates.subDays(now, 4),
 };
 
 const starterFilter: ExpensesFilter = {

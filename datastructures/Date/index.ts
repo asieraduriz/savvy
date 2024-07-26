@@ -146,7 +146,6 @@ export const daysBetween = ({
   const rangeStart = isAfter(start, monthStart) ? start : monthStart;
   const rangeEnd = isBefore(end, monthEnd) ? end : monthEnd;
 
-  console.log("content", { monthStart, monthEnd, rangeStart, rangeEnd });
   const days: string[] = [];
   let currentDate = new Date(rangeStart);
   while (isNotAfter(currentDate, rangeEnd)) {

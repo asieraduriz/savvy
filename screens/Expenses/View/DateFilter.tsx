@@ -7,7 +7,6 @@ import {
   Pressable,
   LayoutChangeEvent,
   Dimensions,
-  Button,
 } from "react-native";
 import { Pickers } from "@/components/Pickers";
 import { useApplyFilter, useFilter } from "@/contexts";
@@ -36,7 +35,6 @@ export const DateFilterScreen: React.FC = () => {
     Dimensions.get("screen").width
   );
 
-  console.log("🚀 ~ markedDates ~ markedDates:", markedDates);
   const onTabLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout;
     setContentWidth(layout.width);
@@ -94,15 +92,6 @@ export const DateFilterScreen: React.FC = () => {
       <View style={styles.container}>
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         <View style={styles.content}>
-          <Button
-            title="Now"
-            onPress={() => {
-              const now = Dates.Today();
-              const tomorrow = sendCalendarToDate(
-                Dates.toFormat(Dates.Tomorrow())
-              );
-            }}
-          />
           <Calendar
             hideExtraDays
             maxDate={Dates.toFormat(Dates.Today())}
