@@ -10,7 +10,7 @@ import { FC, useMemo } from "react";
 import { FlatList } from "react-native";
 
 export const ExpensesScreen: FC = () => {
-  const expenses = useExpenses();
+  const { expenses } = useExpenses();
   const filter = useFilter();
 
   const expenseTitles = useMemo(() => [...new Set(expenses.map((e) => e.title))], [expenses]);

@@ -6,12 +6,16 @@ import { Tabs } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "react-native";
 import { ExpensesProvider } from "@/contexts";
+import { AsyncStorageExpenseRepository } from "@/repositories";
+import { ExpenseService } from "@/services/Expense";
 
 export default () => {
+  const repository = new AsyncStorageExpenseRepository();
+  const expenseService = new ExpenseService(repository);
   const colorScheme = useColorScheme();
 
   return (
-    <ExpensesProvider>
+    <ExpensesProvider expenseService={expenseService}>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,

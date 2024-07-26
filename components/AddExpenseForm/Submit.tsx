@@ -1,4 +1,4 @@
-import { useAddExpense } from "@/contexts";
+import { useExpenses } from "@/contexts";
 import { Transformers } from "@/transformers";
 import { ExpenseToAdd } from "@/types";
 import { FC } from "react";
@@ -10,11 +10,11 @@ type Props = {
 };
 
 export const Submit: FC<Props> = ({ expenseToAdd, onPress }) => {
-  const addExpense = useAddExpense();
+  const { createExpense } = useExpenses();
 
   const onPressHandle = () => {
     const newExpense = Transformers.toExpense(expenseToAdd);
-    addExpense(newExpense);
+    createExpense(newExpense);
   };
 
   return <Button title="Add expense" onPress={onPressHandle} />;
