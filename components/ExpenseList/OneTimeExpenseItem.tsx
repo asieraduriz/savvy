@@ -1,12 +1,14 @@
 import { FC } from "react";
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet } from "react-native";
 import { Text, View } from "../Themed";
 import { Expense } from "@/types";
+import { useExpenses } from "@/contexts";
 
 type Props = { expense: Expense };
 
 export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
-  const { amount, category, title } = expense;
+  const { deleteExpense } = useExpenses();
+  const { id, amount, category, title } = expense;
 
   return (
     <View style={styles.expenseCard}>
@@ -20,6 +22,7 @@ export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
         </View>
         {title && <Text style={styles.titleText}>{title}</Text>}
       </View>
+      <Button title="Delete" onPress={() => deleteExpense(id)} />
     </View>
   );
 };
