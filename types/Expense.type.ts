@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Subscription } from "./Subscription.type";
 
 export type Category = {
   name: string;
@@ -14,8 +15,16 @@ export type ExpenseBase = {
   created: Date;
 };
 
-export type OneTimeExpenseBase = {
+export type OneTimeExpense = {
+  type: 'onetime'
   when: Date;
 };
 
-export type Expense = ExpenseBase & OneTimeExpenseBase;
+export type SubscriptionExpense = {
+  type: 'subscription';
+  when: Date;
+  subscriptionId: Subscription["id"];
+}
+
+
+export type Expense = ExpenseBase & (OneTimeExpense | SubscriptionExpense);

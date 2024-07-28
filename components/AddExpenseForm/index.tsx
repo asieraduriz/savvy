@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { TextInput, View } from "../Themed";
-import { StyleSheet } from "react-native";
+import { Text, TextInput, View } from "../Themed";
+import { StyleSheet, Switch } from "react-native";
 import { ExpenseToAdd } from "@/types";
 import { Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
@@ -11,16 +11,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 export const IconFamilies = {
   MaterialCommunityIcons: require("@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialCommunityIcons.json"),
 };
-
-const IconsArray = [...Object.entries(IconFamilies.MaterialCommunityIcons).map(([iconName, glyphValue]) => {
-  return {
-    name: iconName,
-    // value: glyphValue,
-    // family: "MaterialCommunityIcons",
-  };
-})
-];
-
 
 const Colors = ["white", "orange", "red", "blue", "yellow"];
 
@@ -36,7 +26,13 @@ export const AddExpenseForm = () => {
     setExpense((prev) => ({ ...prev, [key]: value }));
   };
 
-  const { title, amount, when: date, category, categoryColor, categoryIcon } = expenseToAdd;
+  const { title, amount, when: date, category, categoryColor, categoryIcon, type, interval } = expenseToAdd;
+
+  const flipType = () => set('type', type === 'onetime' ? 'subscription' : 'onetime');
+
+  const onSuccess = () => {
+
+  }
 
   return (
     <View style={styles.container}>
@@ -68,9 +64,7 @@ export const AddExpenseForm = () => {
         selectedValue={categoryIcon}
         onValueChange={(icon => set('categoryIcon', icon))}>
         {
-          IconsArray.map(({ name }) =>
-            <Picker.Item key={name} label={name} value={name} />
-          )
+          Defaults.Icons.map((icon) => <Picker.Item key={icon} label={icon} value={icon} />)
         }
       </Picker>
       <MaterialCommunityIcons name={categoryIcon} size={32} />
@@ -78,14 +72,24 @@ export const AddExpenseForm = () => {
         selectedValue={categoryColor}
         onValueChange={(color) => set('categoryColor', color)}>
         {
-          Colors.map((color) =>
-            <Picker.Item key={color} label={color} value={color} />
-          )
+          Colors.map((color) => <Picker.Item key={color} label={color} value={color} />)
         }
       </Picker>
 
       <Pickers.OneTime when={date} setDate={(when) => set("when", when)} />
-      <Submit expenseToAdd={expenseToAdd} />
+
+      <Switch value={type === 'subscription'} onChange={flipType} />
+      {
+        type === 'subscription' ?
+          <View>
+            <Text>Every: </Text>
+            <TextInput keyboardType="numeric" />
+            <Pickers.Interval interval={interval} setInterval={(interval) => set('interval', interval)} />
+          </View>
+          : null
+      }
+
+      <Submit expenseToAdd={expenseToAdd} onSuccess={onSuccess} />
     </View>
   );
 };

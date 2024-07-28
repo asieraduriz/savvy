@@ -1,23 +1,30 @@
 import { Dates } from "@/datastructures";
-import { ExpenseToAdd, Expense } from "@/types";
+import { ExpenseToAdd, ExpenseBase, OneTimeExpense } from "@/types";
 import { randomUUID } from "expo-crypto";
 
-export const toExpense = (expenseToAdd: ExpenseToAdd): Expense => {
-  const { title, amount, when } = expenseToAdd;
-  const newExpenseFields = {
+export const toOneTimeExpense = (expenseToAdd: ExpenseToAdd): ExpenseBase & OneTimeExpense => {
+  const { title, amount, when, category, categoryColor, categoryIcon } = expenseToAdd;
+
+  const sharedFields = {
+    title,
+    amount,
+    when,
+    category: {
+      name: category,
+      color: categoryColor,
+      iconName: categoryIcon,
+    },
+  }
+
+  const newFields = {
     created: Dates.Now(),
     id: randomUUID(),
-    category: {
-      name: expenseToAdd.category,
-      color: expenseToAdd.categoryColor,
-      iconName: expenseToAdd.categoryIcon
-    }
   };
 
-  const singleExpense: Expense = {
-    title, amount, when,
-    ...newExpenseFields,
+  return {
+    type: "onetime",
+    ...sharedFields,
+    ...newFields,
   };
 
-  return singleExpense;
 };

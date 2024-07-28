@@ -1,5 +1,5 @@
-import { toExpense } from "./Expense";
+import { toOneTimeExpense } from "./Expense";
 
 export const Transformers = {
-  toExpense,
+  toExpense: toOneTimeExpense,
 };
