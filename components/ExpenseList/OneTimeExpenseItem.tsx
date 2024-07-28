@@ -3,6 +3,7 @@ import { Button, StyleSheet } from "react-native";
 import { Text, View } from "../Themed";
 import { Expense } from "@/types";
 import { useExpenses } from "@/contexts";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type Props = { expense: Expense };
 
@@ -16,9 +17,10 @@ export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
         <Text style={styles.amountText}>{amount}</Text>
       </View>
       <View style={styles.cardBody}>
-        <View style={styles.categoryRow}>
+        <View style={{ ...styles.categoryRow, backgroundColor: category.color }}>
           <View style={[styles.categoryIcon, styles.categoryRow]} />
-          <Text style={styles.categoryText}>{category}</Text>
+          <MaterialCommunityIcons name={category.iconName} size={32} />
+          <Text style={styles.categoryText}>{category.name}</Text>
         </View>
         {title && <Text style={styles.titleText}>{title}</Text>}
       </View>

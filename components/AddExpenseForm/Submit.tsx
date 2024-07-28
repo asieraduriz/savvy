@@ -6,10 +6,9 @@ import { Button } from "react-native";
 
 type Props = {
   expenseToAdd: ExpenseToAdd;
-  onPress: () => void;
 };
 
-export const Submit: FC<Props> = ({ expenseToAdd, onPress }) => {
+export const Submit: FC<Props> = ({ expenseToAdd }) => {
   const { createExpense } = useExpenses();
 
   const onPressHandle = () => {

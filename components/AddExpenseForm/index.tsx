@@ -5,6 +5,24 @@ import { ExpenseToAdd } from "@/types";
 import { Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
 import { Submit } from "./Submit";
+import { Picker } from '@react-native-picker/picker';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+export const IconFamilies = {
+  MaterialCommunityIcons: require("@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialCommunityIcons.json"),
+};
+
+const IconsArray = [...Object.entries(IconFamilies.MaterialCommunityIcons).map(([iconName, glyphValue]) => {
+  return {
+    name: iconName,
+    // value: glyphValue,
+    // family: "MaterialCommunityIcons",
+  };
+})
+];
+
+
+const Colors = ["white", "orange", "red", "blue", "yellow"];
 
 const toNumber = (input: string, fallback: number) =>
   Number.isNaN(Number(input)) ? fallback : Number(input);
@@ -18,7 +36,7 @@ export const AddExpenseForm = () => {
     setExpense((prev) => ({ ...prev, [key]: value }));
   };
 
-  const { title, amount, category, when: date } = expenseToAdd;
+  const { title, amount, when: date, category, categoryColor, categoryIcon } = expenseToAdd;
 
   return (
     <View style={styles.container}>
@@ -40,18 +58,34 @@ export const AddExpenseForm = () => {
         />
       </View>
       <TextInput
-        style={styles.input}
+        style={{ ...styles.input, backgroundColor: categoryColor }}
         value={category}
         onChangeText={(category) => set("category", category)}
         placeholder="Which category?"
       />
+
+      <Picker
+        selectedValue={categoryIcon}
+        onValueChange={(icon => set('categoryIcon', icon))}>
+        {
+          IconsArray.map(({ name }) =>
+            <Picker.Item key={name} label={name} value={name} />
+          )
+        }
+      </Picker>
+      <MaterialCommunityIcons name={categoryIcon} size={32} />
+      <Picker
+        selectedValue={categoryColor}
+        onValueChange={(color) => set('categoryColor', color)}>
+        {
+          Colors.map((color) =>
+            <Picker.Item key={color} label={color} value={color} />
+          )
+        }
+      </Picker>
+
       <Pickers.OneTime when={date} setDate={(when) => set("when", when)} />
-      <Submit
-        expenseToAdd={expenseToAdd}
-        onPress={() => {
-          setExpense(Defaults.AddExpenseForm);
-        }}
-      />
+      <Submit expenseToAdd={expenseToAdd} />
     </View>
   );
 };

@@ -1,58 +1,14 @@
 import { Dates } from "@/datastructures";
-import { Expense, ExpenseToAdd, ExpensesFilter } from "@/types";
-import { randomUUID } from "expo-crypto";
+import { ExpenseToAdd, ExpensesFilter } from "@/types";
 
 const now = Dates.Now();
 const addExpenseFormStarter: ExpenseToAdd = {
   amount: 0,
   title: "",
   category: "",
+  categoryColor: "white",
+  categoryIcon: "head-question",
   when: now,
-};
-
-const addRandomStarter = (): Expense => ({
-  id: randomUUID(),
-  amount: 5,
-  title: "Tennesee",
-  category: "Cafe",
-  created: Dates.subDays(now, 13),
-  when: Dates.subDays(now, 13),
-});
-
-const starterFirstCoffee: Expense = {
-  id: randomUUID(),
-  amount: 5,
-  title: "Tennesee",
-  category: "Cafe",
-  created: Dates.subDays(now, 13),
-  when: Dates.subDays(now, 13),
-};
-
-const starterSecondCoffee: Expense = {
-  id: randomUUID(),
-  amount: 7,
-  title: "Coffee",
-  category: "Cafe",
-  created: Dates.subDays(now, 7),
-  when: Dates.subDays(now, 6),
-};
-
-const starterGroceriesFirst: Expense = {
-  id: randomUUID(),
-  amount: 87,
-  title: "Glories",
-  category: "Grocieres",
-  created: Dates.subDays(now, 7),
-  when: Dates.subDays(now, 6),
-};
-
-const starterGroceriesSecond: Expense = {
-  id: randomUUID(),
-  amount: 87,
-  title: "Glories",
-  category: "Grocieres",
-  created: Dates.subDays(now, 4),
-  when: Dates.subDays(now, 4),
 };
 
 const starterFilter: ExpensesFilter = {
@@ -63,17 +19,5 @@ const starterFilter: ExpensesFilter = {
 
 export const Defaults = {
   AddExpenseForm: addExpenseFormStarter,
-  Starters: [
-    addRandomStarter(),
-    addRandomStarter(),
-    addRandomStarter(),
-    addRandomStarter(),
-    addRandomStarter(),
-    addRandomStarter(),
-    starterFirstCoffee,
-    starterSecondCoffee,
-    starterGroceriesFirst,
-    starterGroceriesSecond,
-  ],
   Filter: starterFilter,
 };
