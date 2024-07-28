@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Expense, IExpenseRepository } from "@/types";
+import { Expense, IRepository, Subscription } from "@/types";
 
-export class AsyncStorageExpenseRepository implements IExpenseRepository {
+export class AsyncStorageExpenseRepository implements IRepository<Expense> {
     private readonly STORAGE_KEY = 'expenses';
 
     private async getExpenses(): Promise<Expense[]> {
@@ -43,5 +43,50 @@ export class AsyncStorageExpenseRepository implements IExpenseRepository {
         const expenses = await this.getExpenses();
         const updatedExpenses = expenses.filter(expense => expense.id !== id);
         await this.saveExpenses(updatedExpenses);
+    }
+}
+
+export class AsyncStorageSubscriptionRepository implements IRepository<Subscription> {
+    private readonly STORAGE_KEY = 'subscriptions';
+
+    private async getSubscriptions(): Promise<Subscription[]> {
+        const subscriptionsJson = await AsyncStorage.getItem(this.STORAGE_KEY);
+        const subscriptions: Subscription[] = subscriptionsJson ? JSON.parse(subscriptionsJson) : [];
+
+        // Rethink how to handle dates and strings
+        return subscriptions.map((subscription) => ({ ...subscription, start: new Date(subscription.start), end: subscription.end ? new Date(subscription.end) : undefined }))
+    }
+
+    private async saveSubscriptions(subscriptions: Subscription[]): Promise<void> {
+        await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(subscriptions));
+    }
+
+    async readAll(): Promise<Subscription[]> {
+        return this.getSubscriptions();
+    }
+
+    async read(id: string): Promise<Subscription | null> {
+        const subscriptions = await this.getSubscriptions();
+        return subscriptions.find(subscription => subscription.id === id) || null;
+    }
+
+    async create(subscription: Subscription): Promise<Subscription> {
+        const subscriptions = await this.getSubscriptions();
+        await this.saveSubscriptions([...subscriptions, subscription]);
+        return subscription;
+    }
+
+    async update(updatedSubscription: Subscription): Promise<void> {
+        const subscriptions = await this.getSubscriptions();
+        const updatedSubscriptions = subscriptions.map(subscription =>
+            subscription.id === updatedSubscription.id ? updatedSubscription : subscription
+        );
+        await this.saveSubscriptions(updatedSubscriptions);
+    }
+
+    async delete(id: string): Promise<void> {
+        const subscriptions = await this.getSubscriptions();
+        const updatedSubscriptions = subscriptions.filter(subscription => subscription.id !== id);
+        await this.saveSubscriptions(updatedSubscriptions);
     }
 }

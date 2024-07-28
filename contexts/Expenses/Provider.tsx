@@ -1,6 +1,6 @@
 import { Dates } from '@/datastructures';
-import { ExpenseService } from '@/services/Expense';
-import { Expense } from '@/types';
+import { Service } from '@/services';
+import { Expense, Subscription } from '@/types';
 import { createContext, useContext, useState, useCallback, useEffect, PropsWithChildren } from 'react';
 
 interface ExpenseContextType {
@@ -17,7 +17,7 @@ interface ExpenseContextType {
 
 const Context = createContext<ExpenseContextType | null>(null);
 
-type ExpensesProviderProps = PropsWithChildren<{ expenseService: ExpenseService; }>
+type ExpensesProviderProps = PropsWithChildren<{ subscriptionService: Service<Subscription>; expenseService: Service<Expense>; }>
 
 export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, expenseService }) => {
     const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -28,7 +28,7 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, ex
         setIsLoading(true);
         setError(null);
         try {
-            const fetchedExpenses = await expenseService.readAllExpenses();
+            const fetchedExpenses = await expenseService.readAll();
             setExpenses(fetchedExpenses);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('An unknown error occurred'));
@@ -43,7 +43,7 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, ex
 
     const createExpense = useCallback(async (expense: Expense) => {
         try {
-            const newExpense = await expenseService.createExpense(expense);
+            const newExpense = await expenseService.create(expense);
             setExpenses(prevExpenses => [...prevExpenses, newExpense]);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to add expense'));
@@ -52,7 +52,7 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, ex
 
     const updateExpense = useCallback(async (updatedExpense: Expense) => {
         try {
-            await expenseService.updateExpense(updatedExpense);
+            await expenseService.update(updatedExpense);
             setExpenses(prevExpenses =>
                 prevExpenses.map(expense =>
                     expense.id === updatedExpense.id ? updatedExpense : expense
@@ -65,7 +65,7 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, ex
 
     const deleteExpense = useCallback(async (id: string) => {
         try {
-            await expenseService.deleteExpense(id);
+            await expenseService.delete(id);
             setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id));
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to delete expense'));
