@@ -1,8 +1,8 @@
 import { Dates } from "@/datastructures";
-import { ExpenseToAdd, ExpenseBase, OneTimeExpense } from "@/types";
+import { ExpenseToAdd, Expense } from "@/types";
 import { randomUUID } from "expo-crypto";
 
-export const toOneTimeExpense = (expenseToAdd: ExpenseToAdd): ExpenseBase & OneTimeExpense => {
+export const toOneTimeExpense = (expenseToAdd: ExpenseToAdd): Expense => {
   const { title, amount, when, category, categoryColor, categoryIcon } = expenseToAdd;
 
   return {

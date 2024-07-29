@@ -1,7 +1,8 @@
 import { toOneTimeExpense } from "./Expense";
-import { toSubscription } from "./Subscription";
+import { toSubscription, toSubscriptionExpense } from "./Subscription";
 
 export const Transformers = {
   toExpense: toOneTimeExpense,
   toSubscription: toSubscription,
+  toSubscriptionExpense: toSubscriptionExpense
 };

@@ -1,5 +1,5 @@
 import { Dates } from "@/datastructures";
-import { ExpenseToAdd, Subscription, SubscriptionStatus } from "@/types";
+import { Expense, ExpenseToAdd, Subscription, SubscriptionStatus } from "@/types";
 import { randomUUID } from "expo-crypto";
 
 
@@ -26,4 +26,23 @@ export const toSubscription = (expenseToAdd: ExpenseToAdd): Subscription => {
     };
 }
 
-export const toSubscriptionExpense = () => { }
+export const toSubscriptionExpense = (expenseToAdd: ExpenseToAdd, date: Date, subscriptionId: Subscription["id"]): Expense => {
+    const { title, amount, category, categoryColor, categoryIcon } = expenseToAdd;
+
+    return {
+        type: "subscription",
+        // Shared properties
+        title,
+        amount,
+        when: date,
+        category: {
+            name: category,
+            color: categoryColor,
+            iconName: categoryIcon,
+        },
+        // New properties
+        created: Dates.Now(),
+        id: randomUUID(),
+        subscriptionId
+    };
+}
