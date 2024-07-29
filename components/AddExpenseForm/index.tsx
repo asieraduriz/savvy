@@ -26,7 +26,7 @@ export const AddExpenseForm = () => {
     setExpense((prev) => ({ ...prev, [key]: value }));
   };
 
-  const { title, amount, when: date, category, categoryColor, categoryIcon, type, interval } = expenseToAdd;
+  const { title, amount, when: date, category, categoryColor, categoryIcon, type, every, interval } = expenseToAdd;
 
   const flipType = () => set('type', type === 'onetime' ? 'subscription' : 'onetime');
 
@@ -83,7 +83,7 @@ export const AddExpenseForm = () => {
         type === 'subscription' ?
           <View>
             <Text>Every: </Text>
-            <TextInput keyboardType="numeric" />
+            <TextInput keyboardType="numeric" value={`${every}`} onChangeText={(every) => set('every', every)} />
             <Pickers.Interval interval={interval} setInterval={(interval) => set('interval', interval)} />
           </View>
           : null
