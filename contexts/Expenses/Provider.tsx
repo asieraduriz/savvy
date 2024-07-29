@@ -1,4 +1,3 @@
-import { Dates } from '@/datastructures';
 import { Service } from '@/services';
 import { Expense, Subscription } from '@/types';
 import { createContext, useContext, useState, useCallback, useEffect, PropsWithChildren } from 'react';
@@ -11,7 +10,7 @@ interface ExpenseContextType {
     createExpense: (expense: Expense) => Promise<void>;
     updateExpense: (expense: Expense) => Promise<void>;
     deleteExpense: (id: string) => Promise<void>;
-    getRecentExpenses: (period: 'currentMonth' | 'lastMonth') => Expense[];
+    getRecentExpenses: () => Expense[];
     getExpensesByCategory: () => Map<string, Expense[]>;
 }
 
@@ -29,6 +28,7 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, ex
         setError(null);
         try {
             const fetchedExpenses = await expenseService.readAll();
+            fetchedExpenses.sort((a, b) => b.when.getTime() - a.when.getTime())
             setExpenses(fetchedExpenses);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('An unknown error occurred'));
@@ -44,7 +44,7 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, ex
     const createExpense = useCallback(async (expense: Expense) => {
         try {
             const newExpense = await expenseService.create(expense);
-            setExpenses(prevExpenses => [...prevExpenses, newExpense]);
+            setExpenses(prevExpenses => [...prevExpenses, newExpense].sort((a, b) => b.when.getTime() - a.when.getTime()));
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to add expense'));
         }
@@ -56,7 +56,7 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, ex
             setExpenses(prevExpenses =>
                 prevExpenses.map(expense =>
                     expense.id === updatedExpense.id ? updatedExpense : expense
-                )
+                ).sort((a, b) => b.when.getTime() - a.when.getTime())
             );
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to update expense'));
@@ -66,31 +66,13 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({ children, ex
     const deleteExpense = useCallback(async (id: string) => {
         try {
             await expenseService.delete(id);
-            setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id));
+            setExpenses(prevExpenses => prevExpenses.filter(expense => expense.id !== id).sort((a, b) => b.when.getTime() - a.when.getTime()));
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Failed to delete expense'));
         }
     }, [expenseService]);
 
-    const getRecentExpenses = useCallback((period: 'currentMonth' | 'lastMonth'): Expense[] => {
-        const now = Dates.Now();
-
-        let startDate: Date;
-        let endDate: Date;
-
-        if (period === 'currentMonth') {
-            startDate = Dates.startOfMonth(now);
-            endDate = Dates.endOfMonth(now);
-        } else {
-            startDate = Dates.startOfMonth(Dates.subMonths(now, 1));
-            endDate = Dates.endOfMonth(Dates.subMonths(now, 1));
-        }
-
-        return expenses.filter(expense => {
-            return expense.when >= startDate && expense.when <= endDate;
-        });
-    }, [expenses]);
-
+    const getRecentExpenses = useCallback((): Expense[] => expenses.slice(0, 5), [expenses]);
     const getExpensesByCategory = useCallback((): Map<string, Expense[]> => {
         const categoryMap = new Map<string, Expense[]>();
 
@@ -133,9 +115,8 @@ export const useRecentExpenses = () => {
         throw new Error('useExpenses must be used within an useRecentExpenses');
     }
 
-    const currentMonthExpenses = context.getRecentExpenses('currentMonth');
-    const lastMonthExpenses = context.getRecentExpenses('lastMonth');
-    return { currentMonthExpenses, lastMonthExpenses };
+    const recentExpenses = context.getRecentExpenses();
+    return recentExpenses;
 }
 
 export const useGroupedExpenses = () => {

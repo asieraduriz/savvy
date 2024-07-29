@@ -12,7 +12,7 @@ export const IconFamilies = {
   MaterialCommunityIcons: require("@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialCommunityIcons.json"),
 };
 
-const Colors = ["white", "orange", "red", "blue", "yellow"];
+const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
 
 const toNumber = (input: string, fallback: number) =>
   Number.isNaN(Number(input)) ? fallback : Number(input);

@@ -14,8 +14,10 @@ import { SubscriptionsProvider } from "@/contexts/Subscriptions/Provider";
 export default () => {
   const expenseRepository = new AsyncStorageExpenseRepository();
   const subscriptionRepository = new AsyncStorageSubscriptionRepository();
+
   const expenseService = new Service<Expense>(expenseRepository);
   const subscriptionService = new Service<Subscription>(subscriptionRepository);
+
   const colorScheme = useColorScheme();
 
   return (

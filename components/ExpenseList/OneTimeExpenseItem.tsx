@@ -9,11 +9,12 @@ type Props = { expense: Expense };
 
 export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
   const { deleteExpense } = useExpenses();
-  const { id, amount, category, title } = expense;
+  const { id, amount, category, title, type } = expense;
 
   return (
     <View style={styles.expenseCard}>
       <View style={styles.cardHeader}>
+        <Text style={styles.amountText}>{type}</Text>
         <Text style={styles.amountText}>{amount}</Text>
       </View>
       <View style={styles.cardBody}>

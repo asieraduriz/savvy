@@ -60,10 +60,16 @@ export const subMonths = (date: Date, months: number): Date => addMonths(date, -
 
 /* DIFF METHODS */
 export const differenceInDays = (left: Date, right: Date): number => {
-    const leftDate = (left.getFullYear(), left.getMonth(), left.getDate());
-    const rightDate = (right.getFullYear(), right.getMonth(), right.getDate());
-    return Math.floor((rightDate - leftDate) / MILLISECONDS_IN_A_DAY);
+    const diffInTime = right.getTime() - left.getTime();
+    const diffInDays = Math.round(diffInTime / MILLISECONDS_IN_A_DAY);
+    return diffInDays;
 };
+
+const differenceInMonths = (left: Date, right: Date): number => {
+    const startMonth = left.getFullYear() * 12 + left.getMonth();
+    const endMonth = right.getFullYear() * 12 + right.getMonth();
+    return endMonth - startMonth;
+}
 
 /* FORMAT METHODS */
 export const toFormat = (date: Date, format: string = "yyyy-MM-dd"): string => {
@@ -153,3 +159,45 @@ export const occurrencesInInterval = (
 
     return occurrences;
 };
+
+export const nextOccurrence = (start: Date, { interval, every }: {
+    interval: Interval;
+    every: number;
+}) => {
+    const now = Now();
+    let nextDate = new Date(start);
+
+    switch (interval) {
+        case 'days': {
+            const diffDays = differenceInDays(start, now);
+            const intervalsPassed = Math.ceil(diffDays / every);
+            nextDate.setDate(start.getDate() + intervalsPassed * every);
+            break;
+        }
+        case 'weeks': {
+            const diffDays = differenceInDays(start, now);
+            const diffWeeks = Math.ceil(diffDays / 7);
+            const intervalsPassed = Math.ceil(diffWeeks / every);
+            nextDate.setDate(start.getDate() + intervalsPassed * every * 7);
+            break;
+        }
+        case 'months': {
+            const diffMonths = differenceInMonths(start, now);
+            const intervalsPassed = Math.ceil(diffMonths / every);
+            nextDate.setMonth(start.getMonth() + intervalsPassed * every);
+            if (isBefore(nextDate, now)) {
+                nextDate.setMonth(nextDate.getMonth() + every);
+            }
+            break;
+        }
+        case 'years': {
+            nextDate.setFullYear(nextDate.getFullYear() + every);
+            if (isBefore(nextDate, now)) {
+                nextDate = nextOccurrence(nextDate, { interval, every });
+            }
+            break;
+        }
+    }
+
+    return nextDate;
+}
