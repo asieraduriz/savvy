@@ -1,4 +1,7 @@
 import { useExpenses } from "@/contexts";
+import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
+import { Dates } from "@/datastructures";
+import { useToggle } from "@/hooks";
 import { Transformers } from "@/transformers";
 import { ExpenseToAdd } from "@/types";
 import { FC } from "react";
@@ -11,14 +14,30 @@ type Props = {
 
 export const Submit: FC<Props> = ({ expenseToAdd, onSuccess }) => {
   const { createExpense } = useExpenses();
+  const { createSubscription } = useSubscriptions();
 
-  const onPressHandle = () => {
+  const [showConfirmSubscription, toggle] = useToggle(false);
+
+  const onSubmitExpenseHandle = () => {
     const newExpense = Transformers.toExpense(expenseToAdd);
     createExpense(newExpense);
-
-
     onSuccess();
   };
 
-  return <Button title="Add expense" onPress={onPressHandle} />;
+  const onSubmitSubscriptionHandle = () => {
+    const tomorrow = Dates.Tomorrow();
+    const then = expenseToAdd.when;
+
+    const isSubscriptionEarlier = then.getTime() < tomorrow.getTime();
+
+    if (isSubscriptionEarlier) {
+      toggle.on();
+    } else {
+
+    }
+  }
+
+  return expenseToAdd.type === 'onetime' ?
+    <Button title="Add expense" onPress={onSubmitExpenseHandle} /> :
+    <Button title="Add subscription" onPress={onSubmitSubscriptionHandle} />
 };

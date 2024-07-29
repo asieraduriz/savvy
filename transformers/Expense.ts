@@ -5,7 +5,9 @@ import { randomUUID } from "expo-crypto";
 export const toOneTimeExpense = (expenseToAdd: ExpenseToAdd): ExpenseBase & OneTimeExpense => {
   const { title, amount, when, category, categoryColor, categoryIcon } = expenseToAdd;
 
-  const sharedFields = {
+  return {
+    type: "onetime",
+    // Shared properties
     title,
     amount,
     when,
@@ -14,17 +16,8 @@ export const toOneTimeExpense = (expenseToAdd: ExpenseToAdd): ExpenseBase & OneT
       color: categoryColor,
       iconName: categoryIcon,
     },
-  }
-
-  const newFields = {
+    // New properties
     created: Dates.Now(),
     id: randomUUID(),
   };
-
-  return {
-    type: "onetime",
-    ...sharedFields,
-    ...newFields,
-  };
-
 };

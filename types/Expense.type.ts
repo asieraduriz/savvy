@@ -1,11 +1,5 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Category } from "./Category.type";
 import { Subscription } from "./Subscription.type";
-
-export type Category = {
-  name: string;
-  iconName?: typeof MaterialCommunityIcons.defaultProps;
-  color: string;
-}
 
 export type ExpenseBase = {
   id: string;
