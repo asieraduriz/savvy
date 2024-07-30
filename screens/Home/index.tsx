@@ -1,15 +1,17 @@
 import { OneTimeExpenseItem } from "@/components/ExpenseList/OneTimeExpenseItem";
 import { Text, View } from "@/components/Themed";
-import { useGroupedExpenses, useRecentExpenses } from "@/contexts";
+import { useFilter, useGroupedExpenses, useRecentExpenses } from "@/contexts";
 import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
 import { Dates } from "@/datastructures";
 import { SubscriptionStatus } from "@/types";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link } from "expo-router";
 import { FC, Fragment, useMemo } from "react";
 import { Button, ScrollView } from "react-native";
 
 export const HomeScreen: FC = () => {
+    const filter = useFilter();
     const recentExpenses = useRecentExpenses();
     const groupedExpenses = useGroupedExpenses();
 
@@ -24,6 +26,21 @@ export const HomeScreen: FC = () => {
             }))
             .sort((a, b) => a.next.getTime() - b.next.getTime()); // Closest first
     }, [subscriptions]);
+
+    const filteredGroupExpenses = useMemo(() => {
+        const { start, end } = filter;
+        if (!start || !end) return groupedExpenses;
+
+        const filteredGroupExpenses = new Map([...groupedExpenses]);
+        for (const [category, expenses] of filteredGroupExpenses) {
+            filteredGroupExpenses.set(
+                category,
+                expenses.filter((expense) => Dates.isBetweenDays(expense.when, start, Dates.addDays(end, 1)))
+            );
+        }
+
+        return filteredGroupExpenses;
+    }, [groupedExpenses, filter]);
 
     return (
         <ScrollView>
@@ -46,7 +63,10 @@ export const HomeScreen: FC = () => {
 
             <View>
                 <Text>By categories</Text>
-                {Array.from(groupedExpenses.entries()).map(([category, expenses]) => (
+                <Link href="/(home)/dateFilter">
+                    <MaterialCommunityIcons name="calendar" size={24} />
+                </Link>
+                {Array.from(filteredGroupExpenses.entries()).map(([category, expenses]) => (
                     <View key={category}>
                         <Text>
                             {category}: {expenses.reduce((amt, expense) => amt + expense.amount, 0)}
