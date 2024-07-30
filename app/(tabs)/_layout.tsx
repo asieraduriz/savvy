@@ -54,11 +54,11 @@ export default () => {
             }}
           />
           <Tabs.Screen
-            name="insights"
+            name="goals"
             options={{
-              title: "Insights",
+              title: "Goals",
               tabBarIcon: ({ color }) => (
-                <MaterialIcons name="insights" size={24} color={color} />
+                <MaterialCommunityIcons name="bullseye-arrow" size={24} color={color} />
               ),
             }}
           />

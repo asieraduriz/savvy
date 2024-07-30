@@ -4,6 +4,7 @@ import { ExpensesScreen } from "./Expenses/View";
 import { DateFilterScreen } from "./Expenses/View/DateFilter";
 import { FilterScreen } from "./Expenses/View/Filter";
 import { HomeScreen } from "./Home";
+import { GoalsScreen } from "./Goals";
 
 export const Screens = {
   Expenses: ExpensesScreen,
@@ -11,5 +12,6 @@ export const Screens = {
   DateFilterScreen: DateFilterScreen,
   AddExpense: AddExpenseScreen,
   EditExpense: EditExpenseScreen,
-  Home: HomeScreen
+  Home: HomeScreen,
+  Insights: GoalsScreen
 };
