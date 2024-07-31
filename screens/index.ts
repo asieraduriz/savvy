@@ -13,5 +13,5 @@ export const Screens = {
   AddExpense: AddExpenseScreen,
   EditExpense: EditExpenseScreen,
   Home: HomeScreen,
-  Insights: GoalsScreen
+  Goals: GoalsScreen,
 };

@@ -58,13 +58,14 @@ export default () => {
             }}
           />
           <Tabs.Screen
-            name="goals"
+            name="(goals)"
             options={{
+              headerShown: false,
               title: "Goals",
               tabBarIcon: ({ color }) => (
                 <MaterialCommunityIcons
                   name="bullseye-arrow"
-                  size={24}
+                  size={28}
                   color={color}
                 />
               ),
