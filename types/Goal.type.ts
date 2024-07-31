@@ -1,7 +1,19 @@
+import { Category } from "./Category.type";
 import { Expense } from "./Expense.type";
 
+type TitleLinkedGoal = {
+  type: "title-goal";
+  link: Expense["title"];
+};
 
-type Goal = {
-    id: string;
-    category: Expense["title"] | Expense["category"]["name"]
-}
+type CategoryLinkedGoal = {
+  type: "category-goal";
+  link: Category["name"];
+};
+
+export type Goal = {
+  id: string;
+  title: string;
+  target: number;
+  status: "active" | "stopped";
+} & (TitleLinkedGoal | CategoryLinkedGoal);

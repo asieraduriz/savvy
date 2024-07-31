@@ -6,23 +6,23 @@ import { Tabs } from "expo-router";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "react-native";
 import { ExpensesProvider } from "@/contexts";
-import { AsyncStorageExpenseRepository, AsyncStorageSubscriptionRepository } from "@/repositories";
-import { Expense, Subscription } from "@/types";
-import { Service } from "@/services";
+import { ServiceFactory } from "@/services";
 import { SubscriptionsProvider } from "@/contexts/Subscriptions/Provider";
 
 export default () => {
-  const expenseRepository = new AsyncStorageExpenseRepository();
-  const subscriptionRepository = new AsyncStorageSubscriptionRepository();
-
-  const expenseService = new Service<Expense>(expenseRepository);
-  const subscriptionService = new Service<Subscription>(subscriptionRepository);
+  const { expenses, subscriptions } = ServiceFactory.create();
 
   const colorScheme = useColorScheme();
 
   return (
-    <SubscriptionsProvider expenseService={expenseService} subscriptionService={subscriptionService}>
-      <ExpensesProvider expenseService={expenseService} subscriptionService={subscriptionService}>
+    <SubscriptionsProvider
+      expenseService={expenses}
+      subscriptionService={subscriptions}
+    >
+      <ExpensesProvider
+        expenseService={expenses}
+        subscriptionService={subscriptions}
+      >
         <Tabs
           screenOptions={{
             tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
@@ -49,7 +49,11 @@ export default () => {
               headerShown: false,
               title: "Expenses",
               tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="transfer" size={28} color={color} />
+                <MaterialCommunityIcons
+                  name="transfer"
+                  size={28}
+                  color={color}
+                />
               ),
             }}
           />
@@ -58,7 +62,11 @@ export default () => {
             options={{
               title: "Goals",
               tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="bullseye-arrow" size={24} color={color} />
+                <MaterialCommunityIcons
+                  name="bullseye-arrow"
+                  size={24}
+                  color={color}
+                />
               ),
             }}
           />
