@@ -15,5 +15,5 @@ export type Goal = {
   id: string;
   title: string;
   target: number;
-  status: "active" | "stopped";
+  status: "active" | "archived";
 } & (TitleLinkedGoal | CategoryLinkedGoal);

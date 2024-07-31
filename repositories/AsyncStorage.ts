@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Expense, Goal, IRepository, Subscription } from "@/types";
+import { Expense, Goal, IRepository, Subscription, SubscriptionStatus } from "@/types";
 
 export class AsyncStorageExpenseRepository implements IRepository<Expense> {
   private readonly STORAGE_KEY = "expenses";
@@ -103,10 +103,12 @@ export class AsyncStorageSubscriptionRepository
 
   async delete(id: string): Promise<void> {
     const subscriptions = await this.getSubscriptions();
-    const updatedSubscriptions = subscriptions.filter(
-      (subscription) => subscription.id !== id
+    const subscriptionToUpdate = subscriptions.find(
+      (subscription) => subscription.id === id
     );
-    await this.saveSubscriptions(updatedSubscriptions);
+
+    if (!subscriptionToUpdate) { throw new Error(`AsyncStorage<Subscription> delete: Subscription with id ${id} not found!`); }
+    await this.update({...subscriptionToUpdate, status: SubscriptionStatus.archived});
   }
 }
 
@@ -149,7 +151,8 @@ export class AsyncStorageGoalRepository implements IRepository<Goal> {
 
   async delete(id: string): Promise<void> {
     const goals = await this.getgoals();
-    const updatedgoals = goals.filter((goal) => goal.id !== id);
-    await this.savegoals(updatedgoals);
+    const goalToUpdate = goals.find((goal) => goal.id === id);
+    if (!goalToUpdate) { throw new Error(`AsyncStorage<Subscription> delete: Subscription with id ${id} not found!`); }
+    await this.update({...goalToUpdate, status: 'archived'});
   }
 }
