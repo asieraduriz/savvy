@@ -47,7 +47,7 @@ export const HomeScreen: FC = () => {
             {/* <Button title="Erase all" onPress={() => {
                 AsyncStorage.clear()
             }} /> */}
-            <Link href="(expenses)/add">
+            <Link href="/add">
                 <Text>New expense</Text>
             </Link>
             <Text>Most recent expenses</Text>
@@ -57,13 +57,13 @@ export const HomeScreen: FC = () => {
                     <OneTimeExpenseItem expense={expense} />
                 </Fragment>
             ))}
-            <Link href="(expenses)/(view)/">
+            <Link href="/(view)">
                 <Text>View more</Text>
             </Link>
 
             <View>
                 <Text>By categories</Text>
-                <Link href="/(home)/dateFilter">
+                <Link href="/dateFilter">
                     <MaterialCommunityIcons name="calendar" size={24} />
                 </Link>
                 {Array.from(filteredGroupExpenses.entries()).map(([category, expenses]) => (

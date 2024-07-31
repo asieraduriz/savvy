@@ -51,8 +51,7 @@ export class AsyncStorageExpenseRepository implements IRepository<Expense> {
 }
 
 export class AsyncStorageSubscriptionRepository
-  implements IRepository<Subscription>
-{
+  implements IRepository<Subscription> {
   private readonly STORAGE_KEY = "subscriptions";
 
   private async getSubscriptions(): Promise<Subscription[]> {
@@ -108,7 +107,7 @@ export class AsyncStorageSubscriptionRepository
     );
 
     if (!subscriptionToUpdate) { throw new Error(`AsyncStorage<Subscription> delete: Subscription with id ${id} not found!`); }
-    await this.update({...subscriptionToUpdate, status: SubscriptionStatus.archived});
+    await this.update({ ...subscriptionToUpdate, status: SubscriptionStatus.archived });
   }
 }
 
@@ -153,6 +152,6 @@ export class AsyncStorageGoalRepository implements IRepository<Goal> {
     const goals = await this.getgoals();
     const goalToUpdate = goals.find((goal) => goal.id === id);
     if (!goalToUpdate) { throw new Error(`AsyncStorage<Subscription> delete: Subscription with id ${id} not found!`); }
-    await this.update({...goalToUpdate, status: 'archived'});
+    await this.update({ ...goalToUpdate, status: 'archived' });
   }
 }

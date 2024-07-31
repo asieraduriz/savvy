@@ -8,54 +8,32 @@ export const GoalsScreen: FC = () => {
   const { expenses } = useExpenses();
   const { goals } = useGoals();
 
-  const today = Dates.Today();
+  const today = Dates.Tomorrow();
   const startDate = Dates.subDays(today, 40);
 
-  const { titleGoalsReport, categoryGoalsReport } = useMemo(() => {
-    const filteredExpenses = expenses.filter((expense) =>
-      Dates.isBetweenDays(expense.when, startDate, today)
-    );
-    const titleGoalsReport: {
-      [key: string]: { spent: number; limit: number };
-    } = {};
-    const categoryGoalsReport: {
-      [key: string]: { spent: number; limit: number };
-    } = {};
+  const { byCategories, byTitles } = useMemo(() => {
+    const filteredExpenses = expenses.filter((expense) => Dates.isBetweenDays(expense.when, startDate, today));
 
-    goals.forEach((goal) => {
-      const filterByTitle = goal.type === "title-goal";
+    const report = {
+      byCategories: [],
+      byTitles: []
+    } as { [key in "byCategories" | "byTitles"]: { title: string; spent: number; limit: number }[] };
 
-      const expenses = filteredExpenses.filter((expense) =>
-        filterByTitle
-          ? expense.title === goal.link
-          : expense.category.name === goal.link
-      );
+    goals.map((goal) => {
+      const isCategoryGoal = goal.type === 'category-goal';
 
-      if (expenses.length) {
-        if (filterByTitle) {
-          if (!titleGoalsReport[goal.title]) {
-            titleGoalsReport[goal.title].spent = expenses.reduce(
-              (added, expense) => added + expense.amount,
-              0
-            );
-            titleGoalsReport[goal.title].limit = goal.target;
-          }
-        } else {
-          if (!categoryGoalsReport[goal.title])
-            categoryGoalsReport[goal.title].spent = expenses.reduce(
-              (added, expense) => added + expense.amount,
-              0
-            );
-          categoryGoalsReport[goal.title].limit = goal.target;
-        }
+      if (isCategoryGoal) {
+        const goalExpenses = filteredExpenses.filter((expense) => expense.category.name === goal.link);
+        report.byCategories.push({ title: goal.link, spent: goalExpenses.reduce((accumulator, expense) => accumulator + expense.amount, 0), limit: goal.target })
+      } else {
+        const goalExpenses = filteredExpenses.filter((expense) => expense.title === goal.link);
+        report.byTitles.push({ title: goal.link, spent: goalExpenses.reduce((accumulator, expense) => accumulator + expense.amount, 0), limit: goal.target })
       }
+
     });
 
-    return {
-      titleGoalsReport,
-      categoryGoalsReport,
-    };
-  }, [expenses, goals]);
+    return report;
+  }, []);
 
   return (
     <View>
@@ -63,26 +41,19 @@ export const GoalsScreen: FC = () => {
         <Text>List of goals</Text>
         {goals.map((goal) => (
           <Text key={goal.id}>
-            {`${goal.title} Related to ${
-              goal.type === "title-goal" ? "title" : "category"
-            } ${goal.link}`}
+            {`${goal.title} Related to ${goal.type === "title-goal" ? "title" : "category"
+              } ${goal.link}`}
           </Text>
         ))}
       </View>
+      {
+        byCategories.map(({ title, spent, limit }) => <Text key={title}>{`Goal ${title} spent ${spent} vs limit ${limit}`}</Text>)
+      }
+      {
+        byTitles.map(({ title, spent, limit }) => <Text key={title}>{`Goal ${title} spent ${spent} vs limit ${limit}`}</Text>)
+      }
       <View>
-        <Text>Report on current month</Text>
-        {Object.entries(titleGoalsReport).map(([title, { spent, limit }]) => (
-          <View key={`title-${title}`}>
-            <Text>{`Spent on ${title} title: ${spent} vs Limit:${limit}`}</Text>
-          </View>
-        ))}
-        {Object.entries(categoryGoalsReport).map(
-          ([category, { spent, limit }]) => (
-            <View key={`title-${category}`}>
-              <Text>{`Spent on ${category} category: ${spent} vs Limit:${limit}`}</Text>
-            </View>
-          )
-        )}
+
       </View>
     </View>
   );
