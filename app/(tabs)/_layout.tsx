@@ -16,14 +16,8 @@ export default () => {
   const colorScheme = useColorScheme();
 
   return (
-    <SubscriptionsProvider
-      expenseService={expenses}
-      subscriptionService={subscriptions}
-    >
-      <ExpensesProvider
-        expenseService={expenses}
-        subscriptionService={subscriptions}
-      >
+    <SubscriptionsProvider subscriptionService={subscriptions}>
+      <ExpensesProvider expenseService={expenses}>
         <GoalsProvider goalService={goals}>
           <Tabs
             screenOptions={{

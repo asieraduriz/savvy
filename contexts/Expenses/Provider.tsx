@@ -1,5 +1,5 @@
 import { Service } from "@/services";
-import { Expense, Subscription } from "@/types";
+import { Expense } from "@/types";
 import {
   createContext,
   useContext,
@@ -24,7 +24,6 @@ interface ExpenseContextType {
 const Context = createContext<ExpenseContextType | null>(null);
 
 type ExpensesProviderProps = PropsWithChildren<{
-  subscriptionService: Service<Subscription>;
   expenseService: Service<Expense>;
 }>;
 

@@ -1,5 +1,5 @@
 import { Service } from "@/services";
-import { Expense, Subscription } from "@/types";
+import { Subscription } from "@/types";
 import {
   createContext,
   useContext,
@@ -23,7 +23,6 @@ const Context = createContext<SubscriptionContextType | null>(null);
 
 type SubscriptionsProviderProps = PropsWithChildren<{
   subscriptionService: Service<Subscription>;
-  expenseService: Service<Expense>;
 }>;
 
 export const SubscriptionsProvider: React.FC<SubscriptionsProviderProps> = ({
