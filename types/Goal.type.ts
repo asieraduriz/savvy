@@ -13,6 +13,7 @@ type CategoryLinkedGoal = {
 
 export type Goal = {
   id: string;
+  created: Date;
   title: string;
   target: number;
   status: "active" | "archived";

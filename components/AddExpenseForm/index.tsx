@@ -8,10 +8,6 @@ import { Submit } from "./Submit";
 import { Picker } from '@react-native-picker/picker';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export const IconFamilies = {
-  MaterialCommunityIcons: require("@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialCommunityIcons.json"),
-};
-
 const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
 
 const toNumber = (input: string, fallback: number) =>

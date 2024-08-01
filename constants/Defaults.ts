@@ -1,5 +1,5 @@
 import { Dates } from "@/datastructures";
-import { ExpenseToAdd, ExpensesFilter, Interval } from "@/types";
+import { ExpenseToAdd, ExpensesFilter, GoalToAdd, Interval } from "@/types";
 
 const Icons = ['coffee-to-go', 'shopping', 'beach', 'food-drumstick', 'glass-cocktail', 'airplane-takeoff', 'volleyball', 'book-open-page-variant', 'hiking']
 
@@ -16,6 +16,14 @@ const addExpenseFormStarter: ExpenseToAdd = {
   interval: Interval.weeks
 };
 
+const addGoalFormStarter: GoalToAdd = {
+  type: 'title-goal',
+  categoryLink: '',
+  target: 0,
+  title: '',
+  titleLink: ''
+}
+
 const starterFilter: ExpensesFilter = {
   start: undefined,
   end: undefined,
@@ -24,6 +32,7 @@ const starterFilter: ExpensesFilter = {
 
 export const Defaults = {
   AddExpenseForm: addExpenseFormStarter,
+  AddGoalForm: addGoalFormStarter,
   Filter: starterFilter,
   Icons: Icons
 };

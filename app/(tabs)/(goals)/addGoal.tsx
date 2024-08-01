@@ -1,7 +1,3 @@
-import { Text, View } from "@/components/Themed";
+import { Screens } from "@/screens";
 
-export default () => (
-  <View>
-    <Text>Add goal screen</Text>
-  </View>
-);
+export default () => <Screens.AddGoal />
