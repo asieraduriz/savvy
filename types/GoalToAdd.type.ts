@@ -6,6 +6,5 @@ export type GoalToAdd = {
   title: string;
   target: number;
   type: Goal["type"];
-  titleLink: Expense["title"];
-  categoryLink: Category["name"];
+  link: Expense["title"] | Category["name"];
 };

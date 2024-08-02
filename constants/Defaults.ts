@@ -18,10 +18,9 @@ const addExpenseFormStarter: ExpenseToAdd = {
 
 const addGoalFormStarter: GoalToAdd = {
   type: 'title-goal',
-  categoryLink: '',
   target: 0,
   title: '',
-  titleLink: ''
+  link: ''
 }
 
 const starterFilter: ExpensesFilter = {
