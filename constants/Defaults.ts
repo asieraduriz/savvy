@@ -5,9 +5,6 @@ const Icons = ['coffee-to-go', 'shopping', 'beach', 'food-drumstick', 'glass-coc
 
 const now = Dates.Now();
 const addExpenseFormStarter: ExpenseToAdd = {
-  amount: 0,
-  title: "",
-  category: "",
   categoryColor: "white",
   categoryIcon: Icons[0],
   when: now,
