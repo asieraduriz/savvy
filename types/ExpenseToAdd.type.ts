@@ -12,4 +12,5 @@ export type ExpenseToAdd = {
   when: Expense["when"];
   every: Subscription["every"];
   interval: Subscription["interval"];
+  pastSubscriptionChargeDates?: Expense["when"][]
 };

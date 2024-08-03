@@ -1,36 +1,48 @@
 import { Text, TextInput, View } from "../Themed";
-import { Button, StyleSheet, Switch } from "react-native";
+import { StyleSheet, Switch } from "react-native";
 import { Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as Yup from "yup";
 import { Formik, FormikHelpers } from "formik";
-import { SubmitExpense } from "./SubmitExpense";
-import { SubmitSubscription } from "./SubmitSubscription";
-import { useState } from "react";
+import { SubmitExpenseButton } from "./SubmitExpenseButton";
 import { ExpenseToAdd } from "@/types";
 import { useExpenses } from "@/contexts";
 import { Transformers } from "@/transformers";
 import { useAnimateToggle } from "@/hooks";
+import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
+import { SubmitSubscriptionButton } from "./SubmitSubscriptionButton";
+import { validationSchema } from "./validationSchema";
 
 const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
-
-const validationSchema = Yup.object().shape({
-  title: Yup.string().required("Title is required"),
-  amount: Yup.number().required("Amount is required").min(0, "Amount must be a positive number").typeError("Amount must be a number"),
-  category: Yup.string().required("Category is required"),
-  every: Yup.number().required("Every is required").min(0, "Every must be a positive number").typeError("Every must be a number"),
-});
 
 export const AddExpenseForm = () => {
   const [animate, triggerAnimate] = useAnimateToggle();
   const { createExpense } = useExpenses();
-  const [showPastExpenseCharges, setShowPastExpenseCharges] = useState(false);
+  const { createSubscription } = useSubscriptions();
 
   const onSubmit = async (values: ExpenseToAdd, { setSubmitting }: FormikHelpers<ExpenseToAdd>) => {
-    if (values.type === 'onetime') {
+    if (values.type === "onetime") {
       await createExpense(Transformers.toExpense(values));
+
+      setSubmitting(false);
+      triggerAnimate();
+    } else {
+
+      if (values.pastSubscriptionChargeDates?.length) {
+        const subscription = Transformers.toSubscription(values);
+        createSubscription(subscription);
+        const subscriptionExpenses = values.pastSubscriptionChargeDates.map((date) =>
+          Transformers.toSubscriptionExpense(values, date, subscription.id)
+        );
+
+        for (const expense of subscriptionExpenses) {
+          await createExpense(expense);
+        }
+      }
+
+      const subscription = Transformers.toSubscription(values);
+      await createSubscription(subscription);
 
       setSubmitting(false);
       triggerAnimate();
@@ -39,7 +51,7 @@ export const AddExpenseForm = () => {
 
   return (
     <Formik initialValues={Defaults.AddExpenseForm} validationSchema={validationSchema} onSubmit={onSubmit}>
-      {({ handleBlur, handleSubmit, values, errors, setFieldValue, isSubmitting, status }) => (
+      {({ handleBlur, values, errors, setFieldValue }) => (
         <View style={styles.container}>
           <TextInput
             style={[styles.input, errors.title ? styles.inputError : null]}
@@ -90,20 +102,17 @@ export const AddExpenseForm = () => {
             <View>
               <Text>Every: </Text>
               <TextInput keyboardType="numeric" value={`${values.every}`} onChangeText={(every) => setFieldValue("every", every)} />
+              {errors.every ? <Text style={styles.errorText}>{errors.every}</Text> : null}
               <Pickers.Interval interval={values.interval} setInterval={(interval) => setFieldValue("interval", interval)} />
             </View>
           ) : null}
+
           {values.type === "onetime" ? (
-            <SubmitExpense onPress={() => handleSubmit()} isSubmitting={isSubmitting} animate={animate} />
+            <SubmitExpenseButton animate={animate} />
           ) : (
-            null
+            <SubmitSubscriptionButton />
           )}
-          {showPastExpenseCharges ? (
-            <>
-              { }
-              <Button title="Include charged expenses" />
-            </>
-          ) : null}
+
         </View>
       )}
     </Formik>
