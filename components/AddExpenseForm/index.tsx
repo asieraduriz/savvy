@@ -1,12 +1,18 @@
 import { Text, TextInput, View } from "../Themed";
-import { StyleSheet, Switch } from "react-native";
+import { Button, StyleSheet, Switch } from "react-native";
 import { Pickers } from "../Pickers";
 import { Defaults } from "@/constants";
-import { Submit } from "./Submit";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Yup from "yup";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
+import { SubmitExpense } from "./SubmitExpense";
+import { SubmitSubscription } from "./SubmitSubscription";
+import { useState } from "react";
+import { ExpenseToAdd } from "@/types";
+import { useExpenses } from "@/contexts";
+import { Transformers } from "@/transformers";
+import { useAnimateToggle } from "@/hooks";
 
 const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
 
@@ -18,13 +24,22 @@ const validationSchema = Yup.object().shape({
 });
 
 export const AddExpenseForm = () => {
-  const onSuccess = () => { };
+  const [animate, triggerAnimate] = useAnimateToggle();
+  const { createExpense } = useExpenses();
+  const [showPastExpenseCharges, setShowPastExpenseCharges] = useState(false);
 
-  const handleSubmit = () => { };
+  const onSubmit = async (values: ExpenseToAdd, { setSubmitting }: FormikHelpers<ExpenseToAdd>) => {
+    if (values.type === 'onetime') {
+      await createExpense(Transformers.toExpense(values));
+
+      setSubmitting(false);
+      triggerAnimate();
+    }
+  };
 
   return (
-    <Formik initialValues={Defaults.AddExpenseForm} validationSchema={validationSchema} onSubmit={handleSubmit}>
-      {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue }) => (
+    <Formik initialValues={Defaults.AddExpenseForm} validationSchema={validationSchema} onSubmit={onSubmit}>
+      {({ handleBlur, handleSubmit, values, errors, setFieldValue, isSubmitting, status }) => (
         <View style={styles.container}>
           <TextInput
             style={[styles.input, errors.title ? styles.inputError : null]}
@@ -65,7 +80,12 @@ export const AddExpenseForm = () => {
           </Picker>
 
           <Pickers.OneTime when={values.when} setDate={(when) => setFieldValue("when", when)} />
-          <Switch value={values.type === "subscription"} onChange={() => { setFieldValue('type', values.type === 'subscription' ? 'onetime' : 'subscription') }} />
+          <Switch
+            value={values.type === "subscription"}
+            onChange={() => {
+              setFieldValue("type", values.type === "subscription" ? "onetime" : "subscription");
+            }}
+          />
           {values.type === "subscription" ? (
             <View>
               <Text>Every: </Text>
@@ -73,7 +93,17 @@ export const AddExpenseForm = () => {
               <Pickers.Interval interval={values.interval} setInterval={(interval) => setFieldValue("interval", interval)} />
             </View>
           ) : null}
-          <Submit expenseToAdd={values} onSuccess={onSuccess} />
+          {values.type === "onetime" ? (
+            <SubmitExpense onPress={() => handleSubmit()} isSubmitting={isSubmitting} animate={animate} />
+          ) : (
+            null
+          )}
+          {showPastExpenseCharges ? (
+            <>
+              { }
+              <Button title="Include charged expenses" />
+            </>
+          ) : null}
         </View>
       )}
     </Formik>

@@ -8,12 +8,12 @@ export const toSubscription = (expenseToAdd: ExpenseToAdd): Subscription => {
 
     return {
         // Shared properties
-        title,
-        amount,
+        title: title!,
+        amount: amount!,
         start: when,
         category: {
-            name: category,
-            color: categoryColor,
+            name: category!,
+            color: categoryColor!,
             iconName: categoryIcon,
         },
         every,
@@ -32,12 +32,12 @@ export const toSubscriptionExpense = (expenseToAdd: ExpenseToAdd, date: Date, su
     return {
         type: "subscription",
         // Shared properties
-        title,
-        amount,
+        title: title!,
+        amount: amount!,
         when: date,
         category: {
-            name: category,
-            color: categoryColor,
+            name: category!,
+            color: categoryColor!,
             iconName: categoryIcon,
         },
         // New properties

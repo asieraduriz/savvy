@@ -10,6 +10,6 @@ export type ExpenseToAdd = {
   categoryColor?: Category["color"];
   type: Expense["type"];
   when: Expense["when"];
-  every?: Subscription["every"];
+  every: Subscription["every"];
   interval: Subscription["interval"];
 };
