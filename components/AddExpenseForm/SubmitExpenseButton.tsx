@@ -15,7 +15,6 @@ type Props = {
   animate: ReturnType<typeof useAnimateToggle>[0];
 };
 
-
 export const SubmitExpenseButton: FC<Props> = ({ animate }) => {
   const { isSubmitting, handleSubmit, isValid } = useFormikContext<ExpenseToAdd>();
   const [showSuccess, setShowSuccess] = useState(false);

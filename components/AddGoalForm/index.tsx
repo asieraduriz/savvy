@@ -1,28 +1,26 @@
-import { useMemo, useState } from "react";
-import { TextInput, View } from "../Themed";
-import { StyleSheet } from "react-native";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Text, TextInput, View } from "../Themed";
+import { ActivityIndicator, Animated, Pressable, StyleSheet } from "react-native";
 import { GoalToAdd } from "@/types";
 import { Defaults } from "@/constants";
-import { Submit } from "./Submit";
 import { useExpenses } from "@/contexts";
 import { Picker } from "@react-native-picker/picker";
+import { Formik, FormikHelpers } from "formik";
+import { validationSchema } from "./validationSchema";
+import { Transformers } from "@/transformers";
+import { useGoals } from "@/contexts/Goals/Provider";
+import { useAnimateToggle } from "@/hooks";
+import { FontAwesome } from "@expo/vector-icons";
 
 const toNumber = (input: string, fallback: number) =>
     Number.isNaN(Number(input)) ? fallback : Number(input);
 
 export const AddGoalForm = () => {
+    const { createGoal } = useGoals();
     const { expenses } = useExpenses();
-    const [goalToAdd, setGoal] = useState<GoalToAdd>(Defaults.AddGoalForm);
 
-    const set = (key: keyof GoalToAdd, value: any) => {
-        setGoal((prev) => ({ ...prev, [key]: value }));
-    };
-
-    const { title, type, target, link } = goalToAdd;
-
-    const onSuccess = () => {
-
-    }
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [animate, triggerAnimate] = useAnimateToggle();
 
     const expenseChoices = useMemo(() => {
         const titles: string[] = [];
@@ -35,36 +33,106 @@ export const AddGoalForm = () => {
         return { titles: [... new Set(titles)], categories: [...new Set(categories)] }
     }, [expenses]);
 
-    return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.input}
-                value={title}
-                onChangeText={(title) => set("title", title)}
-                placeholder="Title"
-            />
-            <Picker selectedValue={link} onValueChange={(item) => {
-                const isTitleGoal = expenseChoices.titles.includes(item);
-                set('type', isTitleGoal ? 'title-goal' : 'category-goal');
-                set('link', item)
-            }}>
-                {
-                    expenseChoices.titles.map((title) => <Picker.Item key={`title-${title}`} value={title} label={`${title} - via title`} />)
-                }
-                {
-                    expenseChoices.categories.map((title) => <Picker.Item key={`category-${title}`} value={title} label={`${title} - via category`} />)
+    const onSubmit = async (values: GoalToAdd, { setSubmitting }: FormikHelpers<GoalToAdd>) => {
+        const newGoal = Transformers.toGoal(values);
+        await createGoal(newGoal);
 
-                }
-            </Picker>
-            <TextInput
-                style={{ ...styles.input, flex: 1 }}
-                value={`${target}`}
-                onChangeText={(value) => set("target", toNumber(value, target))}
-                placeholder="Limit"
-                keyboardType="numeric"
-            />
-            <Submit goalToAdd={goalToAdd} onSuccess={onSuccess} />
-        </View>
+        setSubmitting(false);
+        triggerAnimate();
+    }
+
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+
+        const effect = async () => {
+            if (animate) {
+                setShowSuccess(true);
+                Animated.sequence([
+                    Animated.timing(scaleAnim, {
+                        toValue: 1.5,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(scaleAnim, {
+                        toValue: 1,
+                        duration: 300,
+                        useNativeDriver: true,
+                    }),
+                ]).start();
+
+                timer = setTimeout(() => setShowSuccess(false), 2000);
+            }
+        }
+        effect();
+
+        return () => clearTimeout(timer);
+    }, [animate, scaleAnim]);
+
+    return (
+        <Formik initialValues={Defaults.AddGoalForm} validationSchema={validationSchema} onSubmit={onSubmit}>
+            {({ handleBlur, handleSubmit, values, errors, setFieldValue, isSubmitting, isValid }) => (
+                <View style={styles.container}>
+                    <TextInput
+                        style={[styles.input, errors.title ? styles.inputError : null]}
+                        value={values.title}
+                        onChangeText={(title) => setFieldValue("title", title)}
+                        placeholder="Title"
+                        onBlur={handleBlur("title")}
+                    />
+                    {errors.title ? <Text style={styles.errorText}>{errors.title}</Text> : null}
+
+                    <Picker selectedValue={values.link}
+                        onBlur={handleBlur("link")}
+                        onValueChange={(item) => {
+                            const isTitleGoal = expenseChoices.titles.includes(item);
+                            setFieldValue('type', isTitleGoal ? 'title-goal' : 'category-goal');
+                            setFieldValue('link', item)
+                        }}>
+                        {
+                            expenseChoices.titles.map((title) => <Picker.Item key={`title-${title}`} value={title} label={`${title} - via title`} />)
+                        }
+                        {
+                            expenseChoices.categories.map((title) => <Picker.Item key={`category-${title}`} value={title} label={`${title} - via category`} />)
+
+                        }
+                    </Picker>
+                    {errors.link ? <Text style={styles.errorText}>{errors.link}</Text> : null}
+
+                    <TextInput
+                        style={[styles.input, errors.limit ? styles.inputError : null]}
+                        value={`${values.limit}`}
+                        onBlur={handleBlur("limit")}
+                        onChangeText={(value) => setFieldValue("limit", toNumber(value, values.limit))}
+                        placeholder="Limit"
+                        keyboardType="numeric"
+                    />
+                    {errors.limit ? <Text style={styles.errorText}>{errors.limit}</Text> : null}
+
+                    <Pressable
+                        style={[
+                            styles.button,
+                            { backgroundColor: showSuccess ? 'green' : '#007bff' },
+                            isSubmitting ? styles.buttonSubmitting : null
+                        ]}
+                        onPress={() => handleSubmit()}
+                        disabled={isSubmitting || !isValid || showSuccess}
+                    >
+                        {isSubmitting ? (
+                            <ActivityIndicator size="small" color="#fff" />
+                        ) : showSuccess ? (
+                            <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+                                <FontAwesome name="thumbs-up" size={24} color="black" />
+                            </Animated.View>
+                        ) : (
+                            <Text style={styles.text}>Create goal</Text>
+                        )}
+                    </Pressable>
+                </View>
+            )}
+        </Formik>
+
     );
 };
 
@@ -73,14 +141,37 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     input: {
-        height: 40,
-        borderColor: "gray",
         borderWidth: 1,
+        borderColor: "#ccc",
+        padding: 10,
+        borderRadius: 5,
+    },
+    inputError: {
+        borderColor: "red",
     },
     switchContainer: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         marginBottom: 10,
+    },
+    errorText: {
+        color: "red",
+        fontSize: 12,
+    },
+    button: {
+        backgroundColor: "#007BFF",
+        padding: 10,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        height: 40,
+    },
+    buttonSubmitting: {
+        opacity: 0.7,
+    },
+    text: {
+        color: "#ffffff",
+        fontSize: 16,
     },
 });

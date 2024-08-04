@@ -15,7 +15,7 @@ const addExpenseFormStarter: ExpenseToAdd = {
 
 const addGoalFormStarter: GoalToAdd = {
   type: 'title-goal',
-  target: 0,
+  limit: 0,
   title: '',
   link: ''
 }

@@ -3,8 +3,8 @@ import { Expense } from "./Expense.type";
 import { Goal } from "./Goal.type";
 
 export type GoalToAdd = {
-  title: string;
-  target: number;
+  title: Goal["title"];
+  limit: Goal["limit"];
   type: Goal["type"];
   link: Expense["title"] | Category["name"];
 };

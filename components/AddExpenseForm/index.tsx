@@ -28,7 +28,6 @@ export const AddExpenseForm = () => {
       setSubmitting(false);
       triggerAnimate();
     } else {
-
       if (values.pastSubscriptionChargeDates?.length) {
         const subscription = Transformers.toSubscription(values);
         createSubscription(subscription);
@@ -66,6 +65,7 @@ export const AddExpenseForm = () => {
             style={[styles.input, errors.amount ? styles.inputError : null]}
             value={values.amount ? String(values.amount) : undefined}
             onChangeText={(amount) => setFieldValue("amount", Number(amount))}
+            onBlur={handleBlur("amount")}
             placeholder="Amount"
             keyboardType="numeric"
           />
@@ -75,17 +75,23 @@ export const AddExpenseForm = () => {
             style={[styles.input, { backgroundColor: values.categoryColor }, errors.category ? styles.inputError : null]}
             value={values.category}
             onChangeText={(category) => setFieldValue("category", category)}
+            onBlur={handleBlur("category")}
             placeholder="Which category?"
           />
           {errors.category ? <Text style={styles.errorText}>{errors.category}</Text> : null}
 
-          <Picker selectedValue={values.categoryIcon} onValueChange={(icon) => setFieldValue("categoryIcon", icon)}>
+          <Picker selectedValue={values.categoryIcon}
+            onBlur={handleBlur("categoryIcon")}
+            onValueChange={(icon) => setFieldValue("categoryIcon", icon)}>
             {Defaults.Icons.map((icon) => (
               <Picker.Item key={icon} label={icon} value={icon} />
             ))}
           </Picker>
+
           <MaterialCommunityIcons name={values.categoryIcon} size={32} />
-          <Picker selectedValue={values.categoryColor} onValueChange={(color) => setFieldValue("categoryColor", color)}>
+          <Picker selectedValue={values.categoryColor}
+            onBlur={handleBlur("categoryColor")}
+            onValueChange={(color) => setFieldValue("categoryColor", color)}>
             {Colors.map((color) => (
               <Picker.Item key={color} label={color} value={color} />
             ))}
@@ -101,7 +107,9 @@ export const AddExpenseForm = () => {
           {values.type === "subscription" ? (
             <View>
               <Text>Every: </Text>
-              <TextInput keyboardType="numeric" value={`${values.every}`} onChangeText={(every) => setFieldValue("every", every)} />
+              <TextInput keyboardType="numeric" value={`${values.every}`}
+                onBlur={handleBlur("every")}
+                onChangeText={(every) => setFieldValue("every", every)} />
               {errors.every ? <Text style={styles.errorText}>{errors.every}</Text> : null}
               <Pickers.Interval interval={values.interval} setInterval={(interval) => setFieldValue("interval", interval)} />
             </View>
@@ -112,7 +120,6 @@ export const AddExpenseForm = () => {
           ) : (
             <SubmitSubscriptionButton />
           )}
-
         </View>
       )}
     </Formik>

@@ -24,10 +24,10 @@ export const GoalsScreen: FC = () => {
 
       if (isCategoryGoal) {
         const goalExpenses = filteredExpenses.filter((expense) => expense.category.name === goal.link);
-        report.byCategories.push({ title: goal.link, spent: goalExpenses.reduce((accumulator, expense) => accumulator + expense.amount, 0), limit: goal.target })
+        report.byCategories.push({ title: goal.link, spent: goalExpenses.reduce((accumulator, expense) => accumulator + expense.amount, 0), limit: goal.limit })
       } else {
         const goalExpenses = filteredExpenses.filter((expense) => expense.title === goal.link);
-        report.byTitles.push({ title: goal.link, spent: goalExpenses.reduce((accumulator, expense) => accumulator + expense.amount, 0), limit: goal.target })
+        report.byTitles.push({ title: goal.link, spent: goalExpenses.reduce((accumulator, expense) => accumulator + expense.amount, 0), limit: goal.limit })
       }
 
     });
