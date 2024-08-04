@@ -5,7 +5,6 @@ import { Defaults } from "@/constants";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik, FormikHelpers } from "formik";
-import { SubmitExpenseButton } from "./SubmitExpenseButton";
 import { ExpenseToAdd } from "@/types";
 import { useExpenses } from "@/contexts";
 import { Transformers } from "@/transformers";
@@ -13,6 +12,7 @@ import { useAnimateToggle } from "@/hooks";
 import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
 import { SubmitSubscriptionButton } from "./SubmitSubscriptionButton";
 import { validationSchema } from "./validationSchema";
+import { Pressables } from "../Pressables";
 
 const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
 
@@ -24,13 +24,10 @@ export const AddExpenseForm = () => {
   const onSubmit = async (values: ExpenseToAdd, { setSubmitting }: FormikHelpers<ExpenseToAdd>) => {
     if (values.type === "onetime") {
       await createExpense(Transformers.toExpense(values));
-
-      setSubmitting(false);
-      triggerAnimate();
     } else {
       if (values.pastSubscriptionChargeDates?.length) {
         const subscription = Transformers.toSubscription(values);
-        createSubscription(subscription);
+        await createSubscription(subscription);
         const subscriptionExpenses = values.pastSubscriptionChargeDates.map((date) =>
           Transformers.toSubscriptionExpense(values, date, subscription.id)
         );
@@ -42,15 +39,15 @@ export const AddExpenseForm = () => {
 
       const subscription = Transformers.toSubscription(values);
       await createSubscription(subscription);
-
-      setSubmitting(false);
-      triggerAnimate();
     }
+
+    setSubmitting(false);
+    triggerAnimate();
   };
 
   return (
     <Formik initialValues={Defaults.AddExpenseForm} validationSchema={validationSchema} onSubmit={onSubmit}>
-      {({ handleBlur, values, errors, setFieldValue }) => (
+      {({ handleBlur, values, errors, setFieldValue, isSubmitting, isValid, handleSubmit }) => (
         <View style={styles.container}>
           <TextInput
             style={[styles.input, errors.title ? styles.inputError : null]}
@@ -116,9 +113,9 @@ export const AddExpenseForm = () => {
           ) : null}
 
           {values.type === "onetime" ? (
-            <SubmitExpenseButton animate={animate} />
+            <Pressables.Animated title="Create expense" animate={animate} disabled={isSubmitting || !isValid} isLoading={isSubmitting} onPress={() => handleSubmit()} />
           ) : (
-            <SubmitSubscriptionButton />
+            <SubmitSubscriptionButton animate={animate} />
           )}
         </View>
       )}

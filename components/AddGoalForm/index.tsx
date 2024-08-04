@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import { Text, TextInput, View } from "../Themed";
-import { ActivityIndicator, Animated, Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { GoalToAdd } from "@/types";
 import { Defaults } from "@/constants";
 import { useExpenses } from "@/contexts";
@@ -10,7 +10,7 @@ import { validationSchema } from "./validationSchema";
 import { Transformers } from "@/transformers";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useAnimateToggle } from "@/hooks";
-import { FontAwesome } from "@expo/vector-icons";
+import { Pressables } from "../Pressables";
 
 const toNumber = (input: string, fallback: number) =>
     Number.isNaN(Number(input)) ? fallback : Number(input);
@@ -19,7 +19,6 @@ export const AddGoalForm = () => {
     const { createGoal } = useGoals();
     const { expenses } = useExpenses();
 
-    const [showSuccess, setShowSuccess] = useState(false);
     const [animate, triggerAnimate] = useAnimateToggle();
 
     const expenseChoices = useMemo(() => {
@@ -40,35 +39,6 @@ export const AddGoalForm = () => {
         setSubmitting(false);
         triggerAnimate();
     }
-
-    const scaleAnim = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-        let timer: NodeJS.Timeout;
-
-        const effect = async () => {
-            if (animate) {
-                setShowSuccess(true);
-                Animated.sequence([
-                    Animated.timing(scaleAnim, {
-                        toValue: 1.5,
-                        duration: 300,
-                        useNativeDriver: true,
-                    }),
-                    Animated.timing(scaleAnim, {
-                        toValue: 1,
-                        duration: 300,
-                        useNativeDriver: true,
-                    }),
-                ]).start();
-
-                timer = setTimeout(() => setShowSuccess(false), 2000);
-            }
-        }
-        effect();
-
-        return () => clearTimeout(timer);
-    }, [animate, scaleAnim]);
 
     return (
         <Formik initialValues={Defaults.AddGoalForm} validationSchema={validationSchema} onSubmit={onSubmit}>
@@ -110,25 +80,7 @@ export const AddGoalForm = () => {
                     />
                     {errors.limit ? <Text style={styles.errorText}>{errors.limit}</Text> : null}
 
-                    <Pressable
-                        style={[
-                            styles.button,
-                            { backgroundColor: showSuccess ? 'green' : '#007bff' },
-                            isSubmitting ? styles.buttonSubmitting : null
-                        ]}
-                        onPress={() => handleSubmit()}
-                        disabled={isSubmitting || !isValid || showSuccess}
-                    >
-                        {isSubmitting ? (
-                            <ActivityIndicator size="small" color="#fff" />
-                        ) : showSuccess ? (
-                            <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-                                <FontAwesome name="thumbs-up" size={24} color="black" />
-                            </Animated.View>
-                        ) : (
-                            <Text style={styles.text}>Create goal</Text>
-                        )}
-                    </Pressable>
+                    <Pressables.Animated title="Create goal" animate={animate} onPress={() => handleSubmit()} disabled={isSubmitting || !isValid} isLoading={isSubmitting} />
                 </View>
             )}
         </Formik>
