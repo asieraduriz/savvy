@@ -26,7 +26,7 @@ export const AddGoalForm = () => {
         const categories: string[] = [];
         expenses.forEach((expense) => {
             titles.push(expense.title);
-            categories.push(expense.category.name)
+            categories.push(expense.category)
         });
 
         return { titles: [... new Set(titles)], categories: [...new Set(categories)] }

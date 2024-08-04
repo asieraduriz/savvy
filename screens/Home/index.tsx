@@ -5,10 +5,9 @@ import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
 import { Dates } from "@/datastructures";
 import { SubscriptionStatus } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link } from "expo-router";
 import { FC, Fragment, useMemo } from "react";
-import { Button, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 
 export const HomeScreen: FC = () => {
     const filter = useFilter();
@@ -44,9 +43,6 @@ export const HomeScreen: FC = () => {
 
     return (
         <ScrollView>
-            {/* <Button title="Erase all" onPress={() => {
-                AsyncStorage.clear()
-            }} /> */}
             <Link href="/add">
                 <Text>New expense</Text>
             </Link>
@@ -83,7 +79,10 @@ export const HomeScreen: FC = () => {
                             {subscription.title} {subscription.every} {subscription.interval} {Dates.toFormat(subscription.start)}
                         </Text>
                         <Text>Upcoming at {Dates.toFormat(subscription.next)}</Text>
-                        <Text>{subscription.amount}</Text>
+                        <Text>Amount: {subscription.amount}</Text>
+                        <Link href={`/edit/subscription/${subscription.id}`}>
+                            <Text>Edit</Text>
+                        </Link>
                     </View>
                 ))}
             </View>

@@ -8,14 +8,12 @@ export const toOneTimeExpense = (expenseToAdd: ExpenseToAdd): Expense => {
   return {
     type: "onetime",
     // Shared properties
-    title,
-    amount,
+    title: title!,
+    amount: amount!,
     when,
-    category: {
-      name: category,
-      color: categoryColor,
-      iconName: categoryIcon,
-    },
+    category: category!,
+    categoryIcon: categoryIcon!,
+    categoryColor: categoryColor!,
     // New properties
     created: Dates.Now(),
     id: randomUUID(),

@@ -4,6 +4,7 @@ import { Text, View } from "../Themed";
 import { Expense } from "@/types";
 import { useExpenses } from "@/contexts";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 
 type Props = { expense: Expense };
 
@@ -25,6 +26,8 @@ export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
         </View>
         {title && <Text style={styles.titleText}>{title}</Text>}
       </View>
+      <Link href={`/edit/expense/${id}`}>
+        <Text>Edit</Text></Link>
       <Button title="Delete" onPress={() => deleteExpense(id)} />
     </View>
   );

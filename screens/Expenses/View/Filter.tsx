@@ -1,5 +1,4 @@
-import { Pickers } from "@/components/Pickers";
-import { Text, TextInput, View } from "@/components/Themed";
+import { TextInput, View } from "@/components/Themed";
 import { useApplyFilter, useFilter } from "@/contexts";
 import { useRef, useState } from "react";
 import {
@@ -10,13 +9,10 @@ import {
   StyleSheet,
 } from "react-native";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Dates } from "@/datastructures";
 
 export const FilterScreen: React.FC = () => {
   const filter = useFilter();
   const applyFilter = useApplyFilter();
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>();
 
   const [isExpanded, setIsExpanded] = useState(false);
   const animatedWidth = useRef(new Animated.Value(40)).current;

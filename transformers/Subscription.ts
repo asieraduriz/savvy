@@ -35,11 +35,9 @@ export const toSubscriptionExpense = (expenseToAdd: ExpenseToAdd, date: Date, su
         title: title!,
         amount: amount!,
         when: date,
-        category: {
-            name: category!,
-            color: categoryColor!,
-            iconName: categoryIcon,
-        },
+        category: category!,
+        categoryIcon: categoryIcon!,
+        categoryColor: categoryColor!,
         // New properties
         created: Dates.Now(),
         id: randomUUID(),

@@ -55,15 +55,6 @@ export const ExpensesScreen: FC = () => {
     </View>
   );
 
-  // const renderItem = ({ item }: { item: Expense }) => {
-  //   return (
-  //     <View>
-  //       <Text>{Dates.readable(item.when)}</Text>
-  //       <OneTimeExpenseItem expense={item} />
-  //     </View>
-  //   );
-  // };
-
   const renderItem = ({ item }: { item: [string, Expense[]] }) => {
     const [date, expenses] = item;
     return (
@@ -78,15 +69,7 @@ export const ExpensesScreen: FC = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <FlatList
-        data={filteredExpenses}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={renderHeader}
-        stickyHeaderIndices={[0]}
-      /> */}
       <TitleSearch terms={expenseTitles} />
-
       <FlatList
         data={groupedExpenses}
         renderItem={renderItem}

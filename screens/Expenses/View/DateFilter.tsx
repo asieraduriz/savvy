@@ -1,12 +1,10 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   Pressable,
-  LayoutChangeEvent,
-  Dimensions,
 } from "react-native";
 import { Pickers } from "@/components/Pickers";
 import { useApplyFilter, useFilter } from "@/contexts";
@@ -16,54 +14,12 @@ import { Dates } from "@/datastructures";
 type Tab = "Since" | "Between";
 
 export const DateFilterScreen: React.FC = () => {
-  const [initialCalendarDate, sendCalendarToDate] = useState(
+  const [initialCalendarDate] = useState(
     Dates.toFormat(Dates.Today())
   );
   const { start, end } = useFilter();
   const applyFilter = useApplyFilter();
-  const [calendarDate, setCalendarDate] = useState<{
-    year: number;
-    month: number;
-  }>({ year: Dates.CurrentYear(), month: Dates.CurrentMonth() });
-
-  const markedDates = useMemo(() => {
-    if (!start || !end) return [];
-    return Dates.daysBetween({ start, end, ...calendarDate });
-  }, [start, end, calendarDate]);
-
-  const [contentWidth, setContentWidth] = useState(
-    Dimensions.get("screen").width
-  );
-
-  const onTabLayout = (event: LayoutChangeEvent) => {
-    const layout = event.nativeEvent.layout;
-    setContentWidth(layout.width);
-  };
-
   const [activeTab, setActiveTab] = useState<Tab>("Between");
-
-  const onDayPressed = (date: Date) => {
-    if (activeTab === "Since") {
-      applyFilter({ start: date, end: Dates.Today() });
-
-      // updateMarkedDates(selectedDate, formatDate(new Date()));
-    } else {
-      if (!start || (start && end)) {
-        applyFilter({ start: date, end: undefined });
-
-        // updateMarkedDates(selectedDate, null);
-      } else {
-        if (Dates.isAfter(date, start)) {
-          applyFilter({ end: date });
-          // updateMarkedDates(start, selectedDate);
-        } else {
-          applyFilter({ start: date, end: start });
-
-          // updateMarkedDates(selectedDate, start);
-        }
-      }
-    }
-  };
 
   return (
     <View style={styles.layout}>
@@ -97,10 +53,6 @@ export const DateFilterScreen: React.FC = () => {
             maxDate={Dates.toFormat(Dates.Today())}
             initialDate={initialCalendarDate}
             enableSwipeMonths
-            onMonthChange={({ year, month }) =>
-              setCalendarDate({ year, month })
-            }
-            onDayPress={({ dateString }) => onDayPressed(new Date(dateString))}
           />
         </View>
       </View>
