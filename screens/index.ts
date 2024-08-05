@@ -1,4 +1,4 @@
-import { AddExpenseScreen } from "./Expenses/Add";
+import { AddExpenseScreen } from "./Expenses/AddExpense";
 import { EditExpenseScreen } from "./Expenses/EditExpense";
 import { EditSubscriptionScreen } from "./Expenses/EditSubscription";
 import { ExpensesScreen } from "./Expenses/View";

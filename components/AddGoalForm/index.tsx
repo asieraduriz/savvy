@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 import { Text, TextInput, View } from "../Themed";
 import { StyleSheet } from "react-native";
-import { GoalToAdd } from "@/types";
+import { GoalToAdd, goalToAddSchema } from "@/types";
 import { Defaults } from "@/constants";
 import { useExpenses } from "@/contexts";
 import { Picker } from "@react-native-picker/picker";
 import { Formik, FormikHelpers } from "formik";
-import { validationSchema } from "./validationSchema";
 import { Transformers } from "@/transformers";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useAnimateToggle } from "@/hooks";
@@ -41,7 +40,7 @@ export const AddGoalForm = () => {
     }
 
     return (
-        <Formik initialValues={Defaults.AddGoalForm} validationSchema={validationSchema} onSubmit={onSubmit}>
+        <Formik initialValues={Defaults.AddGoalForm} validationSchema={goalToAddSchema} onSubmit={onSubmit}>
             {({ handleBlur, handleSubmit, values, errors, setFieldValue, isSubmitting, isValid }) => (
                 <View style={styles.container}>
                     <TextInput

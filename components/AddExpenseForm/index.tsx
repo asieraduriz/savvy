@@ -5,13 +5,12 @@ import { Defaults } from "@/constants";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik, FormikHelpers } from "formik";
-import { ExpenseToAdd } from "@/types";
+import { ExpenseToAdd, expenseToAddSchema } from "@/types";
 import { useExpenses } from "@/contexts";
 import { Transformers } from "@/transformers";
 import { useAnimateToggle } from "@/hooks";
 import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
 import { SubmitSubscriptionButton } from "./SubmitSubscriptionButton";
-import { validationSchema } from "./validationSchema";
 import { Pressables } from "../Pressables";
 
 const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
@@ -46,7 +45,7 @@ export const AddExpenseForm = () => {
   };
 
   return (
-    <Formik initialValues={Defaults.AddExpenseForm} validationSchema={validationSchema} onSubmit={onSubmit}>
+    <Formik initialValues={Defaults.AddExpenseForm} validationSchema={expenseToAddSchema} onSubmit={onSubmit}>
       {({ handleBlur, values, errors, setFieldValue, isSubmitting, isValid, handleSubmit }) => (
         <View style={styles.container}>
           <TextInput
