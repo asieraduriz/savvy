@@ -22,7 +22,7 @@ export const AddExpenseForm = () => {
 
   const onSubmit = async (values: ExpenseToAdd, { setSubmitting }: FormikHelpers<ExpenseToAdd>) => {
     if (values.type === "onetime") {
-      await createExpense(Transformers.toExpense(values));
+      await createExpense(Transformers.toOneTimeExpense(values));
     } else {
       if (values.pastSubscriptionChargeDates?.length) {
         const subscription = Transformers.toSubscription(values);

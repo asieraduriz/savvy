@@ -69,7 +69,7 @@ export const EditExpenseForm = ({ expense }: Props) => {
 
           <MaterialCommunityIcons name={values.categoryIcon} size={32} />
           <Picker selectedValue={values.categoryColor}
-            onBlur={handleBlur("category.color")}
+            onBlur={handleBlur("categoryColor")}
             onValueChange={(color) => setFieldValue("categoryColor", color)}>
             {Colors.map((color) => (
               <Picker.Item key={color} label={color} value={color} />

@@ -10,7 +10,7 @@ type Props = { expense: Expense };
 
 export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
   const { deleteExpense } = useExpenses();
-  const { id, amount, category, title, type } = expense;
+  const { id, amount, category, categoryIcon, categoryColor, title, type } = expense;
 
   return (
     <View style={styles.expenseCard}>
@@ -19,10 +19,10 @@ export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
         <Text style={styles.amountText}>{amount}</Text>
       </View>
       <View style={styles.cardBody}>
-        <View style={{ ...styles.categoryRow, backgroundColor: category.color }}>
+        <View style={{ ...styles.categoryRow, backgroundColor: categoryColor }}>
           <View style={[styles.categoryIcon, styles.categoryRow]} />
-          <MaterialCommunityIcons name={category.iconName} size={32} />
-          <Text style={styles.categoryText}>{category.name}</Text>
+          <MaterialCommunityIcons name={categoryIcon} size={32} />
+          <Text style={styles.categoryText}>{category}</Text>
         </View>
         {title && <Text style={styles.titleText}>{title}</Text>}
       </View>

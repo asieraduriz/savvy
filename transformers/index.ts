@@ -3,7 +3,7 @@ import { toGoal } from "./Goal";
 import { toSubscription, toSubscriptionExpense } from "./Subscription";
 
 export const Transformers = {
-  toExpense: toOneTimeExpense,
+  toOneTimeExpense: toOneTimeExpense,
   toSubscription: toSubscription,
   toSubscriptionExpense: toSubscriptionExpense,
   toGoal: toGoal

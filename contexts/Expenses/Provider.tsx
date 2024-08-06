@@ -69,12 +69,12 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({
           err instanceof Error
             ? err
             : new Error(
-                `Failed to add expense ${expense.id} ${JSON.stringify(
-                  expense,
-                  null,
-                  4
-                )}`
-              )
+              `Failed to add expense ${expense.id} ${JSON.stringify(
+                expense,
+                null,
+                4
+              )}`
+            )
         );
       }
     },
@@ -127,10 +127,10 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({
     const categoryMap = new Map<string, Expense[]>();
 
     for (const expense of expenses) {
-      if (!categoryMap.has(expense.category.name)) {
-        categoryMap.set(expense.category.name, []);
+      if (!categoryMap.has(expense.category)) {
+        categoryMap.set(expense.category, []);
       }
-      categoryMap.get(expense.category.name)!.push(expense);
+      categoryMap.get(expense.category)!.push(expense);
     }
 
     return categoryMap;
