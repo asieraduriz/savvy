@@ -1,5 +1,6 @@
 import { OneTimeExpenseItem } from "@/components/ExpenseList/OneTimeExpenseItem";
 import { TitleSearch } from "@/components/ExpenseList/TitleSearch";
+import { EraseAll } from "@/components/Pressables/EraseAll";
 import { Text, View } from "@/components/Themed";
 import { useExpenses, useFilter } from "@/contexts";
 import { Dates } from "@/datastructures";
@@ -69,6 +70,8 @@ export const ExpensesScreen: FC = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      <EraseAll />
+
       <TitleSearch terms={expenseTitles} />
       <FlatList
         data={groupedExpenses}

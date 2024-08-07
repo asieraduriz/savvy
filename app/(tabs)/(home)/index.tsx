@@ -1,3 +1,3 @@
 import { Screens } from '@/screens';
 
-export default () => <Screens.Home />
+export default () => <Screens.View.Home />

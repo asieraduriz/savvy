@@ -13,6 +13,14 @@ const addExpenseFormStarter: ExpenseToAdd = {
   interval: Interval.weeks
 };
 
+const addSubscriptionFormStarter: ExpenseToAdd = {
+  categoryColor: "white",
+  categoryIcon: Icons[0],
+  when: now,
+  type: 'subscription',
+  every: 1,
+  interval: Interval.weeks
+};
 const addGoalFormStarter: GoalToAdd = {
   type: 'title-goal',
   limit: 0,
@@ -27,7 +35,10 @@ const starterFilter: ExpensesFilter = {
 };
 
 export const Defaults = {
-  AddExpenseForm: addExpenseFormStarter,
+  Add: {
+    OneTimeExpense: addExpenseFormStarter,
+    Subscription: addSubscriptionFormStarter,
+  },
   AddGoalForm: addGoalFormStarter,
   Filter: starterFilter,
   Icons: Icons

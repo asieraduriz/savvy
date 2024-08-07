@@ -1,4 +1,5 @@
 import { OneTimeExpenseItem } from "@/components/ExpenseList/OneTimeExpenseItem";
+import { EraseAll } from "@/components/Pressables/EraseAll";
 import { Text, View } from "@/components/Themed";
 import { useFilter, useGroupedExpenses, useRecentExpenses } from "@/contexts";
 import { useSubscriptions } from "@/contexts/Subscriptions/Provider";

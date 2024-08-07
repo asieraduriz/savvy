@@ -1,3 +1,3 @@
 import { Screens } from "@/screens";
 
-export default () => <Screens.AddGoal />
+export default () => <Screens.Add.Goal />

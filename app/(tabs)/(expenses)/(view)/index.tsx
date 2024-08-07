@@ -4,7 +4,7 @@ import { Screens } from "@/screens";
 
 export default () => (
   <View style={styles.container}>
-    <Screens.Expenses />
+    <Screens.View.Expenses />
   </View>
 );
 

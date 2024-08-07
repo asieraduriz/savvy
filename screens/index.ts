@@ -1,21 +1,39 @@
-import { AddExpenseScreen } from "./Expenses/AddExpense";
-import { EditExpenseScreen } from "./Expenses/EditExpense";
-import { EditSubscriptionScreen } from "./Expenses/EditSubscription";
-import { ExpensesScreen } from "./Expenses/View";
-import { DateFilterScreen } from "./Expenses/View/DateFilter";
-import { FilterScreen } from "./Expenses/View/Filter";
 import { HomeScreen } from "./Home";
+import { ExpensesScreen } from "./Expenses/View";
+import { SubscriptionsScreen } from "./Subscriptions/View";
 import { GoalsScreen } from "./Goals";
+import { SettingsScreen } from "./Settings";
+
+import { AddExpenseScreen } from "./Expenses/AddExpense";
+import { AddSubscriptionScreen } from "./Expenses/AddSubscription";
 import { AddGoalScreen } from "./Goals/Add";
 
+import { EditExpenseScreen } from "./Expenses/EditExpense";
+import { EditSubscriptionScreen } from "./Expenses/EditSubscription";
+import { EditGoalScreen } from "./Goals/Edit";
+
+import { DateFilterScreen } from "./Expenses/View/DateFilter";
+import { FilterScreen } from "./Expenses/View/Filter";
+
 export const Screens = {
-  Expenses: ExpensesScreen,
+  View: {
+    Home: HomeScreen,
+    Expenses: ExpensesScreen,
+    Subscriptions: SubscriptionsScreen,
+    Goals: GoalsScreen,
+    Settings: SettingsScreen,
+  },
+  Add: {
+    Expense: AddExpenseScreen,
+    Subscription: AddSubscriptionScreen,
+    Goal: AddGoalScreen
+  },
+  Edit: {
+    Expense: EditExpenseScreen,
+    Subscription: EditSubscriptionScreen,
+    Goal: EditGoalScreen,
+  },
   Filter: FilterScreen,
   DateFilterScreen: DateFilterScreen,
-  AddExpense: AddExpenseScreen,
-  EditExpense: EditExpenseScreen,
-  EditSubscription: EditSubscriptionScreen,
-  Home: HomeScreen,
-  Goals: GoalsScreen,
-  AddGoal: AddGoalScreen
 };
+

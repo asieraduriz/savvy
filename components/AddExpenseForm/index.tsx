@@ -12,10 +12,15 @@ import { useAnimateToggle } from "@/hooks";
 import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
 import { SubmitSubscriptionButton } from "./SubmitSubscriptionButton";
 import { Pressables } from "../Pressables";
+import { FC } from "react";
 
 const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
 
-export const AddExpenseForm = () => {
+type Props = {
+  initialExpense: ExpenseToAdd
+}
+
+export const AddExpenseForm: FC<Props> = ({ initialExpense }) => {
   const [animate, triggerAnimate] = useAnimateToggle();
   const { createExpense } = useExpenses();
   const { createSubscription } = useSubscriptions();
@@ -45,7 +50,7 @@ export const AddExpenseForm = () => {
   };
 
   return (
-    <Formik initialValues={Defaults.AddExpenseForm} validationSchema={expenseToAddSchema} onSubmit={onSubmit}>
+    <Formik initialValues={initialExpense} validationSchema={expenseToAddSchema} onSubmit={onSubmit}>
       {({ handleBlur, values, errors, setFieldValue, isSubmitting, isValid, handleSubmit }) => (
         <View style={styles.container}>
           <TextInput

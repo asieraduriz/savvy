@@ -1,8 +1,7 @@
 import { Text, TextInput, View } from "@/components/Themed";
 import { Expense } from "@/types";
 import { Formik, FormikHelpers } from "formik";
-import { StyleSheet, Switch } from "react-native";
-import { validationSchema } from "../AddExpenseForm/validationSchema";
+import { StyleSheet } from "react-native";
 import { Defaults } from "@/constants";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -10,11 +9,11 @@ import { Pickers } from "../Pickers";
 import { Pressables } from "../Pressables";
 import { useAnimateToggle } from "@/hooks";
 import { useExpenses } from "@/contexts";
+import { expenseToEditSchema } from "@/types/ExpenseToEdit.type";
 
 type Props = {
   expense: Expense
 };
-
 
 const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
 
@@ -28,7 +27,7 @@ export const EditExpenseForm = ({ expense }: Props) => {
     triggerAnimate();
   }
   return (
-    <Formik initialValues={expense} validationSchema={validationSchema} onSubmit={onSubmit}>
+    <Formik initialValues={expense} validationSchema={expenseToEditSchema} onSubmit={onSubmit}>
       {({ handleBlur, values, errors, setFieldValue, isSubmitting, isValid, handleSubmit }) => (
         <View style={styles.container}>
           <TextInput
@@ -77,12 +76,6 @@ export const EditExpenseForm = ({ expense }: Props) => {
           </Picker>
 
           <Pickers.OneTime when={values.when} setDate={(when) => setFieldValue("when", when)} />
-          <Switch
-            value={values.type === "subscription"}
-            onChange={() => {
-              setFieldValue("type", values.type === "subscription" ? "onetime" : "subscription");
-            }}
-          />
 
           <Pressables.Animated title="Update expense" animate={animate} disabled={isSubmitting || !isValid} isLoading={isSubmitting} onPress={() => handleSubmit()} />
         </View>

@@ -1,5 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
@@ -50,6 +51,16 @@ export default () => {
                     size={28}
                     color={color}
                   />
+                ),
+              }}
+            />
+            <Tabs.Screen
+              name="(subscriptions)"
+              options={{
+                headerShown: false,
+                title: "Subscriptions",
+                tabBarIcon: ({ color }) => (
+                  <FontAwesome5 name="coins" size={24} color={color} />
                 ),
               }}
             />

@@ -5,5 +5,5 @@ export default () => {
     const { id } = useLocalSearchParams<{ id: string }>();
 
     if (!id) throw new Error("No id in edit/subscription/[id]");
-    return <Screens.EditSubscription id={id} />;
+    return <Screens.Edit.Subscription id={id} />;
 };

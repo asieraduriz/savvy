@@ -13,7 +13,7 @@ export type ExpenseToAdd = {
   when: Expense["when"];
   every: Subscription["every"];
   interval: Subscription["interval"];
-  pastSubscriptionChargeDates?: Expense["when"][]
+  pastSubscriptionChargeDates?: Expense["when"][] // This is used to identify possible past dates the subscription was charged to us
 };
 
 
