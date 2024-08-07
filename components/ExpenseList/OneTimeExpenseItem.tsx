@@ -13,7 +13,23 @@ export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
   const { id, amount, category, categoryIcon, categoryColor, title, type } = expense;
 
   return (
-    <View></View>
+    <View style={styles.expenseCard}>
+      <View style={styles.cardHeader}>
+        <Text style={styles.amountText}>{type}</Text>
+        <Text style={styles.amountText}>{amount}</Text>
+      </View>
+      <View style={styles.cardBody}>
+        <View style={{ ...styles.categoryRow, backgroundColor: categoryColor }}>
+          <View style={[styles.categoryIcon, styles.categoryRow]} />
+          <MaterialCommunityIcons name={categoryIcon} size={32} />
+          <Text style={styles.categoryText}>{category}</Text>
+        </View>
+        {title && <Text style={styles.titleText}>{title}</Text>}
+      </View>
+      <Link href={`/edit/expense/${id}`}>
+        <Text>Edit</Text></Link>
+      <Button title="Delete" onPress={() => deleteExpense(id)} />
+    </View>
   );
 };
 

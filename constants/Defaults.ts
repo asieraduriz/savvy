@@ -41,5 +41,6 @@ export const Defaults = {
   },
   AddGoalForm: addGoalFormStarter,
   Filter: starterFilter,
-  Icons: Icons
+  Icons: Icons,
+  Colors: ["white", "orange", "red", "blue", "yellow", "pink"],
 };

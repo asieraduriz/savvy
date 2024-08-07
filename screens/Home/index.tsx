@@ -1,5 +1,6 @@
 import { OneTimeExpenseItem } from "@/components/ExpenseList/OneTimeExpenseItem";
 import { EraseAll } from "@/components/Pressables/EraseAll";
+import { PopulateApp } from "@/components/Pressables/PopulateData";
 import { Text, View } from "@/components/Themed";
 import { useFilter, useGroupedExpenses, useRecentExpenses } from "@/contexts";
 import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
@@ -44,6 +45,7 @@ export const HomeScreen: FC = () => {
 
     return (
         <ScrollView>
+            {/* <PopulateApp /> */}
             <Link href="/add">
                 <Text>New expense</Text>
             </Link>
@@ -81,7 +83,7 @@ export const HomeScreen: FC = () => {
                         </Text>
                         <Text>Upcoming at {Dates.toFormat(subscription.next)}</Text>
                         <Text>Amount: {subscription.amount}</Text>
-                        <Link href={`/edit/subscription/${subscription.id}`}>
+                        <Link href={`/editSubscription/${subscription.id}`}>
                             <Text>Edit</Text>
                         </Link>
                     </View>

@@ -11,11 +11,11 @@ export type ExpenseToEdit = {
     when: Expense["when"];
 };
 
-export const expenseToEditSchema = {
+export const expenseToEditSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     amount: Yup.number().required("Amount is required").positive("Amount must be a positive number").typeError("Amount must be a number"),
     category: Yup.string().required("Category is required"),
     categoryIcon: Yup.string(),
     categoryColor: Yup.string(),
     when: Yup.date()
-}
+})

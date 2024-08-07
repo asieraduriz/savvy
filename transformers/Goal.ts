@@ -1,14 +1,9 @@
-import { Dates } from "@/datastructures";
-import { Goal, GoalToAdd } from "@/types";
-import { randomUUID } from "expo-crypto";
+import { GoalToAdd, GoalToCreate } from "@/types";
 
-export const toGoal = (goalToAdd: GoalToAdd): Goal => ({
+export const toGoal = (goalToAdd: GoalToAdd): GoalToCreate => ({
     title: goalToAdd.title,
     limit: goalToAdd.limit,
     link: goalToAdd.link,
     type: goalToAdd.type,
     status: 'active',
-    // New properties
-    id: randomUUID(),
-    created: Dates.Now(),
 })

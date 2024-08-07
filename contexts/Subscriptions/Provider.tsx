@@ -16,8 +16,8 @@ interface SubscriptionContextType {
   isLoading: boolean;
   error: Error | null;
   refreshSubscriptions: () => Promise<void>;
-  createSubscription: (expense: SubscriptionToCreate) => Promise<Subscription | undefined>;
-  updateSubscription: (expense: Subscription) => Promise<void>;
+  createSubscription: (subscription: SubscriptionToCreate) => Promise<Subscription | undefined>;
+  updateSubscription: (subscription: Subscription) => Promise<void>;
   deleteSubscription: (id: string) => Promise<void>;
 }
 
@@ -39,8 +39,8 @@ export const SubscriptionsProvider: React.FC<SubscriptionsProviderProps> = ({
     setIsLoading(true);
     setError(null);
     try {
-      const fetchedExpenses = await subscriptionService.readAll();
-      setSubscriptions(fetchedExpenses);
+      const fetchedSubscriptions = await subscriptionService.readAll();
+      setSubscriptions(fetchedSubscriptions);
     } catch (err) {
       setError(
         err instanceof Error ? err : new Error("An unknown error occurred")
@@ -64,11 +64,11 @@ export const SubscriptionsProvider: React.FC<SubscriptionsProviderProps> = ({
 
       try {
         const newSubscription = await subscriptionService.create(subscription);
-        setSubscriptions((prevExpenses) => [...prevExpenses, newSubscription]);
+        setSubscriptions((prevSubscriptions) => [...prevSubscriptions, newSubscription]);
         return newSubscription;
       } catch (err) {
         setError(
-          err instanceof Error ? err : new Error("Failed to add expense")
+          err instanceof Error ? err : new Error("Failed to add subscription")
         );
       }
     },
@@ -76,17 +76,17 @@ export const SubscriptionsProvider: React.FC<SubscriptionsProviderProps> = ({
   );
 
   const updateSubscription = useCallback(
-    async (updatedExpense: Subscription) => {
+    async (updatedSubscription: Subscription) => {
       try {
-        await subscriptionService.update(updatedExpense);
-        setSubscriptions((prevExpenses) =>
-          prevExpenses.map((expense) =>
-            expense.id === updatedExpense.id ? updatedExpense : expense
+        await subscriptionService.update(updatedSubscription);
+        setSubscriptions((prevSubscription) =>
+          prevSubscription.map((subscription) =>
+            subscription.id === updatedSubscription.id ? updatedSubscription : subscription
           )
         );
       } catch (err) {
         setError(
-          err instanceof Error ? err : new Error("Failed to update expense")
+          err instanceof Error ? err : new Error("Failed to update subscription")
         );
       }
     },
@@ -97,12 +97,12 @@ export const SubscriptionsProvider: React.FC<SubscriptionsProviderProps> = ({
     async (id: string) => {
       try {
         await subscriptionService.delete(id);
-        setSubscriptions((prevExpenses) =>
-          prevExpenses.filter((expense) => expense.id !== id)
+        setSubscriptions((prevSubscriptions) =>
+          prevSubscriptions.filter((subscription) => subscription.id !== id)
         );
       } catch (err) {
         setError(
-          err instanceof Error ? err : new Error("Failed to delete expense")
+          err instanceof Error ? err : new Error("Failed to delete subscription")
         );
       }
     },

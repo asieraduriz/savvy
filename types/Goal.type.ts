@@ -18,3 +18,5 @@ export type Goal = {
   limit: number;
   status: "active" | "archived";
 } & (TitleLinkedGoal | CategoryLinkedGoal);
+
+export type GoalToCreate = Omit<Goal, 'id' | 'created'> & (TitleLinkedGoal | CategoryLinkedGoal);

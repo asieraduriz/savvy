@@ -15,8 +15,6 @@ type Props = {
   expense: Expense
 };
 
-const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
-
 export const EditExpenseForm = ({ expense }: Props) => {
   const [animate, triggerAnimate] = useAnimateToggle();
   const { updateExpense } = useExpenses();
@@ -70,7 +68,7 @@ export const EditExpenseForm = ({ expense }: Props) => {
           <Picker selectedValue={values.categoryColor}
             onBlur={handleBlur("categoryColor")}
             onValueChange={(color) => setFieldValue("categoryColor", color)}>
-            {Colors.map((color) => (
+            {Defaults.Colors.map((color) => (
               <Picker.Item key={color} label={color} value={color} />
             ))}
           </Picker>

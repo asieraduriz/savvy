@@ -5,11 +5,11 @@ import { GoalsScreen } from "./Goals";
 import { SettingsScreen } from "./Settings";
 
 import { AddExpenseScreen } from "./Expenses/AddExpense";
-import { AddSubscriptionScreen } from "./Expenses/AddSubscription";
+import { AddSubscriptionScreen } from "./Subscriptions/AddSubscription";
 import { AddGoalScreen } from "./Goals/Add";
 
 import { EditExpenseScreen } from "./Expenses/EditExpense";
-import { EditSubscriptionScreen } from "./Expenses/EditSubscription";
+import { EditSubscriptionScreen } from "./Subscriptions/EditSubscription";
 import { EditGoalScreen } from "./Goals/Edit";
 
 import { DateFilterScreen } from "./Expenses/View/DateFilter";

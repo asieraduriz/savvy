@@ -1,5 +1,7 @@
+import { Dates } from "@/datastructures";
 import { Service } from "@/services";
-import { Goal } from "@/types";
+import { Goal, GoalToCreate } from "@/types";
+import { randomUUID } from "expo-crypto";
 import {
   createContext,
   useContext,
@@ -14,7 +16,7 @@ interface GoalContextType {
   isLoading: boolean;
   error: Error | null;
   refreshGoals: () => Promise<void>;
-  createGoal: (goal: Goal) => Promise<void>;
+  createGoal: (goal: GoalToCreate) => Promise<void>;
   updateGoal: (goal: Goal) => Promise<void>;
   deleteGoal: (id: string) => Promise<void>;
 }
@@ -53,7 +55,12 @@ export const GoalsProvider: React.FC<GoalsProviderProps> = ({
   }, [refreshGoals]);
 
   const createGoal = useCallback(
-    async (goal: Goal) => {
+    async (goalToCreate: GoalToCreate) => {
+      const goal: Goal = {
+        id: randomUUID(),
+        created: Dates.Now(),
+        ...goalToCreate
+      }
       try {
         const newGoal = await goalService.create(goal);
         setGoals((prevGoals) => [...prevGoals, newGoal]);
@@ -62,8 +69,8 @@ export const GoalsProvider: React.FC<GoalsProviderProps> = ({
           err instanceof Error
             ? err
             : new Error(
-                `Failed to add goal ${goal.id} ${JSON.stringify(goal, null, 4)}`
-              )
+              `Failed to add goal ${goal.id} ${JSON.stringify(goal, null, 4)}`
+            )
         );
       }
     },

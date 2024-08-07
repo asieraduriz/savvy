@@ -1,7 +1,9 @@
-import { Text, View } from "@/components/Themed";
+import { Screens } from "@/screens";
+import { useLocalSearchParams } from "expo-router";
 
-export default () => (
-  <View>
-    <Text>Edit id goal screen</Text>
-  </View>
-);
+export default () => {
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  if (!id) throw new Error("No id in edit/expense/[id]");
+  return <Screens.Edit.Goal id={id} />;
+};

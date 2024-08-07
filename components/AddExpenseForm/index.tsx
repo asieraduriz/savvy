@@ -14,8 +14,6 @@ import { SubmitSubscriptionButton } from "./SubmitSubscriptionButton";
 import { Pressables } from "../Pressables";
 import { FC } from "react";
 
-const Colors = ["white", "orange", "red", "blue", "yellow", "pink"];
-
 type Props = {
   initialExpense: ExpenseToAdd
 }
@@ -93,7 +91,7 @@ export const AddExpenseForm: FC<Props> = ({ initialExpense }) => {
           <Picker selectedValue={values.categoryColor}
             onBlur={handleBlur("categoryColor")}
             onValueChange={(color) => setFieldValue("categoryColor", color)}>
-            {Colors.map((color) => (
+            {Defaults.Colors.map((color) => (
               <Picker.Item key={color} label={color} value={color} />
             ))}
           </Picker>
