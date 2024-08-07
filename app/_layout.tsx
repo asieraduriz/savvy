@@ -1,3 +1,7 @@
+import { ExpensesProvider } from "@/contexts";
+import { GoalsProvider } from "@/contexts/Goals/Provider";
+import { SubscriptionsProvider } from "@/contexts/Subscriptions/Provider";
+import { ServiceFactory } from "@/services";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
@@ -51,14 +55,32 @@ export default () => {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+  const { expenses, subscriptions, goals } = ServiceFactory.create();
+
+
   return (
     <SafeAreaProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: "modal" }} />
-        </Stack>
-      </ThemeProvider>
+      <SubscriptionsProvider subscriptionService={subscriptions}>
+        <ExpensesProvider expenseService={expenses}>
+          <GoalsProvider goalService={goals}>
+            <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+
+                <Stack.Screen name="add/expense" options={{ headerTitle: 'Adding expenseee' }} />
+                <Stack.Screen name="edit/[expenseId]" />
+
+                <Stack.Screen name="add/subscription" />
+                <Stack.Screen name="edit/[subscriptionId]" />
+
+                <Stack.Screen name="add/goal" />
+                <Stack.Screen name="edit/[goalId]" />
+              </Stack>
+            </ThemeProvider>
+          </GoalsProvider>
+        </ExpensesProvider>
+      </SubscriptionsProvider>
     </SafeAreaProvider>
   );
 }

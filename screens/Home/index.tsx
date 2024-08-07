@@ -47,7 +47,7 @@ export const HomeScreen: FC = () => {
     return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
             {/* <PopulateApp /> */}
-            <Pressable onPress={() => navigate('/add')}>
+            <Pressable onPress={() => navigate('/add/expense')}>
                 <Text>New one time expense</Text>
             </Pressable>
             <Pressable onPress={() => navigate('/addSubscription')}>
