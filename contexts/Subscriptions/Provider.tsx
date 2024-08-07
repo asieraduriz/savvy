@@ -1,5 +1,7 @@
+import { Dates } from "@/datastructures";
 import { Service } from "@/services";
-import { Subscription } from "@/types";
+import { Subscription, SubscriptionToCreate } from "@/types";
+import { randomUUID } from "expo-crypto";
 import {
   createContext,
   useContext,
@@ -14,7 +16,7 @@ interface SubscriptionContextType {
   isLoading: boolean;
   error: Error | null;
   refreshSubscriptions: () => Promise<void>;
-  createSubscription: (expense: Subscription) => Promise<void>;
+  createSubscription: (expense: SubscriptionToCreate) => Promise<Subscription | undefined>;
   updateSubscription: (expense: Subscription) => Promise<void>;
   deleteSubscription: (id: string) => Promise<void>;
 }
@@ -53,10 +55,17 @@ export const SubscriptionsProvider: React.FC<SubscriptionsProviderProps> = ({
   }, [refreshSubscriptions]);
 
   const createSubscription = useCallback(
-    async (expense: Subscription) => {
+    async (subscriptionToCreate: SubscriptionToCreate) => {
+      const subscription: Subscription = {
+        id: randomUUID(),
+        created: Dates.Now(),
+        ...subscriptionToCreate
+      }
+
       try {
-        const newExpense = await subscriptionService.create(expense);
-        setSubscriptions((prevExpenses) => [...prevExpenses, newExpense]);
+        const newSubscription = await subscriptionService.create(subscription);
+        setSubscriptions((prevExpenses) => [...prevExpenses, newSubscription]);
+        return newSubscription;
       } catch (err) {
         setError(
           err instanceof Error ? err : new Error("Failed to add expense")

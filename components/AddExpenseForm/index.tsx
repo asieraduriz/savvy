@@ -25,8 +25,8 @@ export const AddExpenseForm = () => {
       await createExpense(Transformers.toOneTimeExpense(values));
     } else {
       if (values.pastSubscriptionChargeDates?.length) {
-        const subscription = Transformers.toSubscription(values);
-        await createSubscription(subscription);
+        const subscription = await createSubscription(Transformers.toSubscription(values));
+        if (!subscription) throw new Error(`Error adding subscription ${JSON.stringify(values)}`)
         const subscriptionExpenses = values.pastSubscriptionChargeDates.map((date) =>
           Transformers.toSubscriptionExpense(values, date, subscription.id)
         );

@@ -24,3 +24,6 @@ export type SubscriptionExpense = {
 
 
 export type Expense = ExpenseBase & (OneTimeExpense | SubscriptionExpense);
+export type OneTimeExpenseToCreate = Omit<ExpenseBase, 'id' | 'created'> & OneTimeExpense;
+export type SubscriptionExpenseToCreate = Omit<ExpenseBase, 'id' | 'created'> & SubscriptionExpense;
+export type ExpenseToCreate = OneTimeExpenseToCreate | SubscriptionExpenseToCreate;

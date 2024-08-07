@@ -32,3 +32,5 @@ type SubscriptionHistory = {
     reason?: string;
   }[];
 };
+
+export type SubscriptionToCreate = Omit<Subscription, 'id' | 'created'>;

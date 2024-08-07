@@ -1,5 +1,7 @@
+import { Dates } from "@/datastructures";
 import { Service } from "@/services";
-import { Expense } from "@/types";
+import { Expense, ExpenseToCreate } from "@/types";
+import { randomUUID } from "expo-crypto";
 import {
   createContext,
   useContext,
@@ -14,7 +16,7 @@ interface ExpenseContextType {
   isLoading: boolean;
   error: Error | null;
   refreshExpenses: () => Promise<void>;
-  createExpense: (expense: Expense) => Promise<void>;
+  createExpense: (expense: ExpenseToCreate) => Promise<void>;
   updateExpense: (expense: Expense) => Promise<void>;
   deleteExpense: (id: string) => Promise<void>;
   getRecentExpenses: () => Expense[];
@@ -56,7 +58,13 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({
   }, [refreshExpenses]);
 
   const createExpense = useCallback(
-    async (expense: Expense) => {
+    async (expenseToCreate: ExpenseToCreate) => {
+      const expense: Expense = {
+        id: randomUUID(),
+        created: Dates.Now(),
+        ...expenseToCreate
+      };
+
       try {
         const newExpense = await expenseService.create(expense);
         setExpenses((prevExpenses) =>
