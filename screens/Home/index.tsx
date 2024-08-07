@@ -7,11 +7,12 @@ import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
 import { Dates } from "@/datastructures";
 import { SubscriptionStatus } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { FC, Fragment, useMemo } from "react";
-import { ScrollView } from "react-native";
+import { Pressable, ScrollView } from "react-native";
 
 export const HomeScreen: FC = () => {
+    const { navigate } = useRouter()
     const filter = useFilter();
     const recentExpenses = useRecentExpenses();
     const groupedExpenses = useGroupedExpenses();
@@ -44,11 +45,14 @@ export const HomeScreen: FC = () => {
     }, [groupedExpenses, filter]);
 
     return (
-        <ScrollView>
+        <ScrollView style={{ backgroundColor: '#fff' }}>
             {/* <PopulateApp /> */}
-            <Link href="/add">
-                <Text>New expense</Text>
-            </Link>
+            <Pressable onPress={() => navigate('/add')}>
+                <Text>New one time expense</Text>
+            </Pressable>
+            <Pressable onPress={() => navigate('/addSubscription')}>
+                <Text>New subscription</Text>
+            </Pressable>
             <Text>Most recent expenses</Text>
             {recentExpenses.map((expense) => (
                 <Fragment key={expense.id}>

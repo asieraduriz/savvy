@@ -70,8 +70,6 @@ export const ExpensesScreen: FC = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <EraseAll />
-
       <TitleSearch terms={expenseTitles} />
       <FlatList
         data={groupedExpenses}

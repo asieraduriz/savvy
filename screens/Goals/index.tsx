@@ -1,60 +1,26 @@
+import { Card } from "@/components/Card";
 import { Text, View } from "@/components/Themed";
-import { useExpenses } from "@/contexts";
 import { useGoals } from "@/contexts/Goals/Provider";
-import { Dates } from "@/datastructures";
-import { FC, useMemo } from "react";
+import { useRouter } from "expo-router";
+import { FC } from "react";
 
 export const GoalsScreen: FC = () => {
-  const { expenses } = useExpenses();
   const { goals } = useGoals();
 
-  const today = Dates.Tomorrow();
-  const startDate = Dates.subDays(today, 40);
-
-  const { byCategories, byTitles } = useMemo(() => {
-    const filteredExpenses = expenses.filter((expense) => Dates.isBetweenDays(expense.when, startDate, today));
-
-    const report = {
-      byCategories: [],
-      byTitles: []
-    } as { [key in "byCategories" | "byTitles"]: { id: string; title: string; spent: number; limit: number }[] };
-
-    goals.map((goal) => {
-      const isCategoryGoal = goal.type === 'category-goal';
-
-      if (isCategoryGoal) {
-        const goalExpenses = filteredExpenses.filter((expense) => expense.category === goal.link);
-        report.byCategories.push({ id: goal.id, title: goal.link, spent: goalExpenses.reduce((accumulator, expense) => accumulator + expense.amount, 0), limit: goal.limit })
-      } else {
-        const goalExpenses = filteredExpenses.filter((expense) => expense.title === goal.link);
-        report.byTitles.push({ id: goal.id, title: goal.link, spent: goalExpenses.reduce((accumulator, expense) => accumulator + expense.amount, 0), limit: goal.limit })
-      }
-
-    });
-
-    return report;
-  }, []);
-
+  const { navigate } = useRouter();
   return (
     <View>
       <View>
         <Text>List of goals</Text>
         {goals.map((goal) => (
-          <Text key={goal.id}>
-            {`${goal.title} Related to ${goal.type === "title-goal" ? "title" : "category"
-              } ${goal.link}`}
-          </Text>
+          <Card key={goal.id} onEditPress={() => navigate(`/editGoal/${goal.id}`)}>
+            <Text>
+              {goal.title} target:{goal.limit}
+            </Text>
+          </Card>
         ))}
       </View>
-      {
-        byCategories.map(({ id, title, spent, limit }) => <Text key={id}>{`Goal ${title} spent ${spent} vs limit ${limit}`}</Text>)
-      }
-      {
-        byTitles.map(({ id, title, spent, limit }) => <Text key={id}>{`Goal ${title} spent ${spent} vs limit ${limit}`}</Text>)
-      }
-      <View>
-
-      </View>
+      <View></View>
     </View>
   );
 };
