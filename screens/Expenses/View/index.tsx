@@ -47,10 +47,10 @@ export const ExpensesScreen: FC = () => {
 
   const renderHeader = () => (
     <View>
-      <Link href="/filter">
+      <Link href="/filter/filters">
         <MaterialCommunityIcons name="filter-variant" size={24} color="black" />
       </Link>
-      <Link href="/dateFilter">
+      <Link href="/filter/dateFilters">
         <MaterialCommunityIcons name="calendar" size={24} color="black" />
       </Link>
     </View>

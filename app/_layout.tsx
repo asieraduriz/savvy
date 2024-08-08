@@ -54,9 +54,7 @@ export default () => {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-
   const { expenses, subscriptions, goals } = ServiceFactory.create();
-
 
   return (
     <SafeAreaProvider>
@@ -68,14 +66,14 @@ function RootLayoutNav() {
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="modal" options={{ presentation: "modal" }} />
 
-                <Stack.Screen name="add/expense" options={{ headerTitle: 'Adding expenseee' }} />
-                <Stack.Screen name="edit/[expenseId]" />
+                <Stack.Screen name="add/expense" options={{ headerTitle: 'Add expense' }} />
+                <Stack.Screen name="edit/expense/[id]" options={{ headerTitle: 'Edit expense' }} />
 
-                <Stack.Screen name="add/subscription" />
-                <Stack.Screen name="edit/[subscriptionId]" />
+                <Stack.Screen name="add/subscription" options={{ headerTitle: 'Add subscription' }} />
+                <Stack.Screen name="edit/subscription/[id]" options={{ headerTitle: 'Edit subscription' }} />
 
-                <Stack.Screen name="add/goal" />
-                <Stack.Screen name="edit/[goalId]" />
+                <Stack.Screen name="add/goal" options={{ headerTitle: 'Add goal' }} />
+                <Stack.Screen name="edit/goal/[id]" options={{ headerTitle: 'Edit goal' }} />
               </Stack>
             </ThemeProvider>
           </GoalsProvider>

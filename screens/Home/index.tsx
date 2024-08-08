@@ -6,7 +6,7 @@ import { useFilter, useGroupedExpenses, useRecentExpenses } from "@/contexts";
 import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
 import { Dates } from "@/datastructures";
 import { SubscriptionStatus } from "@/types";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { FC, Fragment, useMemo } from "react";
 import { Pressable, ScrollView } from "react-native";
@@ -50,7 +50,7 @@ export const HomeScreen: FC = () => {
             <Pressable onPress={() => navigate('/add/expense')}>
                 <Text>New one time expense</Text>
             </Pressable>
-            <Pressable onPress={() => navigate('/addSubscription')}>
+            <Pressable onPress={() => navigate('/add/subscription')}>
                 <Text>New subscription</Text>
             </Pressable>
             <Text>Most recent expenses</Text>
@@ -60,13 +60,14 @@ export const HomeScreen: FC = () => {
                     <OneTimeExpenseItem expense={expense} />
                 </Fragment>
             ))}
-            <Link href="/(view)">
+            <Link href="/expenses">
                 <Text>View more</Text>
+                <MaterialIcons name="read-more" size={24} />
             </Link>
 
             <View>
                 <Text>By categories</Text>
-                <Link href="/dateFilter">
+                <Link href="/filter/dateFilters">
                     <MaterialCommunityIcons name="calendar" size={24} />
                 </Link>
                 {Array.from(filteredGroupExpenses.entries()).map(([category, expenses]) => (
@@ -87,7 +88,7 @@ export const HomeScreen: FC = () => {
                         </Text>
                         <Text>Upcoming at {Dates.toFormat(subscription.next)}</Text>
                         <Text>Amount: {subscription.amount}</Text>
-                        <Link href={`/editSubscription/${subscription.id}`}>
+                        <Link href={`/edit/subscription/${subscription.id}`}>
                             <Text>Edit</Text>
                         </Link>
                     </View>

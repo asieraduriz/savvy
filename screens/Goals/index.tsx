@@ -13,7 +13,7 @@ export const GoalsScreen: FC = () => {
       <View>
         <Text>List of goals</Text>
         {goals.map((goal) => (
-          <Card key={goal.id} onEditPress={() => navigate(`/editGoal/${goal.id}`)}>
+          <Card key={goal.id} onEditPress={() => navigate(`/edit/goal/${goal.id}`)}>
             <Text>
               {goal.title} target:{goal.limit}
             </Text>

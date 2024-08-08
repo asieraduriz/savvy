@@ -17,10 +17,9 @@ export default () => {
       }}
     >
       <Tabs.Screen
-        name="(home)"
+        name="index"
         options={{
           title: "Home",
-          headerShown: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome
               size={28}
@@ -32,9 +31,8 @@ export default () => {
         }}
       />
       <Tabs.Screen
-        name="(expenses)"
+        name="expenses"
         options={{
-          headerShown: false,
           title: "Expenses",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
@@ -46,9 +44,8 @@ export default () => {
         }}
       />
       <Tabs.Screen
-        name="(subscriptions)"
+        name="subscriptions"
         options={{
-          headerShown: false,
           title: "Subscriptions",
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="coins" size={24} color={color} />
@@ -56,9 +53,8 @@ export default () => {
         }}
       />
       <Tabs.Screen
-        name="(goals)"
+        name="goals"
         options={{
-          headerShown: false,
           title: "Goals",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons

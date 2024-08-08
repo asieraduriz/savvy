@@ -10,9 +10,9 @@ import {
 
 const ExpensesFilterContext = createContext<
   | {
-      filter: ExpensesFilter;
-      applyFilter: (filter: Partial<ExpensesFilter>) => void;
-    }
+    filter: ExpensesFilter;
+    applyFilter: (filter: Partial<ExpensesFilter>) => void;
+  }
   | undefined
 >(undefined);
 
@@ -35,7 +35,7 @@ export const ExpensesFilterProvider: FC<Props> = ({ children }) => {
 export const useFilter = () => {
   const context = useContext(ExpensesFilterContext);
   if (context === undefined)
-    throw new Error("useFilter must be used within EntriesFilterProvider");
+    throw new Error("useFilter must be used within ExpensesFilterProvider");
 
   return context.filter;
 };
@@ -43,7 +43,7 @@ export const useFilter = () => {
 export const useApplyFilter = () => {
   const context = useContext(ExpensesFilterContext);
   if (context === undefined)
-    throw new Error("useApplyFilter must be used within EntriesFilterProvider");
+    throw new Error("useApplyFilter must be used within ExpensesFilterProvider");
 
   return context.applyFilter;
 };
