@@ -1,6 +1,7 @@
 import { Dates } from "@/datastructures";
 import { Service } from "@/services";
-import { Goal, GoalToCreate } from "@/types";
+import { Transformers } from "@/transformers";
+import { AddGoalFormType, Goal } from "@/types";
 import { randomUUID } from "expo-crypto";
 import {
   createContext,
@@ -16,7 +17,7 @@ interface GoalContextType {
   isLoading: boolean;
   error: Error | null;
   refreshGoals: () => Promise<void>;
-  createGoal: (goal: GoalToCreate) => Promise<void>;
+  createGoal: (goal: AddGoalFormType) => Promise<void>;
   updateGoal: (goal: Goal) => Promise<void>;
   deleteGoal: (id: string) => Promise<void>;
 }
@@ -55,11 +56,13 @@ export const GoalsProvider: React.FC<GoalsProviderProps> = ({
   }, [refreshGoals]);
 
   const createGoal = useCallback(
-    async (goalToCreate: GoalToCreate) => {
+    async (goalToAdd: AddGoalFormType) => {
+
       const goal: Goal = {
         id: randomUUID(),
         created: Dates.Now(),
-        ...goalToCreate
+        ...goalToAdd,
+        status: 'active',
       }
       try {
         const newGoal = await goalService.create(goal);

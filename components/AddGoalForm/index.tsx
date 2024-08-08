@@ -5,7 +5,6 @@ import { AddGoalFormType, addGoalFormSchema } from "@/types";
 import { Defaults } from "@/constants";
 import { Picker } from "@react-native-picker/picker";
 import { Formik, FormikHelpers } from "formik";
-import { Transformers } from "@/transformers";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useAnimateToggle } from "@/hooks";
 import { Pressables } from "../Pressables";
@@ -38,9 +37,7 @@ export const AddGoalForm: FC = () => {
     values: AddGoalFormType,
     { setSubmitting }: FormikHelpers<AddGoalFormType>
   ) => {
-    const newGoal = Transformers.toGoal(values);
-    await createGoal(newGoal);
-
+    await createGoal(values);
     setSubmitting(false);
     triggerAnimate();
   };
