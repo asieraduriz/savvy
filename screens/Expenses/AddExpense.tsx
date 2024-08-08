@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { View } from "@/components/Themed";
-import { Defaults, Forms } from "@/constants";
+import { Defaults } from "@/constants";
+import { Forms } from "@/components";
 
 export const AddExpenseScreen: FC = () => {
   return (
