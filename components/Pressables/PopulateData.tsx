@@ -8,7 +8,7 @@ import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 import { Button } from "react-native";
 
 export const PopulateApp = () => {
-  const { createExpense, createSubscription } = useSpendings();
+  const { createSpending } = useSpendings();
   const { createGoal } = useGoals();
 
   const onPress = async () => {
@@ -47,10 +47,9 @@ export const PopulateApp = () => {
       every: 1,
       interval: Interval.weeks,
     };
-
-    await createExpense(Transformers.toOneTimeExpense(oneTimeExpense1));
-    await createExpense(Transformers.toOneTimeExpense(oneTimeExpense2));
-    await createExpense(Transformers.toOneTimeExpense(oneTimeExpense3));
+    await createSpending(oneTimeExpense1)
+    await createSpending(oneTimeExpense2)
+    await createSpending(oneTimeExpense3)
 
     const subscription1: AddSpendingFormType = {
       title: "Netflix",
@@ -64,13 +63,7 @@ export const PopulateApp = () => {
       categoryIcon: Defaults.Icons[3],
     };
 
-    const sub1 = await createSubscription(
-      Transformers.toSubscription(subscription1)
-    );
-    const sub1Id = sub1?.id;
-    await createExpense(
-      Transformers.toSubscriptionExpense(subscription1, sub1!.start, sub1Id!)
-    );
+    await createSpending(subscription1);
 
     const subscription2: AddSpendingFormType = {
       title: "Kombucha",
@@ -84,31 +77,7 @@ export const PopulateApp = () => {
       categoryIcon: Defaults.Icons[5],
     };
 
-    const sub2 = await createSubscription(
-      Transformers.toSubscription(subscription2)
-    );
-    const sub2Id = sub2?.id;
-    await createExpense(
-      Transformers.toSubscriptionExpense(
-        subscription2,
-        Dates.addDays(sub2!.start, 30),
-        sub2Id!
-      )
-    );
-    await createExpense(
-      Transformers.toSubscriptionExpense(
-        subscription2,
-        Dates.addDays(sub2!.start, 60),
-        sub2Id!
-      )
-    );
-    await createExpense(
-      Transformers.toSubscriptionExpense(
-        subscription2,
-        Dates.addDays(sub2!.start, 90),
-        sub2Id!
-      )
-    );
+    await createSpending(subscription2);
 
     const goal1: AddGoalFormType = {
       title: "Coffee goal",

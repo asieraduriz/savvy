@@ -5,7 +5,6 @@ import { Defaults } from "@/constants";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik, FormikHelpers } from "formik";
-import { Transformers } from "@/transformers";
 import { useAnimateToggle } from "@/hooks";
 import { SubmitSubscriptionButton } from "./SubmitSubscriptionButton";
 import { Pressables } from "../Pressables";
@@ -22,37 +21,10 @@ type Props = {
 
 export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
   const [animate, triggerAnimate] = useAnimateToggle();
-  const { createExpense, createSubscription } = useSpendings();
+  const { createSpending } = useSpendings();
 
-  const onSubmit = async (
-    values: AddSpendingFormType,
-    { setSubmitting }: FormikHelpers<AddSpendingFormType>
-  ) => {
-    if (values.type === "onetime") {
-      await createExpense(Transformers.toOneTimeExpense(values));
-    } else {
-      if (values.pastSubscriptionChargeDates?.length) {
-        const subscription = await createSubscription(
-          Transformers.toSubscription(values)
-        );
-        if (!subscription)
-          throw new Error(
-            `Error adding subscription ${JSON.stringify(values)}`
-          );
-        const subscriptionExpenses = values.pastSubscriptionChargeDates.map(
-          (date) =>
-            Transformers.toSubscriptionExpense(values, date, subscription.id)
-        );
-
-        for (const expense of subscriptionExpenses) {
-          await createExpense(expense);
-        }
-      }
-
-      const subscription = Transformers.toSubscription(values);
-      await createSubscription(subscription);
-    }
-
+  const onSubmit = async (values: AddSpendingFormType, { setSubmitting }: FormikHelpers<AddSpendingFormType>) => {
+    await createSpending(values);
     setSubmitting(false);
     triggerAnimate();
   };

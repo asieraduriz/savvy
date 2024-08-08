@@ -1,9 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { createContext, FC, PropsWithChildren, useCallback, useContext, useEffect, useState } from "react";
 import { randomUUID } from "expo-crypto";
 import { Dates } from "@/datastructures";
 import { Service } from "@/services";
-import { Subscription, SubscriptionToCreate } from "@/types";
-import { Expense, ExpenseToCreate } from "@/types/Expenses/Expense.type";
+import { Subscription } from "@/types";
+import { Expense } from "@/types/Expenses/Expense.type";
+import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
+import { Transformers } from "@/transformers";
 
 interface SpendingsContextType {
   expenses: Expense[];
@@ -11,10 +13,7 @@ interface SpendingsContextType {
   isLoading: boolean;
   error: Error | null;
   refreshSpendings: () => Promise<void>;
-  createExpense: (expense: ExpenseToCreate) => Promise<void>;
-  createSubscription: (
-    subscription: SubscriptionToCreate
-  ) => Promise<Subscription | undefined>;
+  createSpending: (spending: AddSpendingFormType) => Promise<void>;
   updateExpense: (expense: Expense) => Promise<void>;
   updateSubscription: (subscription: Subscription) => Promise<void>;
   deleteExpense: (id: string) => Promise<void>;
@@ -24,18 +23,14 @@ interface SpendingsContextType {
   getNextSubscriptionDates: () => Subscription[];
 }
 
-const Context = React.createContext<SpendingsContextType | null>(null);
+const Context = createContext<SpendingsContextType | null>(null);
 
-type SpendingsProviderProps = React.PropsWithChildren<{
+type SpendingsProviderProps = PropsWithChildren<{
   expenseService: Service<Expense>;
   subscriptionService: Service<Subscription>;
 }>;
 
-export const SpendingsProvider: React.FC<SpendingsProviderProps> = ({
-  children,
-  expenseService,
-  subscriptionService,
-}) => {
+export const SpendingsProvider: FC<SpendingsProviderProps> = ({ children, expenseService, subscriptionService }) => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,9 +59,7 @@ export const SpendingsProvider: React.FC<SpendingsProviderProps> = ({
       setExpenses(fetchedExpenses);
       setSubscriptions(fetchedSubscriptions);
     } catch (err) {
-      setError(
-        err instanceof Error ? err : new Error("An unknown error occurred")
-      );
+      setError(err instanceof Error ? err : new Error("An unknown error occurred"));
     } finally {
       setIsLoading(false);
     }
@@ -76,61 +69,52 @@ export const SpendingsProvider: React.FC<SpendingsProviderProps> = ({
     refreshSpendings();
   }, [refreshSpendings]);
 
-  const createExpense = useCallback(
-    async (expenseToCreate: ExpenseToCreate) => {
+  const createSpending = useCallback(async (spending: AddSpendingFormType) => {
+    if (spending.type === "onetime") {
       const expense: Expense = {
         id: randomUUID(),
         created: Dates.Now(),
-        ...expenseToCreate,
+        ...Transformers.toOneTimeExpense(spending),
       };
 
-      try {
-        const newExpense = await expenseService.create(expense);
-        setExpenses((prevExpenses) =>
-          [...prevExpenses, newExpense].sort(
-            (a, b) => b.when.getTime() - a.when.getTime()
-          )
-        );
-      } catch (err) {
-        setError(
-          err instanceof Error
-            ? err
-            : new Error(
-                `Failed to add expense ${expense.id} ${JSON.stringify(
-                  expense,
-                  null,
-                  4
-                )}`
-              )
-        );
-      }
-    },
-    [expenseService]
-  );
+      const newExpense = await expenseService.create(expense);
+      setExpenses((prevExpenses) => [...prevExpenses, newExpense].sort((a, b) => b.when.getTime() - a.when.getTime()));
+    } else {
+      if (spending.pastSubscriptionChargeDates?.length) {
+        const subscription: Subscription = {
+          id: randomUUID(),
+          created: Dates.Now(),
+          ...Transformers.toSubscription(spending)
+        };
 
-  const createSubscription = useCallback(
-    async (subscriptionToCreate: SubscriptionToCreate) => {
-      const subscription: Subscription = {
-        id: randomUUID(),
-        created: Dates.Now(),
-        ...subscriptionToCreate,
-      };
-
-      try {
         const newSubscription = await subscriptionService.create(subscription);
-        setSubscriptions((prevSubscriptions) => [
-          ...prevSubscriptions,
-          newSubscription,
-        ]);
-        return newSubscription;
-      } catch (err) {
-        setError(
-          err instanceof Error ? err : new Error("Failed to add subscription")
+        setSubscriptions((prevSubscriptions) => [...prevSubscriptions, newSubscription]);
+
+        if (!subscription)
+          throw new Error(
+            `Error adding subscription ${JSON.stringify(spending)}`
+          );
+        const subscriptionExpenses = spending.pastSubscriptionChargeDates.map(
+          (date) =>
+            Transformers.toSubscriptionExpense(spending, date, subscription.id)
         );
+
+        const createdSubscriptionExpenses: Expense[] = [];
+        for (const subscriptionExpense of subscriptionExpenses) {
+          const newExpense = await expenseService.create({
+            id: randomUUID(),
+            created: Dates.Now(),
+            ...subscriptionExpense
+          });
+          createdSubscriptionExpenses.push(newExpense);
+        }
+
+        setExpenses((prevExpenses) => [...prevExpenses, ...createdSubscriptionExpenses].sort((a, b) => b.when.getTime() - a.when.getTime()));
+
       }
-    },
-    [subscriptionService]
-  );
+
+    }
+  }, [expenseService, subscriptionService]);
 
   const updateExpense = useCallback(
     async (updatedExpense: Expense) => {
@@ -138,15 +122,11 @@ export const SpendingsProvider: React.FC<SpendingsProviderProps> = ({
         await expenseService.update(updatedExpense);
         setExpenses((prevExpenses) =>
           prevExpenses
-            .map((expense) =>
-              expense.id === updatedExpense.id ? updatedExpense : expense
-            )
+            .map((expense) => (expense.id === updatedExpense.id ? updatedExpense : expense))
             .sort((a, b) => b.when.getTime() - a.when.getTime())
         );
       } catch (err) {
-        setError(
-          err instanceof Error ? err : new Error("Failed to update expense")
-        );
+        setError(err instanceof Error ? err : new Error("Failed to update expense"));
       }
     },
     [expenseService]
@@ -157,18 +137,10 @@ export const SpendingsProvider: React.FC<SpendingsProviderProps> = ({
       try {
         await subscriptionService.update(updatedSubscription);
         setSubscriptions((prevSubscriptions) =>
-          prevSubscriptions.map((subscription) =>
-            subscription.id === updatedSubscription.id
-              ? updatedSubscription
-              : subscription
-          )
+          prevSubscriptions.map((subscription) => (subscription.id === updatedSubscription.id ? updatedSubscription : subscription))
         );
       } catch (err) {
-        setError(
-          err instanceof Error
-            ? err
-            : new Error("Failed to update subscription")
-        );
+        setError(err instanceof Error ? err : new Error("Failed to update subscription"));
       }
     },
     [subscriptionService]
@@ -179,14 +151,10 @@ export const SpendingsProvider: React.FC<SpendingsProviderProps> = ({
       try {
         await expenseService.delete(id);
         setExpenses((prevExpenses) =>
-          prevExpenses
-            .filter((expense) => expense.id !== id)
-            .sort((a, b) => b.when.getTime() - a.when.getTime())
+          prevExpenses.filter((expense) => expense.id !== id).sort((a, b) => b.when.getTime() - a.when.getTime())
         );
       } catch (err) {
-        setError(
-          err instanceof Error ? err : new Error("Failed to delete expense")
-        );
+        setError(err instanceof Error ? err : new Error("Failed to delete expense"));
       }
     },
     [expenseService]
@@ -196,24 +164,15 @@ export const SpendingsProvider: React.FC<SpendingsProviderProps> = ({
     async (id: string) => {
       try {
         await subscriptionService.delete(id);
-        setSubscriptions((prevSubscriptions) =>
-          prevSubscriptions.filter((subscription) => subscription.id !== id)
-        );
+        setSubscriptions((prevSubscriptions) => prevSubscriptions.filter((subscription) => subscription.id !== id));
       } catch (err) {
-        setError(
-          err instanceof Error
-            ? err
-            : new Error("Failed to delete subscription")
-        );
+        setError(err instanceof Error ? err : new Error("Failed to delete subscription"));
       }
     },
     [subscriptionService]
   );
 
-  const getRecentExpenses = useCallback(
-    (): Expense[] => expenses.slice(0, 5),
-    [expenses]
-  );
+  const getRecentExpenses = useCallback((): Expense[] => expenses.slice(0, 5), [expenses]);
   const getExpensesByCategory = useCallback((): Map<string, Expense[]> => {
     const categoryMap = new Map<string, Expense[]>();
 
@@ -247,8 +206,7 @@ export const SpendingsProvider: React.FC<SpendingsProviderProps> = ({
     isLoading,
     error,
     refreshSpendings,
-    createExpense,
-    createSubscription,
+    createSpending,
     updateExpense,
     updateSubscription,
     deleteExpense,
