@@ -1,7 +1,11 @@
-import { ExpenseToAdd, OneTimeExpenseToCreate } from "@/types";
+import { OneTimeExpenseToCreate } from "@/types/Expenses/Expense.type";
+import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 
-export const toOneTimeExpense = (expenseToAdd: ExpenseToAdd): OneTimeExpenseToCreate => {
-  const { title, amount, when, category, categoryColor, categoryIcon } = expenseToAdd;
+export const toOneTimeExpense = (
+  expenseToAdd: AddSpendingFormType
+): OneTimeExpenseToCreate => {
+  const { title, amount, when, category, categoryColor, categoryIcon } =
+    expenseToAdd;
 
   return {
     type: "onetime",

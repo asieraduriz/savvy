@@ -1,6 +1,6 @@
 import { Dates } from "@/datastructures";
 import { Service } from "@/services";
-import { Expense, ExpenseToCreate } from "@/types";
+import { Expense, ExpenseToCreate } from "@/types/Expenses/Expense.type";
 import { randomUUID } from "expo-crypto";
 import {
   createContext,
@@ -62,7 +62,7 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({
       const expense: Expense = {
         id: randomUUID(),
         created: Dates.Now(),
-        ...expenseToCreate
+        ...expenseToCreate,
       };
 
       try {
@@ -77,12 +77,12 @@ export const ExpensesProvider: React.FC<ExpensesProviderProps> = ({
           err instanceof Error
             ? err
             : new Error(
-              `Failed to add expense ${expense.id} ${JSON.stringify(
-                expense,
-                null,
-                4
-              )}`
-            )
+                `Failed to add expense ${expense.id} ${JSON.stringify(
+                  expense,
+                  null,
+                  4
+                )}`
+              )
         );
       }
     },

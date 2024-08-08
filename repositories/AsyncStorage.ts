@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Expense, Goal, IRepository, Subscription, SubscriptionStatus } from "@/types";
+import { Goal, IRepository, Subscription, SubscriptionStatus } from "@/types";
+import { Expense } from "@/types/Expenses/Expense.type";
 
 export class AsyncStorageExpenseRepository implements IRepository<Expense> {
   private readonly STORAGE_KEY = "expenses";
@@ -51,7 +52,8 @@ export class AsyncStorageExpenseRepository implements IRepository<Expense> {
 }
 
 export class AsyncStorageSubscriptionRepository
-  implements IRepository<Subscription> {
+  implements IRepository<Subscription>
+{
   private readonly STORAGE_KEY = "subscriptions";
 
   private async getSubscriptions(): Promise<Subscription[]> {
@@ -106,8 +108,15 @@ export class AsyncStorageSubscriptionRepository
       (subscription) => subscription.id === id
     );
 
-    if (!subscriptionToUpdate) { throw new Error(`AsyncStorage<Subscription> delete: Subscription with id ${id} not found!`); }
-    await this.update({ ...subscriptionToUpdate, status: SubscriptionStatus.archived });
+    if (!subscriptionToUpdate) {
+      throw new Error(
+        `AsyncStorage<Subscription> delete: Subscription with id ${id} not found!`
+      );
+    }
+    await this.update({
+      ...subscriptionToUpdate,
+      status: SubscriptionStatus.archived,
+    });
   }
 }
 
@@ -151,7 +160,11 @@ export class AsyncStorageGoalRepository implements IRepository<Goal> {
   async delete(id: string): Promise<void> {
     const goals = await this.getgoals();
     const goalToUpdate = goals.find((goal) => goal.id === id);
-    if (!goalToUpdate) { throw new Error(`AsyncStorage<Subscription> delete: Subscription with id ${id} not found!`); }
-    await this.update({ ...goalToUpdate, status: 'archived' });
+    if (!goalToUpdate) {
+      throw new Error(
+        `AsyncStorage<Subscription> delete: Subscription with id ${id} not found!`
+      );
+    }
+    await this.update({ ...goalToUpdate, status: "archived" });
   }
 }

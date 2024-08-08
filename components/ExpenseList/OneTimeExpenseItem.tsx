@@ -1,24 +1,26 @@
 import { FC, PropsWithChildren } from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "../Themed";
-import { Expense } from "@/types";
 import { useExpenses } from "@/contexts";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Card } from "../Card";
+import { Expense } from "@/types/Expenses/Expense.type";
 
 type Props = { expense: Expense };
 
-const Circle: React.FC<PropsWithChildren<{ backgroundColor: Expense["categoryColor"] }>> = ({ backgroundColor, children }) => {
+const Circle: React.FC<
+  PropsWithChildren<{ backgroundColor: Expense["categoryColor"] }>
+> = ({ backgroundColor, children }) => {
   return (
-    <View style={{
-      flexDirection: 'row',
-      alignItems: 'center',
-    }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+      }}
+    >
       <View style={[styles.circle, { backgroundColor }]} />
-      <View >
-        {children}
-      </View>
+      <View>{children}</View>
     </View>
   );
 };
@@ -29,10 +31,23 @@ export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
   const router = useRouter();
 
   return (
-    <Card onEditPress={() => router.navigate(`/edit/expense/${id}`)} onDeletePress={() => deleteExpense(id)}>
+    <Card
+      onEditPress={() => router.navigate(`/edit/expense/${id}`)}
+      onDeletePress={() => deleteExpense(id)}
+    >
       <Circle backgroundColor={categoryColor}>
-        <View style={{ display: 'flex', flexDirection: 'row', alignContent: 'space-around', gap: 10, justifyContent: 'center' }}>
-          <Text style={styles.titleText}>{title} {amount}</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignContent: "space-around",
+            gap: 10,
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.titleText}>
+            {title} {amount}
+          </Text>
           <MaterialCommunityIcons name={categoryIcon} size={32} />
           <Text style={styles.categoryText}>{category}</Text>
         </View>
@@ -46,9 +61,9 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10, // Half of the width/height to make it a circle
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
-    marginRight: 20
+    marginRight: 20,
   },
   categoryIcon: {
     width: 20,

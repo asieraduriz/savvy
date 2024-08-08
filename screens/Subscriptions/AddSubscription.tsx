@@ -1,13 +1,11 @@
-
 import { FC } from "react";
-import { AddExpenseForm } from "@/components/AddExpenseForm";
 import { View } from "@/components/Themed";
-import { Defaults } from "@/constants";
+import { Defaults, Forms } from "@/constants";
 
 export const AddSubscriptionScreen: FC = () => {
-    return (
-        <View>
-            <AddExpenseForm initialExpense={Defaults.Add.Subscription} />
-        </View>
-    );
+  return (
+    <View>
+      <Forms.AddSpending initialExpense={Defaults.Add.Subscription} />
+    </View>
+  );
 };

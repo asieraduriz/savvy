@@ -3,7 +3,8 @@ import {
   AsyncStorageGoalRepository,
   AsyncStorageSubscriptionRepository,
 } from "@/repositories";
-import { Expense, Goal, IRepository, Subscription } from "@/types";
+import { Goal, IRepository, Subscription } from "@/types";
+import { Expense } from "@/types/Expenses/Expense.type";
 
 export class Service<T> {
   constructor(private repository: IRepository<T>) {}

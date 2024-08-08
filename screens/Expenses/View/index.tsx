@@ -4,7 +4,7 @@ import { EraseAll } from "@/components/Pressables/EraseAll";
 import { Text, View } from "@/components/Themed";
 import { useExpenses, useFilter } from "@/contexts";
 import { Dates } from "@/datastructures";
-import { Expense } from "@/types";
+import { Expense } from "@/types/Expenses/Expense.type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { FC, useMemo } from "react";
@@ -14,7 +14,10 @@ export const ExpensesScreen: FC = () => {
   const { expenses } = useExpenses();
   const filter = useFilter();
 
-  const expenseTitles = useMemo(() => [...new Set(expenses.map((e) => e.title))], [expenses]);
+  const expenseTitles = useMemo(
+    () => [...new Set(expenses.map((e) => e.title))],
+    [expenses]
+  );
 
   const filteredExpenses = useMemo(() => {
     const { titleQuery, start, end } = filter;

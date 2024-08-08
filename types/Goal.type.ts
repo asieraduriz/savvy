@@ -1,5 +1,5 @@
 import { Category } from "./Category.type";
-import { Expense } from "./Expense.type";
+import { Expense } from "./Expenses/Expense.type";
 
 type TitleLinkedGoal = {
   type: "title-goal";
@@ -19,4 +19,5 @@ export type Goal = {
   status: "active" | "archived";
 } & (TitleLinkedGoal | CategoryLinkedGoal);
 
-export type GoalToCreate = Omit<Goal, 'id' | 'created'> & (TitleLinkedGoal | CategoryLinkedGoal);
+export type GoalToCreate = Omit<Goal, "id" | "created"> &
+  (TitleLinkedGoal | CategoryLinkedGoal);

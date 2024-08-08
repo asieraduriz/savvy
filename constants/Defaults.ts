@@ -1,32 +1,43 @@
 import { Dates } from "@/datastructures";
-import { ExpenseToAdd, ExpensesFilter, GoalToAdd, Interval } from "@/types";
+import { ExpensesFilter, AddGoalFormType, Interval } from "@/types";
+import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 
-const Icons = ['coffee-to-go', 'shopping', 'beach', 'food-drumstick', 'glass-cocktail', 'airplane-takeoff', 'volleyball', 'book-open-page-variant', 'hiking']
+const Icons = [
+  "coffee-to-go",
+  "shopping",
+  "beach",
+  "food-drumstick",
+  "glass-cocktail",
+  "airplane-takeoff",
+  "volleyball",
+  "book-open-page-variant",
+  "hiking",
+];
 
 const now = Dates.Now();
-const addExpenseFormStarter: ExpenseToAdd = {
+const addExpenseFormStarter: AddSpendingFormType = {
   categoryColor: "white",
   categoryIcon: Icons[0],
   when: now,
-  type: 'onetime',
+  type: "onetime",
   every: 1,
-  interval: Interval.weeks
+  interval: Interval.weeks,
 };
 
-const addSubscriptionFormStarter: ExpenseToAdd = {
+const addSubscriptionFormStarter: AddSpendingFormType = {
   categoryColor: "white",
   categoryIcon: Icons[0],
   when: now,
-  type: 'subscription',
+  type: "subscription",
   every: 1,
-  interval: Interval.weeks
+  interval: Interval.weeks,
 };
-const addGoalFormStarter: GoalToAdd = {
-  type: 'title-goal',
+const addGoalFormStarter: AddGoalFormType = {
+  type: "title-goal",
   limit: 0,
-  title: '',
-  link: ''
-}
+  title: "",
+  link: "",
+};
 
 const starterFilter: ExpensesFilter = {
   start: undefined,
