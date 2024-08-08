@@ -80,16 +80,16 @@ export const SpendingsProvider: FC<SpendingsProviderProps> = ({ children, expens
       const newExpense = await expenseService.create(expense);
       setExpenses((prevExpenses) => [...prevExpenses, newExpense].sort((a, b) => b.when.getTime() - a.when.getTime()));
     } else {
+      const subscription: Subscription = {
+        id: randomUUID(),
+        created: Dates.Now(),
+        ...Transformers.toSubscription(spending)
+      };
+
+      const newSubscription = await subscriptionService.create(subscription);
+      setSubscriptions((prevSubscriptions) => [...prevSubscriptions, newSubscription]);
+
       if (spending.pastSubscriptionChargeDates?.length) {
-        const subscription: Subscription = {
-          id: randomUUID(),
-          created: Dates.Now(),
-          ...Transformers.toSubscription(spending)
-        };
-
-        const newSubscription = await subscriptionService.create(subscription);
-        setSubscriptions((prevSubscriptions) => [...prevSubscriptions, newSubscription]);
-
         if (!subscription)
           throw new Error(
             `Error adding subscription ${JSON.stringify(spending)}`

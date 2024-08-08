@@ -2,7 +2,6 @@ import { Defaults } from "@/constants";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { Dates } from "@/datastructures";
-import { Transformers } from "@/transformers";
 import { AddGoalFormType, Interval } from "@/types";
 import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 import { Button } from "react-native";
@@ -47,9 +46,9 @@ export const PopulateApp = () => {
       every: 1,
       interval: Interval.weeks,
     };
-    await createSpending(oneTimeExpense1)
-    await createSpending(oneTimeExpense2)
-    await createSpending(oneTimeExpense3)
+    await createSpending(oneTimeExpense1);
+    await createSpending(oneTimeExpense2);
+    await createSpending(oneTimeExpense3);
 
     const subscription1: AddSpendingFormType = {
       title: "Netflix",
@@ -61,6 +60,7 @@ export const PopulateApp = () => {
       category: "Leisure",
       categoryColor: "green",
       categoryIcon: Defaults.Icons[3],
+      pastSubscriptionChargeDates: [Dates.startOfMonth(Dates.Now())],
     };
 
     await createSpending(subscription1);
@@ -75,6 +75,13 @@ export const PopulateApp = () => {
       category: "Health",
       categoryColor: "white",
       categoryIcon: Defaults.Icons[5],
+      pastSubscriptionChargeDates: [
+        Dates.startOfMonth(Dates.subDays(Dates.Now(), 84)),
+        Dates.startOfMonth(Dates.subDays(Dates.Now(), 63)),
+        Dates.startOfMonth(Dates.subDays(Dates.Now(), 42)),
+        Dates.startOfMonth(Dates.subDays(Dates.Now(), 21)),
+        Dates.startOfMonth(Dates.Now()),
+      ],
     };
 
     await createSpending(subscription2);
@@ -93,8 +100,8 @@ export const PopulateApp = () => {
       link: oneTimeExpense1.category!,
     };
 
-    await createGoal(Transformers.toGoal(goal1));
-    await createGoal(Transformers.toGoal(goal2));
+    await createGoal(goal1);
+    await createGoal(goal2);
   };
 
   return <Button title="Add some data" onPress={onPress} />;
