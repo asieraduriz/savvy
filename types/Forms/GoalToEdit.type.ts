@@ -1,20 +1,10 @@
-import { Category } from "../Category.type";
-import { Expense } from "../Expense.type";
+import * as Yup from "yup";
 
-type TitleLinkedGoal = {
-  type: "title-goal";
-  link: Expense["title"];
-};
-
-type CategoryLinkedGoal = {
-  type: "category-goal";
-  link: Category["name"];
-};
-
-export type Goal = {
-  id: string;
-  created: Date;
-  title: string;
-  limit: number;
-  status: "active" | "archived";
-} & (TitleLinkedGoal | CategoryLinkedGoal);
+export const goalToEditSchema = Yup.object().shape({
+  title: Yup.string().required("Title is required"),
+  limit: Yup.number()
+    .required("Limit is required")
+    .positive("Limit must be positive"),
+  type: Yup.string(),
+  link: Yup.string().required("Link is required"),
+});
