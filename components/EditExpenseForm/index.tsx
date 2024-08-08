@@ -7,9 +7,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pickers } from "../Pickers";
 import { Pressables } from "../Pressables";
 import { useAnimateToggle } from "@/hooks";
-import { useExpenses } from "@/contexts";
 import { Expense } from "@/types/Expenses/Expense.type";
 import { expenseToEditSchema } from "@/types/Expenses/ExpenseToEdit.type";
+import { useSpendings } from "@/contexts/Spendings/Provider";
 
 type Props = {
   expense: Expense;
@@ -17,7 +17,7 @@ type Props = {
 
 export const EditExpenseForm = ({ expense }: Props) => {
   const [animate, triggerAnimate] = useAnimateToggle();
-  const { updateExpense } = useExpenses();
+  const { updateExpense } = useSpendings();
 
   const onSubmit = async (
     values: Expense,

@@ -1,6 +1,5 @@
-import { ExpensesProvider } from "@/contexts";
 import { GoalsProvider } from "@/contexts/Goals/Provider";
-import { SubscriptionsProvider } from "@/contexts/Subscriptions/Provider";
+import { SpendingsProvider } from "@/contexts/Spendings/Provider";
 import { ServiceFactory } from "@/services";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
@@ -58,27 +57,47 @@ function RootLayoutNav() {
 
   return (
     <SafeAreaProvider>
-      <SubscriptionsProvider subscriptionService={subscriptions}>
-        <ExpensesProvider expenseService={expenses}>
-          <GoalsProvider goalService={goals}>
-            <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      <SpendingsProvider
+        expenseService={expenses}
+        subscriptionService={subscriptions}
+      >
+        <GoalsProvider goalService={goals}>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-                <Stack.Screen name="add/expense" options={{ headerTitle: 'Add expense' }} />
-                <Stack.Screen name="edit/expense/[id]" options={{ headerTitle: 'Edit expense' }} />
+              <Stack.Screen
+                name="add/expense"
+                options={{ headerTitle: "Add expense" }}
+              />
+              <Stack.Screen
+                name="edit/expense/[id]"
+                options={{ headerTitle: "Edit expense" }}
+              />
 
-                <Stack.Screen name="add/subscription" options={{ headerTitle: 'Add subscription' }} />
-                <Stack.Screen name="edit/subscription/[id]" options={{ headerTitle: 'Edit subscription' }} />
+              <Stack.Screen
+                name="add/subscription"
+                options={{ headerTitle: "Add subscription" }}
+              />
+              <Stack.Screen
+                name="edit/subscription/[id]"
+                options={{ headerTitle: "Edit subscription" }}
+              />
 
-                <Stack.Screen name="add/goal" options={{ headerTitle: 'Add goal' }} />
-                <Stack.Screen name="edit/goal/[id]" options={{ headerTitle: 'Edit goal' }} />
-              </Stack>
-            </ThemeProvider>
-          </GoalsProvider>
-        </ExpensesProvider>
-      </SubscriptionsProvider>
+              <Stack.Screen
+                name="add/goal"
+                options={{ headerTitle: "Add goal" }}
+              />
+              <Stack.Screen
+                name="edit/goal/[id]"
+                options={{ headerTitle: "Edit goal" }}
+              />
+            </Stack>
+          </ThemeProvider>
+        </GoalsProvider>
+      </SpendingsProvider>
     </SafeAreaProvider>
   );
 }

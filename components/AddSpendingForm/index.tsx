@@ -5,10 +5,8 @@ import { Defaults } from "@/constants";
 import { Picker } from "@react-native-picker/picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik, FormikHelpers } from "formik";
-import { useExpenses } from "@/contexts";
 import { Transformers } from "@/transformers";
 import { useAnimateToggle } from "@/hooks";
-import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
 import { SubmitSubscriptionButton } from "./SubmitSubscriptionButton";
 import { Pressables } from "../Pressables";
 import { FC } from "react";
@@ -16,6 +14,7 @@ import {
   AddSpendingFormType,
   addSpendingFormSchema,
 } from "@/types/Forms/AddSpendingForm.type";
+import { useSpendings } from "@/contexts/Spendings/Provider";
 
 type Props = {
   initialExpense: AddSpendingFormType;
@@ -23,8 +22,7 @@ type Props = {
 
 export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
   const [animate, triggerAnimate] = useAnimateToggle();
-  const { createExpense } = useExpenses();
-  const { createSubscription } = useSubscriptions();
+  const { createExpense, createSubscription } = useSpendings();
 
   const onSubmit = async (
     values: AddSpendingFormType,

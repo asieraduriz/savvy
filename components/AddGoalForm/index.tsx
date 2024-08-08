@@ -3,20 +3,20 @@ import { Text, TextInput, View } from "../Themed";
 import { StyleSheet } from "react-native";
 import { AddGoalFormType, addGoalFormSchema } from "@/types";
 import { Defaults } from "@/constants";
-import { useExpenses } from "@/contexts";
 import { Picker } from "@react-native-picker/picker";
 import { Formik, FormikHelpers } from "formik";
 import { Transformers } from "@/transformers";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useAnimateToggle } from "@/hooks";
 import { Pressables } from "../Pressables";
+import { useSpendings } from "@/contexts/Spendings/Provider";
 
 const toNumber = (input: string, fallback: number) =>
   Number.isNaN(Number(input)) ? fallback : Number(input);
 
 export const AddGoalForm: FC = () => {
   const { createGoal } = useGoals();
-  const { expenses } = useExpenses();
+  const { expenses } = useSpendings();
 
   const [animate, triggerAnimate] = useAnimateToggle();
 

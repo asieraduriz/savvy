@@ -1,11 +1,11 @@
 import { FC, PropsWithChildren } from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "../Themed";
-import { useExpenses } from "@/contexts";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Card } from "../Card";
 import { Expense } from "@/types/Expenses/Expense.type";
+import { useSpendings } from "@/contexts/Spendings/Provider";
 
 type Props = { expense: Expense };
 
@@ -26,7 +26,7 @@ const Circle: React.FC<
 };
 
 export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
-  const { deleteExpense } = useExpenses();
+  const { deleteExpense } = useSpendings();
   const { id, amount, category, categoryIcon, categoryColor, title } = expense;
   const router = useRouter();
 

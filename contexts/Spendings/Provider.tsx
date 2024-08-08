@@ -268,3 +268,21 @@ export const useSpendings = () => {
   }
   return context;
 };
+
+export const useRecentExpenses = () => {
+  const context = useContext(Context);
+  if (!context) {
+    throw new Error("useExpenses must be used within an useRecentExpenses");
+  }
+
+  const recentExpenses = context.getRecentExpenses();
+  return recentExpenses;
+};
+
+export const useGroupedExpenses = () => {
+  const context = useContext(Context);
+  if (!context) {
+    throw new Error("useExpenses must be used within an useGroupedExpenses");
+  }
+  return context.getExpensesByCategory();
+};

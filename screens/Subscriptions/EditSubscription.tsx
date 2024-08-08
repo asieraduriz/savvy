@@ -1,6 +1,6 @@
 import { EditSubscriptionForm } from "@/components/EditSubscrptionForm";
 import { View } from "@/components/Themed";
-import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
+import { useSpendings } from "@/contexts/Spendings/Provider";
 import { FC } from "react";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const EditSubscriptionScreen: FC<Props> = ({ id }) => {
-  const { subscriptions } = useSubscriptions();
+  const { subscriptions } = useSpendings();
   const subscription = subscriptions.find((sub) => sub.id === id);
 
   if (!subscription) throw new Error(`No subscription with id ${id} found`);

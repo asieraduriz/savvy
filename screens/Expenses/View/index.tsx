@@ -2,7 +2,8 @@ import { OneTimeExpenseItem } from "@/components/ExpenseList/OneTimeExpenseItem"
 import { TitleSearch } from "@/components/ExpenseList/TitleSearch";
 import { EraseAll } from "@/components/Pressables/EraseAll";
 import { Text, View } from "@/components/Themed";
-import { useExpenses, useFilter } from "@/contexts";
+import { useFilter } from "@/contexts";
+import { useSpendings } from "@/contexts/Spendings/Provider";
 import { Dates } from "@/datastructures";
 import { Expense } from "@/types/Expenses/Expense.type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -11,7 +12,7 @@ import { FC, useMemo } from "react";
 import { FlatList } from "react-native";
 
 export const ExpensesScreen: FC = () => {
-  const { expenses } = useExpenses();
+  const { expenses } = useSpendings();
   const filter = useFilter();
 
   const expenseTitles = useMemo(

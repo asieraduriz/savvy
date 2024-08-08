@@ -1,7 +1,6 @@
 import { Defaults } from "@/constants";
-import { useExpenses } from "@/contexts";
 import { useGoals } from "@/contexts/Goals/Provider";
-import { useSubscriptions } from "@/contexts/Subscriptions/Provider";
+import { useSpendings } from "@/contexts/Spendings/Provider";
 import { Dates } from "@/datastructures";
 import { Transformers } from "@/transformers";
 import { AddGoalFormType, Interval } from "@/types";
@@ -9,8 +8,7 @@ import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 import { Button } from "react-native";
 
 export const PopulateApp = () => {
-  const { createExpense } = useExpenses();
-  const { createSubscription } = useSubscriptions();
+  const { createExpense, createSubscription } = useSpendings();
   const { createGoal } = useGoals();
 
   const onPress = async () => {
