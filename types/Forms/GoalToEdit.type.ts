@@ -1,5 +1,5 @@
-import { Category } from "./Category.type";
-import { Expense } from "./Expense.type";
+import { Category } from "../Category.type";
+import { Expense } from "../Expense.type";
 
 type TitleLinkedGoal = {
   type: "title-goal";
@@ -18,4 +18,3 @@ export type Goal = {
   limit: number;
   status: "active" | "archived";
 } & (TitleLinkedGoal | CategoryLinkedGoal);
-

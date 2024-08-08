@@ -1,7 +1,7 @@
-import { Expense } from "../Expenses/Expense.type";
+import { Expense } from "../Expense.type";
 import { Interval } from "../Interval.type";
-import { Subscription } from "../Subscription.type";
 import * as Yup from "yup";
+import { Subscription } from "../Subscription.type";
 
 export type AddSpendingFormType = {
   /* Expense properties */

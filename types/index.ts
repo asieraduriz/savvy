@@ -1,4 +1,5 @@
 export * from "./Category.type";
+export * from "./Expense.type";
 export * from "./Filter.type";
 export * from "./Goal.type";
 export * from "./Forms/AddGoalForm.type";

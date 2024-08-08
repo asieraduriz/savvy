@@ -23,7 +23,7 @@ export const SubmitSubscriptionButton: FC<Props> = ({ animate }) => {
       );
       setFieldValue("pastSubscriptionChargeDates", occurrences);
     }
-  }, [values.when, values.every, values.interval]);
+  }, [values.when, values.every, values.interval, setFieldValue]);
 
   return (
     <View>

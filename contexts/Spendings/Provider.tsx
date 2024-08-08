@@ -3,7 +3,7 @@ import { randomUUID } from "expo-crypto";
 import { Dates } from "@/datastructures";
 import { Service } from "@/services";
 import { Subscription } from "@/types";
-import { Expense } from "@/types/Expenses/Expense.type";
+import { Expense } from "@/types/Expense.type";
 import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 import { Transformers } from "@/transformers";
 

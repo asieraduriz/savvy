@@ -5,7 +5,7 @@ import { Text, View } from "@/components/Themed";
 import { useFilter } from "@/contexts";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { Dates } from "@/datastructures";
-import { Expense } from "@/types/Expenses/Expense.type";
+import { Expense } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { FC, useMemo } from "react";

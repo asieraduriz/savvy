@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { Expense } from "./Expense.type";
+import { Expense } from "../Expense.type";
 
 export type ExpenseToEdit = {
   title?: Expense["title"];

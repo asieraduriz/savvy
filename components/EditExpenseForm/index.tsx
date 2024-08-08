@@ -7,9 +7,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pickers } from "../Pickers";
 import { Pressables } from "../Pressables";
 import { useAnimateToggle } from "@/hooks";
-import { Expense } from "@/types/Expenses/Expense.type";
-import { expenseToEditSchema } from "@/types/Expenses/ExpenseToEdit.type";
+import { Expense } from "@/types/Expense.type";
 import { useSpendings } from "@/contexts/Spendings/Provider";
+import { expenseToEditSchema } from "@/types/Forms/ExpenseToEdit.type";
 
 type Props = {
   expense: Expense;

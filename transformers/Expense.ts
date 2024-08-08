@@ -1,4 +1,4 @@
-import { OneTimeExpenseToCreate } from "@/types/Expenses/Expense.type";
+import { OneTimeExpenseToCreate } from "@/types";
 import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 
 export const toOneTimeExpense = (

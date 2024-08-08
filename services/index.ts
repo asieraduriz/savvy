@@ -3,11 +3,10 @@ import {
   AsyncStorageGoalRepository,
   AsyncStorageSubscriptionRepository,
 } from "@/repositories";
-import { Goal, IRepository, Subscription } from "@/types";
-import { Expense } from "@/types/Expenses/Expense.type";
+import { Expense, Goal, IRepository, Subscription } from "@/types";
 
 export class Service<T> {
-  constructor(private repository: IRepository<T>) {}
+  constructor(private repository: IRepository<T>) { }
 
   async readAll(): Promise<T[]> {
     return this.repository.readAll();

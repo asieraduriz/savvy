@@ -1,4 +1,4 @@
-import { EditSubscriptionForm } from "@/components/EditSubscrptionForm";
+import { EditSubscriptionForm } from "@/components/EditSubscriptionForm";
 import { View } from "@/components/Themed";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { FC } from "react";

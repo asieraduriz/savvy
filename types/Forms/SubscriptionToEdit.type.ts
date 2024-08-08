@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { Interval } from "../Interval.type";
 import { Subscription } from "../Subscription.type";
 
 export type SubscriptionToEdit = {
@@ -7,16 +8,21 @@ export type SubscriptionToEdit = {
     category?: Subscription["category"];
     categoryIcon?: Subscription["categoryIcon"];
     categoryColor?: Subscription["categoryColor"];
+    start?: Date;
+    every?: number;
+    interval?: Interval;
 };
 
-export const expenseToEditSchema = Yup.object().shape({
+export const subscriptionToEditSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
     amount: Yup.number()
         .required("Amount is required")
-        .positive("Amount must be a positive number")
-        .typeError("Amount must be a number"),
+        .positive("Amount must be a positive number"),
     category: Yup.string().required("Category is required"),
     categoryIcon: Yup.string(),
     categoryColor: Yup.string(),
-    when: Yup.date(),
+    start: Yup.date().required("Date is required"),
+    every: Yup.number().required("Every is required")
+        .positive("Every must be a positive number"),
+    Interval: Yup.string().oneOf(Object.values(Interval))
 });

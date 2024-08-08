@@ -1,5 +1,5 @@
 import { Category } from "../Category.type";
-import { Expense } from "../Expenses/Expense.type";
+import { Expense } from "../Expense.type";
 import { Goal } from "../Goal.type";
 import * as Yup from "yup";
 

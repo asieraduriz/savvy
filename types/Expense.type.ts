@@ -1,5 +1,5 @@
-import { Category } from "../Category.type";
-import { Subscription } from "../Subscription.type";
+import { Category } from "./Category.type";
+import { Subscription } from "./Subscription.type";
 
 export type ExpenseBase = {
   id: string;

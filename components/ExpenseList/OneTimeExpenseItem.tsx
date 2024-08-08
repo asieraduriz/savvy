@@ -4,7 +4,7 @@ import { Text, View } from "../Themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { Card } from "../Card";
-import { Expense } from "@/types/Expenses/Expense.type";
+import { Expense } from "@/types/Expense.type";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 
 type Props = { expense: Expense };

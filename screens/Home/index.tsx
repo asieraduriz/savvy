@@ -57,8 +57,8 @@ export const HomeScreen: FC = () => {
 
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
-      <PopulateApp />
-      <EraseAll />
+      {/* <PopulateApp />
+      <EraseAll /> */}
       <Pressable onPress={() => navigate("/add/expense")}>
         <Text>New one time expense</Text>
       </Pressable>
