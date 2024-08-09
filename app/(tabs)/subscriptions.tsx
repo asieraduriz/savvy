@@ -1,3 +1,6 @@
+import { ExpensesFilterProvider } from '@/contexts';
 import { Screens } from '@/screens';
 
-export default () => <Screens.View.Subscriptions />
+export default () => <ExpensesFilterProvider>
+    <Screens.View.Subscriptions />
+</ExpensesFilterProvider>

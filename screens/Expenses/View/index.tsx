@@ -1,17 +1,20 @@
 import { OneTimeExpenseItem } from "@/components/ExpenseList/OneTimeExpenseItem";
 import { TitleSearch } from "@/components/ExpenseList/TitleSearch";
+import { DateFilter } from "@/components/Filters/DateFilter";
+import { FullScreenModal } from "@/components/Modal";
 import { EraseAll } from "@/components/Pressables/EraseAll";
 import { Text, View } from "@/components/Themed";
 import { useFilter } from "@/contexts";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { Dates } from "@/datastructures";
+import { useToggle } from "@/hooks";
 import { Expense } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
 import { FC, useMemo } from "react";
-import { FlatList } from "react-native";
+import { FlatList, Pressable } from "react-native";
 
 export const ExpensesScreen: FC = () => {
+  const [showDateFilter, dateFilterToggle] = useToggle(false);
   const { expenses } = useSpendings();
   const filter = useFilter();
 
@@ -51,12 +54,9 @@ export const ExpensesScreen: FC = () => {
 
   const renderHeader = () => (
     <View>
-      <Link href="/filter/filters">
-        <MaterialCommunityIcons name="filter-variant" size={24} color="black" />
-      </Link>
-      <Link href="/filter/dateFilters">
-        <MaterialCommunityIcons name="calendar" size={24} color="black" />
-      </Link>
+      <Pressable onPress={dateFilterToggle.on}>
+        <MaterialCommunityIcons name="calendar" size={24} />
+      </Pressable>
     </View>
   );
 
@@ -82,6 +82,9 @@ export const ExpensesScreen: FC = () => {
         ListHeaderComponent={renderHeader}
         stickyHeaderIndices={[0]}
       />
+      <FullScreenModal visible={showDateFilter} onClose={dateFilterToggle.off}>
+        <DateFilter />
+      </FullScreenModal>
     </View>
   );
 };

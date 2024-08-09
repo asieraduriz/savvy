@@ -12,9 +12,6 @@ import { EditExpenseScreen } from "./Expenses/EditExpense";
 import { EditSubscriptionScreen } from "./Subscriptions/EditSubscription";
 import { EditGoalScreen } from "./Goals/Edit";
 
-import { DateFilterScreen } from "./Expenses/View/DateFilter";
-import { FilterScreen } from "./Expenses/View/Filter";
-
 export const Screens = {
   View: {
     Home: HomeScreen,
@@ -33,7 +30,5 @@ export const Screens = {
     Subscription: EditSubscriptionScreen,
     Goal: EditGoalScreen,
   },
-  Filter: FilterScreen,
-  DateFilterScreen: DateFilterScreen,
 };
 
