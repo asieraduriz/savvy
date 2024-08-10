@@ -1,9 +1,10 @@
 import {
+  AsyncStorageCategoryRepository,
   AsyncStorageExpenseRepository,
   AsyncStorageGoalRepository,
   AsyncStorageSubscriptionRepository,
 } from "@/repositories";
-import { Expense, Goal, IRepository, Subscription } from "@/types";
+import { Category, Expense, Goal, IRepository, Subscription } from "@/types";
 
 export class Service<T> {
   constructor(private repository: IRepository<T>) { }
@@ -37,6 +38,7 @@ export class ServiceFactory {
         new AsyncStorageSubscriptionRepository()
       ),
       goals: new Service<Goal>(new AsyncStorageGoalRepository()),
+      categories: new Service<Category>(new AsyncStorageCategoryRepository())
     };
   }
 }

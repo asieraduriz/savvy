@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Goal, IRepository, Subscription, SubscriptionStatus } from "@/types";
+import { Category, Goal, IRepository, Subscription, SubscriptionStatus } from "@/types";
 import { Expense } from "@/types/Expense.type";
 
 export class AsyncStorageExpenseRepository implements IRepository<Expense> {
@@ -122,42 +122,42 @@ export class AsyncStorageSubscriptionRepository
 export class AsyncStorageGoalRepository implements IRepository<Goal> {
   private readonly STORAGE_KEY = "goals";
 
-  private async getgoals(): Promise<Goal[]> {
+  private async getGoals(): Promise<Goal[]> {
     const goalsJson = await AsyncStorage.getItem(this.STORAGE_KEY);
     const goals: Goal[] = goalsJson ? JSON.parse(goalsJson) : [];
 
     return goals;
   }
 
-  private async savegoals(goals: Goal[]): Promise<void> {
+  private async saveGoals(goals: Goal[]): Promise<void> {
     await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(goals));
   }
 
   async readAll(): Promise<Goal[]> {
-    return this.getgoals();
+    return this.getGoals();
   }
 
   async read(id: string): Promise<Goal | null> {
-    const goals = await this.getgoals();
+    const goals = await this.getGoals();
     return goals.find((goal) => goal.id === id) || null;
   }
 
   async create(goal: Goal): Promise<Goal> {
-    const goals = await this.getgoals();
-    await this.savegoals([...goals, goal]);
+    const goals = await this.getGoals();
+    await this.saveGoals([...goals, goal]);
     return goal;
   }
 
   async update(updatedgoal: Goal): Promise<void> {
-    const goals = await this.getgoals();
+    const goals = await this.getGoals();
     const updatedgoals = goals.map((goal) =>
       goal.id === updatedgoal.id ? updatedgoal : goal
     );
-    await this.savegoals(updatedgoals);
+    await this.saveGoals(updatedgoals);
   }
 
   async delete(id: string): Promise<void> {
-    const goals = await this.getgoals();
+    const goals = await this.getGoals();
     const goalToUpdate = goals.find((goal) => goal.id === id);
     if (!goalToUpdate) {
       throw new Error(
@@ -165,5 +165,54 @@ export class AsyncStorageGoalRepository implements IRepository<Goal> {
       );
     }
     await this.update({ ...goalToUpdate, status: "archived" });
+  }
+}
+
+export class AsyncStorageCategoryRepository implements IRepository<Category> {
+  private readonly STORAGE_KEY = "categories";
+
+  private async getCategories(): Promise<Category[]> {
+    const categoriesJson = await AsyncStorage.getItem(this.STORAGE_KEY);
+    const categories: Category[] = categoriesJson ? JSON.parse(categoriesJson) : [];
+
+    return categories;
+  }
+
+  private async saveCategories(categories: Category[]): Promise<void> {
+    await AsyncStorage.setItem(this.STORAGE_KEY, JSON.stringify(categories));
+  }
+
+  async readAll(): Promise<Category[]> {
+    return this.getCategories();
+  }
+
+  async read(id: string): Promise<Category | null> {
+    const categories = await this.getCategories();
+    return categories.find((category) => category.id === id) || null;
+  }
+
+  async create(category: Category): Promise<Category> {
+    const categories = await this.getCategories();
+    await this.saveCategories([...categories, category]);
+    return category;
+  }
+
+  async update(updatedCategory: Category): Promise<void> {
+    const categories = await this.getCategories();
+    const updatedCategories = categories.map((category) =>
+      category.id === updatedCategory.id ? updatedCategory : category
+    );
+    await this.saveCategories(updatedCategories);
+  }
+
+  async delete(id: string): Promise<void> {
+    const categories = await this.getCategories();
+    const filteredCategories = categories.filter((category) => category.id !== id);
+    if (!filteredCategories) {
+      throw new Error(
+        `AsyncStorage<Category> delete: Category with id ${id} not found!`
+      );
+    }
+    await this.saveCategories(filteredCategories);
   }
 }

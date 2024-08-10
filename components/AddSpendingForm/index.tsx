@@ -68,6 +68,7 @@ export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
             <Text style={styles.errorText}>{errors.amount}</Text>
           ) : null}
 
+          <Pickers.CategoryPicker addCategory={() => { }} categories={[]} onCategoryChange={() => { }} selectedCategory="" updateCategory={() => { }} />
           <TextInput
             style={[
               styles.input,
