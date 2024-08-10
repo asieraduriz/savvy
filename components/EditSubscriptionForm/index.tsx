@@ -1,15 +1,13 @@
 import { Text, TextInput, View } from "@/components/Themed";
 import { Formik, FormikHelpers } from "formik";
 import { StyleSheet } from "react-native";
-import { Defaults } from "@/constants";
-import { Picker } from "@react-native-picker/picker";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pickers } from "../Pickers";
 import { Pressables } from "../Pressables";
 import { useAnimateToggle } from "@/hooks";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { Subscription } from "@/types";
 import { subscriptionToEditSchema } from "@/types/Forms/SubscriptionToEdit.type";
+import { CategoryViewer } from "../CategoryViewer";
 
 type Props = {
     subscription: Subscription;
@@ -66,42 +64,10 @@ export const EditSubscriptionForm = ({ subscription }: Props) => {
                         <Text style={styles.errorText}>{errors.amount}</Text>
                     ) : null}
 
-                    <TextInput
-                        style={[
-                            styles.input,
-                            { backgroundColor: values.category },
-                            errors.category ? styles.inputError : null,
-                        ]}
-                        value={values.category}
-                        onChangeText={(category) => setFieldValue("category", category)}
-                        onBlur={handleBlur("category")}
-                        placeholder="Which category?"
+                    <CategoryViewer
+                        id={values.categoryId}
+                        onCategoryChange={(categoryId) => setFieldValue("categoryId", categoryId)}
                     />
-                    {errors.category ? (
-                        <Text style={styles.errorText}>{errors.category}</Text>
-                    ) : null}
-
-                    <Picker
-                        selectedValue={values.categoryIcon}
-                        onBlur={handleBlur("categoryIcon")}
-                        onValueChange={(icon) => setFieldValue("categoryIcon", icon)}
-                    >
-                        {Defaults.Icons.map((icon) => (
-                            <Picker.Item key={icon} label={icon} value={icon} />
-                        ))}
-                    </Picker>
-
-                    <MaterialCommunityIcons name={values.categoryIcon} size={32} />
-                    <Picker
-                        selectedValue={values.categoryColor}
-                        onBlur={handleBlur("categoryColor")}
-                        onValueChange={(color) => setFieldValue("categoryColor", color)}
-                    >
-                        {Defaults.Colors.map((color) => (
-                            <Picker.Item key={color} label={color} value={color} />
-                        ))}
-                    </Picker>
-
                     <Pickers.OneTime
                         when={values.start}
                         setDate={(start) => setFieldValue("start", start)}

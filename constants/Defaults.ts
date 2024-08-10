@@ -1,5 +1,5 @@
 import { Dates } from "@/datastructures";
-import { ExpensesFilter, AddGoalFormType, Interval } from "@/types";
+import { ExpensesFilter, AddGoalFormType, Interval, Category } from "@/types";
 import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 
 const Icons = [
@@ -16,8 +16,6 @@ const Icons = [
 
 const now = Dates.Now();
 const addExpenseFormStarter: AddSpendingFormType = {
-  categoryColor: "white",
-  categoryIcon: Icons[0],
   when: now,
   type: "onetime",
   every: 1,
@@ -25,13 +23,18 @@ const addExpenseFormStarter: AddSpendingFormType = {
 };
 
 const addSubscriptionFormStarter: AddSpendingFormType = {
-  categoryColor: "white",
-  categoryIcon: Icons[0],
   when: now,
   type: "subscription",
   every: 1,
   interval: Interval.weeks,
 };
+
+const addCategoryFormStarter: Omit<Category, 'id'> = {
+  name: '',
+  iconName: Icons[0],
+  color: "white"
+}
+
 const addGoalFormStarter: AddGoalFormType = {
   type: "title-goal",
   limit: 0,
@@ -49,8 +52,9 @@ export const Defaults = {
   Add: {
     OneTimeExpense: addExpenseFormStarter,
     Subscription: addSubscriptionFormStarter,
+    Category: addCategoryFormStarter,
+    Goal: addGoalFormStarter,
   },
-  AddGoalForm: addGoalFormStarter,
   Filter: starterFilter,
   Icons: Icons,
   Colors: ["white", "orange", "red", "blue", "yellow", "pink"],

@@ -24,7 +24,6 @@ export const AddGoalForm: FC = () => {
     const categories: string[] = [];
     expenses.forEach((expense) => {
       titles.push(expense.title);
-      categories.push(expense.category);
     });
 
     return {
@@ -44,7 +43,7 @@ export const AddGoalForm: FC = () => {
 
   return (
     <Formik
-      initialValues={Defaults.AddGoalForm}
+      initialValues={Defaults.Add.Goal}
       validationSchema={addGoalFormSchema}
       onSubmit={onSubmit}
     >

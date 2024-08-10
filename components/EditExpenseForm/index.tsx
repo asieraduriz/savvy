@@ -1,15 +1,14 @@
 import { Text, TextInput, View } from "@/components/Themed";
 import { Formik, FormikHelpers } from "formik";
 import { StyleSheet } from "react-native";
-import { Defaults } from "@/constants";
-import { Picker } from "@react-native-picker/picker";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Pickers } from "../Pickers";
 import { Pressables } from "../Pressables";
 import { useAnimateToggle } from "@/hooks";
 import { Expense } from "@/types/Expense.type";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { expenseToEditSchema } from "@/types/Forms/ExpenseToEdit.type";
+import { useCategories } from "@/contexts/Categories/Provider";
+import { CategoryViewer } from "../CategoryViewer";
 
 type Props = {
   expense: Expense;
@@ -17,31 +16,18 @@ type Props = {
 
 export const EditExpenseForm = ({ expense }: Props) => {
   const [animate, triggerAnimate] = useAnimateToggle();
+  const { categories, createCategory, updateCategory } = useCategories();
   const { updateExpense } = useSpendings();
 
-  const onSubmit = async (
-    values: Expense,
-    { setSubmitting }: FormikHelpers<Expense>
-  ) => {
-    updateExpense(values);
+  const onSubmit = async (values: Expense, { setSubmitting }: FormikHelpers<Expense>) => {
+    await updateExpense(values);
     setSubmitting(false);
     triggerAnimate();
   };
+
   return (
-    <Formik
-      initialValues={expense}
-      validationSchema={expenseToEditSchema}
-      onSubmit={onSubmit}
-    >
-      {({
-        handleBlur,
-        values,
-        errors,
-        setFieldValue,
-        isSubmitting,
-        isValid,
-        handleSubmit,
-      }) => (
+    <Formik initialValues={expense} validationSchema={expenseToEditSchema} onSubmit={onSubmit}>
+      {({ handleBlur, values, errors, setFieldValue, isSubmitting, isValid, handleSubmit, dirty }) => (
         <View style={styles.container}>
           <TextInput
             style={[styles.input, errors.title ? styles.inputError : null]}
@@ -50,9 +36,7 @@ export const EditExpenseForm = ({ expense }: Props) => {
             onBlur={handleBlur("title")}
             placeholder="Title"
           />
-          {errors.title ? (
-            <Text style={styles.errorText}>{errors.title}</Text>
-          ) : null}
+          {errors.title ? <Text style={styles.errorText}>{errors.title}</Text> : null}
 
           <TextInput
             style={[styles.input, errors.amount ? styles.inputError : null]}
@@ -62,55 +46,19 @@ export const EditExpenseForm = ({ expense }: Props) => {
             placeholder="Amount"
             keyboardType="numeric"
           />
-          {errors.amount ? (
-            <Text style={styles.errorText}>{errors.amount}</Text>
-          ) : null}
+          {errors.amount ? <Text style={styles.errorText}>{errors.amount}</Text> : null}
 
-          <TextInput
-            style={[
-              styles.input,
-              { backgroundColor: values.category },
-              errors.category ? styles.inputError : null,
-            ]}
-            value={values.category}
-            onChangeText={(category) => setFieldValue("category", category)}
-            onBlur={handleBlur("category")}
-            placeholder="Which category?"
+          <CategoryViewer
+            id={values.categoryId}
+            onCategoryChange={(categoryId) => setFieldValue("categoryId", categoryId)}
           />
-          {errors.category ? (
-            <Text style={styles.errorText}>{errors.category}</Text>
-          ) : null}
 
-          <Picker
-            selectedValue={values.categoryIcon}
-            onBlur={handleBlur("categoryIcon")}
-            onValueChange={(icon) => setFieldValue("categoryIcon", icon)}
-          >
-            {Defaults.Icons.map((icon) => (
-              <Picker.Item key={icon} label={icon} value={icon} />
-            ))}
-          </Picker>
-
-          <MaterialCommunityIcons name={values.categoryIcon} size={32} />
-          <Picker
-            selectedValue={values.categoryColor}
-            onBlur={handleBlur("categoryColor")}
-            onValueChange={(color) => setFieldValue("categoryColor", color)}
-          >
-            {Defaults.Colors.map((color) => (
-              <Picker.Item key={color} label={color} value={color} />
-            ))}
-          </Picker>
-
-          <Pickers.OneTime
-            when={values.when}
-            setDate={(when) => setFieldValue("when", when)}
-          />
+          <Pickers.OneTime when={values.when} setDate={(when) => setFieldValue("when", when)} />
 
           <Pressables.Animated
             title="Update expense"
             animate={animate}
-            disabled={isSubmitting || !isValid}
+            disabled={isSubmitting || !isValid || !dirty}
             isLoading={isSubmitting}
             onPress={() => handleSubmit()}
           />

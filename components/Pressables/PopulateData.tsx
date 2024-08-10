@@ -1,4 +1,5 @@
 import { Defaults } from "@/constants";
+import { useCategories } from "@/contexts/Categories/Provider";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { Dates } from "@/datastructures";
@@ -7,16 +8,41 @@ import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 import { Button } from "react-native";
 
 export const PopulateApp = () => {
+  const { createCategory } = useCategories();
   const { createSpending } = useSpendings();
   const { createGoal } = useGoals();
 
   const onPress = async () => {
+
+    const category1 = await createCategory({
+      name: 'Beauty',
+      color: "orange",
+      iconName: Defaults.Icons[0]
+    })
+    const category2 = await createCategory({
+
+      name: "Cafes",
+      color: "orange",
+      iconName: Defaults.Icons[2]
+    });
+
+    const category3 = await createCategory({
+      name: "Leisure",
+      color: "green",
+      iconName: Defaults.Icons[3],
+    });
+
+    const category4 = await createCategory({
+
+      name: "Health",
+      color: "white",
+      iconName: Defaults.Icons[5],
+    });
+
     const oneTimeExpense1: AddSpendingFormType = {
       title: "Haircut",
       amount: 35,
-      category: "Beauty",
-      categoryColor: "orange",
-      categoryIcon: Defaults.Icons[0],
+      categoryId: category1!.id,
       when: Dates.subDays(Dates.Now(), 5),
       type: "onetime",
       every: 1,
@@ -26,9 +52,7 @@ export const PopulateApp = () => {
     const oneTimeExpense2: AddSpendingFormType = {
       title: "Coffee",
       amount: 8,
-      category: "Cafes",
-      categoryColor: "orange",
-      categoryIcon: Defaults.Icons[2],
+      categoryId: category2!.id,
       when: Dates.subDays(Dates.Now(), 11),
       type: "onetime",
       every: 1,
@@ -38,9 +62,7 @@ export const PopulateApp = () => {
     const oneTimeExpense3: AddSpendingFormType = {
       title: "Coffee",
       amount: 8,
-      category: "Cafes",
-      categoryColor: "orange",
-      categoryIcon: Defaults.Icons[2],
+      categoryId: category2!.id,
       when: Dates.subDays(Dates.Now(), 3),
       type: "onetime",
       every: 1,
@@ -57,9 +79,7 @@ export const PopulateApp = () => {
       interval: Interval.months,
       when: Dates.startOfMonth(Dates.Now()),
       type: "subscription",
-      category: "Leisure",
-      categoryColor: "green",
-      categoryIcon: Defaults.Icons[3],
+      categoryId: category3!.id,
       pastSubscriptionChargeDates: [Dates.startOfMonth(Dates.Now())],
     };
 
@@ -70,17 +90,15 @@ export const PopulateApp = () => {
       amount: 72,
       every: 3,
       interval: Interval.weeks,
-      when: Dates.startOfMonth(Dates.subMonths(Dates.Now(), 3)),
+      when: Dates.startOfMonth(Dates.subDays(Dates.Now(), 84)),
       type: "subscription",
-      category: "Health",
-      categoryColor: "white",
-      categoryIcon: Defaults.Icons[5],
+      categoryId: category4!.id,
       pastSubscriptionChargeDates: [
-        Dates.startOfMonth(Dates.subDays(Dates.Now(), 84)),
-        Dates.startOfMonth(Dates.subDays(Dates.Now(), 63)),
-        Dates.startOfMonth(Dates.subDays(Dates.Now(), 42)),
-        Dates.startOfMonth(Dates.subDays(Dates.Now(), 21)),
-        Dates.startOfMonth(Dates.Now()),
+        Dates.subDays(Dates.Now(), 84),
+        Dates.subDays(Dates.Now(), 63),
+        Dates.subDays(Dates.Now(), 42),
+        Dates.subDays(Dates.Now(), 21),
+        Dates.Now(),
       ],
     };
 
@@ -90,14 +108,14 @@ export const PopulateApp = () => {
       title: "Coffee goal",
       type: "title-goal",
       limit: 15,
-      link: oneTimeExpense2.category!,
+      link: category2!.name,
     };
 
     const goal2: AddGoalFormType = {
       title: "Beauty goal",
       type: "category-goal",
       limit: 55,
-      link: oneTimeExpense1.category!,
+      link: category1!.name,
     };
 
     await createGoal(goal1);

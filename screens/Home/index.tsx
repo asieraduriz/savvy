@@ -4,16 +4,11 @@ import { FullScreenModal } from "@/components/Modal";
 import { EraseAll } from "@/components/Pressables/EraseAll";
 import { PopulateApp } from "@/components/Pressables/PopulateData";
 import { Text, View } from "@/components/Themed";
-import { useFilter } from "@/contexts";
-import {
-  useGroupedExpenses,
-  useRecentExpenses,
-  useSpendings,
-} from "@/contexts/Spendings/Provider";
+import { useRecentExpenses, useSpendings } from "@/contexts/Spendings/Provider";
 import { Dates } from "@/datastructures";
 import { useToggle } from "@/hooks";
 import { SubscriptionStatus } from "@/types";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { FC, Fragment, useMemo } from "react";
 import { Pressable, ScrollView } from "react-native";
@@ -21,17 +16,13 @@ import { Pressable, ScrollView } from "react-native";
 export const HomeScreen: FC = () => {
   const [showDateFilter, dateFilterToggle] = useToggle(false);
   const { navigate } = useRouter();
-  const filter = useFilter();
   const recentExpenses = useRecentExpenses();
-  const groupedExpenses = useGroupedExpenses();
 
   const { subscriptions } = useSpendings();
 
   const activeOrderedSubscriptions = useMemo(() => {
     return subscriptions
-      .filter(
-        (subscription) => subscription.status === SubscriptionStatus.active
-      )
+      .filter((subscription) => subscription.status === SubscriptionStatus.active)
       .map((subscription) => ({
         ...subscription,
         next: Dates.nextOccurrence(subscription.start, {
@@ -41,23 +32,6 @@ export const HomeScreen: FC = () => {
       }))
       .sort((a, b) => a.next.getTime() - b.next.getTime()); // Closest first
   }, [subscriptions]);
-
-  const filteredGroupExpenses = useMemo(() => {
-    const { start, end } = filter;
-    if (!start || !end) return groupedExpenses;
-
-    const filteredGroupExpenses = new Map([...groupedExpenses]);
-    for (const [category, expenses] of filteredGroupExpenses) {
-      filteredGroupExpenses.set(
-        category,
-        expenses.filter((expense) =>
-          Dates.isBetweenDays(expense.when, start, Dates.addDays(end, 1))
-        )
-      );
-    }
-
-    return filteredGroupExpenses;
-  }, [groupedExpenses, filter]);
 
   return (
     <ScrollView style={{ backgroundColor: "#fff" }}>
@@ -80,31 +54,12 @@ export const HomeScreen: FC = () => {
         <Text>View more</Text>
         <MaterialIcons name="read-more" size={24} />
       </Link>
-
-      <View>
-        <Text>By categories</Text>
-        <Pressable onPress={dateFilterToggle.on}>
-          <MaterialCommunityIcons name="calendar" size={24} />
-        </Pressable>
-        {Array.from(filteredGroupExpenses.entries()).map(
-          ([category, expenses]) => (
-            <View key={category}>
-              <Text>
-                {category}:{" "}
-                {expenses.reduce((amt, expense) => amt + expense.amount, 0)}
-              </Text>
-            </View>
-          )
-        )}
-      </View>
-
       <View>
         <Text>Active subscriptions</Text>
         {activeOrderedSubscriptions.map((subscription) => (
           <View key={subscription.id}>
             <Text>
-              {subscription.title} {subscription.every} {subscription.interval}{" "}
-              {Dates.toFormat(subscription.start)}
+              {subscription.title} {subscription.every} {subscription.interval} {Dates.toFormat(subscription.start)}
             </Text>
             <Text>Upcoming at {Dates.toFormat(subscription.next)}</Text>
             <Text>Amount: {subscription.amount}</Text>

@@ -6,11 +6,13 @@ import { useRouter } from "expo-router";
 import { Card } from "../Card";
 import { Expense } from "@/types/Expense.type";
 import { useSpendings } from "@/contexts/Spendings/Provider";
+import { useCategories } from "@/contexts/Categories/Provider";
+import { Category } from "@/types";
 
 type Props = { expense: Expense };
 
 const Circle: React.FC<
-  PropsWithChildren<{ backgroundColor: Expense["categoryColor"] }>
+  PropsWithChildren<{ backgroundColor: Category["color"] }>
 > = ({ backgroundColor, children }) => {
   return (
     <View
@@ -26,16 +28,20 @@ const Circle: React.FC<
 };
 
 export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
-  const { deleteExpense } = useSpendings();
-  const { id, amount, category, categoryIcon, categoryColor, title } = expense;
   const router = useRouter();
+  const { findCategory } = useCategories();
+  const { deleteExpense } = useSpendings();
+  const { id, amount, categoryId, title } = expense;
+
+  const category = findCategory(categoryId);
+  if (!category) throw new Error(`OneTimeExpenseItem: Category ${id} was not found`);
 
   return (
     <Card
       onEditPress={() => router.navigate(`/edit/expense/${id}`)}
       onDeletePress={() => deleteExpense(id)}
     >
-      <Circle backgroundColor={categoryColor}>
+      <Circle backgroundColor={category.color}>
         <View
           style={{
             display: "flex",
@@ -48,8 +54,8 @@ export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
           <Text style={styles.titleText}>
             {title} {amount}
           </Text>
-          <MaterialCommunityIcons name={categoryIcon} size={32} />
-          <Text style={styles.categoryText}>{category}</Text>
+          <MaterialCommunityIcons name={category.iconName} size={32} />
+          <Text style={styles.categoryText}>{category.name}</Text>
         </View>
       </Circle>
     </Card>

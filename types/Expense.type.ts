@@ -4,9 +4,7 @@ import { Subscription } from "./Subscription.type";
 export type ExpenseBase = {
   id: string;
   amount: number;
-  category: Category["name"];
-  categoryIcon: Category["iconName"];
-  categoryColor: Category["color"];
+  categoryId: Category["id"];
   title: string;
   created: Date;
 };

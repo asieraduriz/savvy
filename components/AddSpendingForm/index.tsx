@@ -1,19 +1,15 @@
 import { Text, TextInput, View } from "../Themed";
 import { StyleSheet, Switch } from "react-native";
 import { Pickers } from "../Pickers";
-import { Defaults } from "@/constants";
-import { Picker } from "@react-native-picker/picker";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Formik, FormikHelpers } from "formik";
 import { useAnimateToggle } from "@/hooks";
 import { SubmitSubscriptionButton } from "./SubmitSubscriptionButton";
 import { Pressables } from "../Pressables";
 import { FC } from "react";
-import {
-  AddSpendingFormType,
-  addSpendingFormSchema,
-} from "@/types/Forms/AddSpendingForm.type";
+import { AddSpendingFormType, addSpendingFormSchema } from "@/types/Forms/AddSpendingForm.type";
 import { useSpendings } from "@/contexts/Spendings/Provider";
+import { useCategories } from "@/contexts/Categories/Provider";
+import { CategoryViewer } from "../CategoryViewer";
 
 type Props = {
   initialExpense: AddSpendingFormType;
@@ -22,6 +18,7 @@ type Props = {
 export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
   const [animate, triggerAnimate] = useAnimateToggle();
   const { createSpending } = useSpendings();
+  const { categories, createCategory, updateCategory } = useCategories();
 
   const onSubmit = async (values: AddSpendingFormType, { setSubmitting }: FormikHelpers<AddSpendingFormType>) => {
     await createSpending(values);
@@ -30,20 +27,8 @@ export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
   };
 
   return (
-    <Formik
-      initialValues={initialExpense}
-      validationSchema={addSpendingFormSchema}
-      onSubmit={onSubmit}
-    >
-      {({
-        handleBlur,
-        values,
-        errors,
-        setFieldValue,
-        isSubmitting,
-        isValid,
-        handleSubmit,
-      }) => (
+    <Formik initialValues={initialExpense} validationSchema={addSpendingFormSchema} onSubmit={onSubmit}>
+      {({ handleBlur, values, errors, setFieldValue, isSubmitting, isValid, handleSubmit }) => (
         <View style={styles.container}>
           <TextInput
             style={[styles.input, errors.title ? styles.inputError : null]}
@@ -52,9 +37,7 @@ export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
             onBlur={handleBlur("title")}
             placeholder="Title"
           />
-          {errors.title ? (
-            <Text style={styles.errorText}>{errors.title}</Text>
-          ) : null}
+          {errors.title ? <Text style={styles.errorText}>{errors.title}</Text> : null}
 
           <TextInput
             style={[styles.input, errors.amount ? styles.inputError : null]}
@@ -64,58 +47,17 @@ export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
             placeholder="Amount"
             keyboardType="numeric"
           />
-          {errors.amount ? (
-            <Text style={styles.errorText}>{errors.amount}</Text>
-          ) : null}
-
-          <Pickers.CategoryPicker addCategory={() => { }} categories={[]} onCategoryChange={() => { }} selectedCategory="" updateCategory={() => { }} />
-          <TextInput
-            style={[
-              styles.input,
-              { backgroundColor: values.categoryColor },
-              errors.category ? styles.inputError : null,
-            ]}
-            value={values.category}
-            onChangeText={(category) => setFieldValue("category", category)}
-            onBlur={handleBlur("category")}
-            placeholder="Which category?"
+          {errors.amount ? <Text style={styles.errorText}>{errors.amount}</Text> : null}
+          <CategoryViewer
+            id={values.categoryId}
+            onCategoryChange={(categoryId) => setFieldValue("categoryId", categoryId)}
           />
-          {errors.category ? (
-            <Text style={styles.errorText}>{errors.category}</Text>
-          ) : null}
 
-          <Picker
-            selectedValue={values.categoryIcon}
-            onBlur={handleBlur("categoryIcon")}
-            onValueChange={(icon) => setFieldValue("categoryIcon", icon)}
-          >
-            {Defaults.Icons.map((icon) => (
-              <Picker.Item key={icon} label={icon} value={icon} />
-            ))}
-          </Picker>
-
-          <MaterialCommunityIcons name={values.categoryIcon} size={32} />
-          <Picker
-            selectedValue={values.categoryColor}
-            onBlur={handleBlur("categoryColor")}
-            onValueChange={(color) => setFieldValue("categoryColor", color)}
-          >
-            {Defaults.Colors.map((color) => (
-              <Picker.Item key={color} label={color} value={color} />
-            ))}
-          </Picker>
-
-          <Pickers.OneTime
-            when={values.when}
-            setDate={(when) => setFieldValue("when", when)}
-          />
+          <Pickers.OneTime when={values.when} setDate={(when) => setFieldValue("when", when)} />
           <Switch
             value={values.type === "subscription"}
             onChange={() => {
-              setFieldValue(
-                "type",
-                values.type === "subscription" ? "onetime" : "subscription"
-              );
+              setFieldValue("type", values.type === "subscription" ? "onetime" : "subscription");
             }}
           />
           {values.type === "subscription" ? (
@@ -127,13 +69,8 @@ export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
                 onBlur={handleBlur("every")}
                 onChangeText={(every) => setFieldValue("every", every)}
               />
-              {errors.every ? (
-                <Text style={styles.errorText}>{errors.every}</Text>
-              ) : null}
-              <Pickers.Interval
-                interval={values.interval}
-                setInterval={(interval) => setFieldValue("interval", interval)}
-              />
+              {errors.every ? <Text style={styles.errorText}>{errors.every}</Text> : null}
+              <Pickers.Interval interval={values.interval} setInterval={(interval) => setFieldValue("interval", interval)} />
             </View>
           ) : null}
 

@@ -1,17 +1,5 @@
 import * as Yup from "yup";
 import { Interval } from "../Interval.type";
-import { Subscription } from "../Subscription.type";
-
-export type SubscriptionToEdit = {
-    title?: Subscription["title"];
-    amount?: Subscription["amount"];
-    category?: Subscription["category"];
-    categoryIcon?: Subscription["categoryIcon"];
-    categoryColor?: Subscription["categoryColor"];
-    start?: Date;
-    every?: number;
-    interval?: Interval;
-};
 
 export const subscriptionToEditSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),

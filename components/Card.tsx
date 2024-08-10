@@ -17,7 +17,7 @@ export const Card: React.FC<CardProps> = ({ children, backgroundColor = '#fff', 
             }
             {
                 onDeletePress ?
-                    <Pressable style={styles.deleteIcon} onPress={onEditPress}>
+                    <Pressable style={styles.deleteIcon} onPress={onDeletePress}>
                         <MaterialCommunityIcons name="delete-empty" size={20} color="grey" />
                     </Pressable>
                     : null

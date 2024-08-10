@@ -2,14 +2,13 @@ import { Expense } from "../Expense.type";
 import { Interval } from "../Interval.type";
 import * as Yup from "yup";
 import { Subscription } from "../Subscription.type";
+import { Category } from "../Category.type";
 
 export type AddSpendingFormType = {
   /* Expense properties */
   title?: Expense["title"];
   amount?: Expense["amount"];
-  category?: Expense["category"];
-  categoryIcon?: Expense["categoryIcon"];
-  categoryColor?: Expense["categoryColor"];
+  categoryId?: Category["id"];
   type: Expense["type"];
   when: Expense["when"];
   /* Subscription properties */
@@ -24,9 +23,6 @@ const schemaBase = {
     .required("Amount is required")
     .positive("Amount must be a positive number")
     .typeError("Amount must be a number"),
-  category: Yup.string().required("Category is required"),
-  categoryIcon: Yup.string(),
-  categoryColor: Yup.string(),
   when: Yup.date(),
 };
 

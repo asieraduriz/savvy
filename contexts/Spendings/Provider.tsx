@@ -19,7 +19,6 @@ interface SpendingsContextType {
   deleteExpense: (id: string) => Promise<void>;
   deleteSubscription: (id: string) => Promise<void>;
   getRecentExpenses: () => Expense[];
-  getExpensesByCategory: () => Map<string, Expense[]>;
   getNextSubscriptionDates: () => Subscription[];
 }
 
@@ -173,18 +172,6 @@ export const SpendingsProvider: FC<SpendingsProviderProps> = ({ children, expens
   );
 
   const getRecentExpenses = useCallback((): Expense[] => expenses.slice(0, 5), [expenses]);
-  const getExpensesByCategory = useCallback((): Map<string, Expense[]> => {
-    const categoryMap = new Map<string, Expense[]>();
-
-    for (const expense of expenses) {
-      if (!categoryMap.has(expense.category)) {
-        categoryMap.set(expense.category, []);
-      }
-      categoryMap.get(expense.category)!.push(expense);
-    }
-
-    return categoryMap;
-  }, [expenses]);
 
   const getNextSubscriptionDates = useCallback((): Subscription[] => {
     return subscriptions.sort(
@@ -212,7 +199,6 @@ export const SpendingsProvider: FC<SpendingsProviderProps> = ({ children, expens
     deleteExpense,
     deleteSubscription,
     getRecentExpenses,
-    getExpensesByCategory,
     getNextSubscriptionDates,
   };
 
@@ -235,12 +221,4 @@ export const useRecentExpenses = () => {
 
   const recentExpenses = context.getRecentExpenses();
   return recentExpenses;
-};
-
-export const useGroupedExpenses = () => {
-  const context = useContext(Context);
-  if (!context) {
-    throw new Error("useExpenses must be used within an useGroupedExpenses");
-  }
-  return context.getExpensesByCategory();
 };

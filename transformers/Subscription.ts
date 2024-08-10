@@ -13,9 +13,7 @@ export const toSubscription = (
     title,
     amount,
     when,
-    category,
-    categoryColor,
-    categoryIcon,
+    categoryId,
     every,
     interval,
   } = subscriptionToAdd;
@@ -25,9 +23,7 @@ export const toSubscription = (
     title: title!,
     amount: amount!,
     start: when,
-    category: category!,
-    categoryColor: categoryColor!,
-    categoryIcon: categoryIcon,
+    categoryId: categoryId!,
     every,
     interval,
     status: SubscriptionStatus.active,
@@ -40,16 +36,14 @@ export const toSubscriptionExpense = (
   date: Date,
   subscriptionId: Subscription["id"]
 ): SubscriptionExpenseToCreate => {
-  const { title, amount, category, categoryColor, categoryIcon } = expenseToAdd;
+  const { title, amount, categoryId } = expenseToAdd;
 
   return {
     type: "subscription",
     title: title!,
     amount: amount!,
     when: date,
-    category: category!,
-    categoryIcon: categoryIcon!,
-    categoryColor: categoryColor!,
+    categoryId: categoryId!,
     subscriptionId,
   };
 };

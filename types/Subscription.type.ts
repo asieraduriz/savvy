@@ -11,9 +11,7 @@ export type Subscription = {
   id: string;
   title: string;
   amount: number;
-  category: Category["name"];
-  categoryIcon: Category["iconName"];
-  categoryColor: Category["color"];
+  categoryId: Category["id"];
   created: Date;
   start: Date;
   status: SubscriptionStatus;

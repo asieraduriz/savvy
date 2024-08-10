@@ -2,7 +2,6 @@ import { OneTimeExpenseItem } from "@/components/ExpenseList/OneTimeExpenseItem"
 import { TitleSearch } from "@/components/ExpenseList/TitleSearch";
 import { DateFilter } from "@/components/Filters/DateFilter";
 import { FullScreenModal } from "@/components/Modal";
-import { EraseAll } from "@/components/Pressables/EraseAll";
 import { Text, View } from "@/components/Themed";
 import { useFilter } from "@/contexts";
 import { useSpendings } from "@/contexts/Spendings/Provider";
