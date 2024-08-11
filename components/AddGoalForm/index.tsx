@@ -1,40 +1,26 @@
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { Text, TextInput, View } from "../Themed";
 import { StyleSheet } from "react-native";
-import { AddGoalFormType, addGoalFormSchema } from "@/types";
+import { AddLinkedMontlyLimitGoalFormType, addLinkedMontlyLimitGoalFormSchema } from "@/types";
 import { Defaults } from "@/constants";
 import { Picker } from "@react-native-picker/picker";
 import { Formik, FormikHelpers } from "formik";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useAnimateToggle } from "@/hooks";
 import { Pressables } from "../Pressables";
-import { useSpendings } from "@/contexts/Spendings/Provider";
+import { useCategories } from "@/contexts/Categories/Provider";
 
 const toNumber = (input: string, fallback: number) =>
   Number.isNaN(Number(input)) ? fallback : Number(input);
 
 export const AddGoalForm: FC = () => {
   const { createGoal } = useGoals();
-  const { expenses } = useSpendings();
-
+  const { uniqueCategoryNames } = useCategories();
   const [animate, triggerAnimate] = useAnimateToggle();
 
-  const expenseChoices = useMemo(() => {
-    const titles: string[] = [];
-    const categories: string[] = [];
-    expenses.forEach((expense) => {
-      titles.push(expense.title);
-    });
-
-    return {
-      titles: [...new Set(titles)],
-      categories: [...new Set(categories)],
-    };
-  }, [expenses]);
-
   const onSubmit = async (
-    values: AddGoalFormType,
-    { setSubmitting }: FormikHelpers<AddGoalFormType>
+    values: AddLinkedMontlyLimitGoalFormType,
+    { setSubmitting }: FormikHelpers<AddLinkedMontlyLimitGoalFormType>
   ) => {
     await createGoal(values);
     setSubmitting(false);
@@ -44,7 +30,7 @@ export const AddGoalForm: FC = () => {
   return (
     <Formik
       initialValues={Defaults.Add.Goal}
-      validationSchema={addGoalFormSchema}
+      validationSchema={addLinkedMontlyLimitGoalFormSchema}
       onSubmit={onSubmit}
     >
       {({
@@ -72,26 +58,15 @@ export const AddGoalForm: FC = () => {
             selectedValue={values.link}
             onBlur={handleBlur("link")}
             onValueChange={(item) => {
-              const isTitleGoal = expenseChoices.titles.includes(item);
-              setFieldValue(
-                "type",
-                isTitleGoal ? "title-goal" : "category-goal"
-              );
               setFieldValue("link", item);
+              setFieldValue("linkType", "category-goal");
             }}
           >
-            {expenseChoices.titles.map((title) => (
+            {uniqueCategoryNames.map((category) => (
               <Picker.Item
-                key={`title-${title}`}
-                value={title}
-                label={`${title} - via title`}
-              />
-            ))}
-            {expenseChoices.categories.map((title) => (
-              <Picker.Item
-                key={`category-${title}`}
-                value={title}
-                label={`${title} - via category`}
+                key={category}
+                value={category}
+                label={category}
               />
             ))}
           </Picker>

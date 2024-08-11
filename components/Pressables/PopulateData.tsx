@@ -3,7 +3,7 @@ import { useCategories } from "@/contexts/Categories/Provider";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { Dates } from "@/datastructures";
-import { AddGoalFormType, Interval } from "@/types";
+import { AddLinkedMontlyLimitGoalFormType, Interval } from "@/types";
 import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 import { Button } from "react-native";
 
@@ -104,18 +104,20 @@ export const PopulateApp = () => {
 
     await createSpending(subscription2);
 
-    const goal1: AddGoalFormType = {
+    const goal1: AddLinkedMontlyLimitGoalFormType = {
       title: "Coffee goal",
-      type: "title-goal",
+      linkType: "category-goal",
       limit: 15,
       link: category2!.name,
+      type: 'linkedMontlyLimit'
     };
 
-    const goal2: AddGoalFormType = {
+    const goal2: AddLinkedMontlyLimitGoalFormType = {
       title: "Beauty goal",
-      type: "category-goal",
+      linkType: "category-goal",
       limit: 55,
       link: category1!.name,
+      type: 'linkedMontlyLimit'
     };
 
     await createGoal(goal1);

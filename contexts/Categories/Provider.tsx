@@ -1,7 +1,7 @@
 import { Service } from "@/services";
 import { Category } from "@/types";
 import { randomUUID } from "expo-crypto";
-import { createContext, useContext, useState, useCallback, useEffect, PropsWithChildren } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, PropsWithChildren, useMemo } from "react";
 
 interface CategoryContextType {
     categories: Category[];
@@ -12,6 +12,7 @@ interface CategoryContextType {
     updateCategory: (category: Category) => Promise<void>;
     deleteCategory: (id: string) => Promise<void>;
     findCategory: (id: string) => Category | undefined;
+    uniqueCategoryNames: string[];
 }
 
 const Context = createContext<CategoryContextType | null>(null);
@@ -90,6 +91,8 @@ export const CategoriesProvider: React.FC<CategoriesProviderProps> = ({ children
         return categories.find((category) => category.id === id)
     }, [categories]);
 
+    const uniqueCategoryNames = useMemo(() => [...new Set(categories.map((category) => category.name))], [categories])
+
     const value = {
         categories,
         isLoading,
@@ -99,6 +102,7 @@ export const CategoriesProvider: React.FC<CategoriesProviderProps> = ({ children
         updateCategory,
         deleteCategory,
         findCategory,
+        uniqueCategoryNames,
     };
 
     return <Context.Provider value={value}>{children}</Context.Provider>;

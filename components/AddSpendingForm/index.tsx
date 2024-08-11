@@ -8,7 +8,6 @@ import { Pressables } from "../Pressables";
 import { FC } from "react";
 import { AddSpendingFormType, addSpendingFormSchema } from "@/types/Forms/AddSpendingForm.type";
 import { useSpendings } from "@/contexts/Spendings/Provider";
-import { useCategories } from "@/contexts/Categories/Provider";
 import { CategoryViewer } from "../CategoryViewer";
 
 type Props = {
@@ -18,7 +17,6 @@ type Props = {
 export const AddSpendingForm: FC<Props> = ({ initialExpense }) => {
   const [animate, triggerAnimate] = useAnimateToggle();
   const { createSpending } = useSpendings();
-  const { categories, createCategory, updateCategory } = useCategories();
 
   const onSubmit = async (values: AddSpendingFormType, { setSubmitting }: FormikHelpers<AddSpendingFormType>) => {
     await createSpending(values);

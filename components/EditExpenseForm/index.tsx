@@ -7,7 +7,6 @@ import { useAnimateToggle } from "@/hooks";
 import { Expense } from "@/types/Expense.type";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { expenseToEditSchema } from "@/types/Forms/ExpenseToEdit.type";
-import { useCategories } from "@/contexts/Categories/Provider";
 import { CategoryViewer } from "../CategoryViewer";
 
 type Props = {
@@ -16,7 +15,6 @@ type Props = {
 
 export const EditExpenseForm = ({ expense }: Props) => {
   const [animate, triggerAnimate] = useAnimateToggle();
-  const { categories, createCategory, updateCategory } = useCategories();
   const { updateExpense } = useSpendings();
 
   const onSubmit = async (values: Expense, { setSubmitting }: FormikHelpers<Expense>) => {

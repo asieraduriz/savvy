@@ -1,6 +1,6 @@
 import { Dates } from "@/datastructures";
 import { Service } from "@/services";
-import { AddGoalFormType, Goal } from "@/types";
+import { AddLinkedMontlyLimitGoalFormType, Goal } from "@/types";
 import { randomUUID } from "expo-crypto";
 import {
   createContext,
@@ -16,7 +16,7 @@ interface GoalContextType {
   isLoading: boolean;
   error: Error | null;
   refreshGoals: () => Promise<void>;
-  createGoal: (goal: AddGoalFormType) => Promise<void>;
+  createGoal: (goal: AddLinkedMontlyLimitGoalFormType) => Promise<void>;
   updateGoal: (goal: Goal) => Promise<void>;
   deleteGoal: (id: string) => Promise<void>;
 }
@@ -55,13 +55,15 @@ export const GoalsProvider: React.FC<GoalsProviderProps> = ({
   }, [refreshGoals]);
 
   const createGoal = useCallback(
-    async (goalToAdd: AddGoalFormType) => {
+    async (goalToAdd: AddLinkedMontlyLimitGoalFormType) => {
 
       const goal: Goal = {
         id: randomUUID(),
         created: Dates.Now(),
-        ...goalToAdd,
+        start: Dates.startOfMonth(),
+        pastMonths: [],
         status: 'active',
+        ...goalToAdd,
       }
       try {
         const newGoal = await goalService.create(goal);

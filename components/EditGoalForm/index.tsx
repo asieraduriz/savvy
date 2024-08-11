@@ -1,13 +1,11 @@
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { Text, TextInput, View } from "../Themed";
 import { StyleSheet } from "react-native";
 import { Goal } from "@/types";
-import { Picker } from "@react-native-picker/picker";
 import { Formik, FormikHelpers } from "formik";
 import { useGoals } from "@/contexts/Goals/Provider";
 import { useAnimateToggle } from "@/hooks";
 import { Pressables } from "../Pressables";
-import { useSpendings } from "@/contexts/Spendings/Provider";
 import { goalToEditSchema } from "@/types/Forms/GoalToEdit.type";
 
 const toNumber = (input: string, fallback: number) =>
@@ -19,23 +17,8 @@ type Props = {
 
 export const EditGoalForm: FC<Props> = ({ goal }) => {
     const { updateGoal } = useGoals();
-    const { expenses } = useSpendings();
 
     const [animate, triggerAnimate] = useAnimateToggle();
-
-    const expenseChoices = useMemo(() => {
-        const titles: string[] = [];
-        const categories: string[] = [];
-        expenses.forEach((expense) => {
-            titles.push(expense.title);
-            categories.push(expense.category);
-        });
-
-        return {
-            titles: [...new Set(titles)],
-            categories: [...new Set(categories)],
-        };
-    }, [expenses]);
 
     const onSubmit = async (
         values: Goal,
@@ -71,37 +54,6 @@ export const EditGoalForm: FC<Props> = ({ goal }) => {
                     />
                     {errors.title ? (
                         <Text style={styles.errorText}>{errors.title}</Text>
-                    ) : null}
-
-                    <Picker
-                        selectedValue={values.link}
-                        onBlur={handleBlur("link")}
-                        onValueChange={(item) => {
-                            const isTitleGoal = expenseChoices.titles.includes(item);
-                            setFieldValue(
-                                "type",
-                                isTitleGoal ? "title-goal" : "category-goal"
-                            );
-                            setFieldValue("link", item);
-                        }}
-                    >
-                        {expenseChoices.titles.map((title) => (
-                            <Picker.Item
-                                key={`title-${title}`}
-                                value={title}
-                                label={`${title} - via title`}
-                            />
-                        ))}
-                        {expenseChoices.categories.map((title) => (
-                            <Picker.Item
-                                key={`category-${title}`}
-                                value={title}
-                                label={`${title} - via category`}
-                            />
-                        ))}
-                    </Picker>
-                    {errors.link ? (
-                        <Text style={styles.errorText}>{errors.link}</Text>
                     ) : null}
 
                     <TextInput

@@ -35,7 +35,7 @@ export const Tomorrow = (): Date => {
 /* START METHODS */
 export const startOfDay = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-export const startOfMonth = (date: Date): Date => new Date(date.getFullYear(), date.getMonth(), 1);
+export const startOfMonth = (date: Date = new Date()): Date => new Date(date.getFullYear(), date.getMonth(), 1);
 
 /* END METHODS */
 export const endOfMonth = (date: Date): Date => new Date(date.getFullYear(), date.getMonth() + 1, 0);

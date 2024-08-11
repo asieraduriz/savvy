@@ -1,5 +1,5 @@
 import { Dates } from "@/datastructures";
-import { ExpensesFilter, AddGoalFormType, Interval, Category } from "@/types";
+import { ExpensesFilter, AddLinkedMontlyLimitGoalFormType, Interval, Category } from "@/types";
 import { AddSpendingFormType } from "@/types/Forms/AddSpendingForm.type";
 
 const Icons = [
@@ -35,11 +35,12 @@ const addCategoryFormStarter: Omit<Category, 'id'> = {
   color: "white"
 }
 
-const addGoalFormStarter: AddGoalFormType = {
-  type: "title-goal",
+const addGoalFormStarter: AddLinkedMontlyLimitGoalFormType = {
   limit: 0,
   title: "",
   link: "",
+  linkType: "category-goal",
+  type: 'linkedMontlyLimit'
 };
 
 const starterFilter: ExpensesFilter = {

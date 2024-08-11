@@ -1,21 +1,28 @@
 import { Category } from "./Category.type";
-import { Expense } from "./Expense.type";
 
-type TitleLinkedGoal = {
-  type: "title-goal";
-  link: Expense["title"];
-};
-
-type CategoryLinkedGoal = {
-  type: "category-goal";
-  link: Category["name"];
-};
-
-export type Goal = {
+type GoalBase = {
   id: string;
   created: Date;
   title: string;
-  limit: number;
   status: "active" | "archived";
-} & (TitleLinkedGoal | CategoryLinkedGoal);
+};
 
+type CategoryLinkedGoal = {
+  linkType: "category-goal";
+  link: Category["id"];
+};
+
+type LinkedMonthlyLimitGoal = {
+  limit: number;
+  start: Date;
+  end?: Date;
+  pastMonths: {
+    start: Date;
+    end: Date;
+    limit: number;
+    actual: number;
+  }[]
+  type: 'linkedMontlyLimit'
+} & (CategoryLinkedGoal);
+
+export type Goal = GoalBase & (LinkedMonthlyLimitGoal);
