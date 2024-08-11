@@ -23,7 +23,6 @@ export const CategoryViewer: FC<Props> = ({ id, onCategoryChange }) => {
             {
                 category ?
                     <View>
-
                         <Text>{category.name}</Text>
                         <MaterialCommunityIcons name={category.iconName} size={32} />
                         <Text>{category.color}</Text>

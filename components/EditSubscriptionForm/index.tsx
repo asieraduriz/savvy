@@ -1,6 +1,6 @@
-import { Text, TextInput, View } from "@/components/Themed";
+import { Text, TextInput } from "@/components/Themed";
 import { Formik, FormikHelpers } from "formik";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { Pickers } from "../Pickers";
 import { Pressables } from "../Pressables";
 import { useAnimateToggle } from "@/hooks";
@@ -40,7 +40,7 @@ export const EditSubscriptionForm = ({ subscription }: Props) => {
                 isValid,
                 handleSubmit,
             }) => (
-                <View style={styles.container}>
+                <ScrollView style={styles.container}>
                     <TextInput
                         style={[styles.input, errors.title ? styles.inputError : null]}
                         value={values.title}
@@ -68,27 +68,11 @@ export const EditSubscriptionForm = ({ subscription }: Props) => {
                         id={values.categoryId}
                         onCategoryChange={(categoryId) => setFieldValue("categoryId", categoryId)}
                     />
+
                     <Pickers.OneTime
                         when={values.start}
                         setDate={(start) => setFieldValue("start", start)}
                     />
-
-                    <View>
-                        <Text>Every: </Text>
-                        <TextInput
-                            keyboardType="numeric"
-                            value={`${values.every}`}
-                            onBlur={handleBlur("every")}
-                            onChangeText={(every) => setFieldValue("every", every)}
-                        />
-                        {errors.every ? (
-                            <Text style={styles.errorText}>{errors.every}</Text>
-                        ) : null}
-                        <Pickers.Interval
-                            interval={values.interval}
-                            setInterval={(interval) => setFieldValue("interval", interval)}
-                        />
-                    </View>
 
                     <Pressables.Animated
                         title="Update subscription"
@@ -97,7 +81,7 @@ export const EditSubscriptionForm = ({ subscription }: Props) => {
                         isLoading={isSubmitting}
                         onPress={() => handleSubmit()}
                     />
-                </View>
+                </ScrollView>
             )}
         </Formik>
     );
