@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react";
+import { FC } from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "../Themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -7,25 +7,9 @@ import { Card } from "../Card";
 import { Expense } from "@/types/Expense.type";
 import { useSpendings } from "@/contexts/Spendings/Provider";
 import { useCategories } from "@/contexts/Categories/Provider";
-import { Category } from "@/types";
+import { Circle } from "../Circle";
 
 type Props = { expense: Expense };
-
-const Circle: React.FC<
-  PropsWithChildren<{ backgroundColor: Category["color"] }>
-> = ({ backgroundColor, children }) => {
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-      }}
-    >
-      <View style={[styles.circle, { backgroundColor }]} />
-      <View>{children}</View>
-    </View>
-  );
-};
 
 export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
   const router = useRouter();
@@ -63,14 +47,6 @@ export const OneTimeExpenseItem: FC<Props> = ({ expense }) => {
 };
 
 const styles = StyleSheet.create({
-  circle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10, // Half of the width/height to make it a circle
-    borderColor: "#ccc",
-    borderWidth: 1,
-    marginRight: 20,
-  },
   categoryIcon: {
     width: 20,
     height: 20,
