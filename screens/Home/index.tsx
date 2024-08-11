@@ -44,10 +44,14 @@ export const HomeScreen: FC = () => {
         <Text>New subscription</Text>
       </Pressable>
       <Text>Most recent expenses</Text>
-      {recentExpenses.map((expense) => (
-        <Fragment key={expense.id}>
-          <Text>{Dates.readable(expense.when)}</Text>
-          <OneTimeExpenseItem expense={expense} />
+      {recentExpenses.map(([date, expenses]) => (
+        <Fragment key={date}>
+          <Text>{Dates.readable(Dates.At(date))}</Text>
+          {
+            expenses.map((expense) =>
+              <OneTimeExpenseItem expense={expense} key={expense.id} />
+            )
+          }
         </Fragment>
       ))}
       <Link href="/expenses">

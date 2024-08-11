@@ -18,7 +18,7 @@ interface SpendingsContextType {
   updateSubscription: (subscription: Subscription) => Promise<void>;
   deleteExpense: (id: string) => Promise<void>;
   deleteSubscription: (id: string) => Promise<void>;
-  getRecentExpenses: () => Expense[];
+  getRecentExpenses: () => [string, Expense[]][];
   getNextSubscriptionDates: () => Subscription[];
 }
 
@@ -171,7 +171,20 @@ export const SpendingsProvider: FC<SpendingsProviderProps> = ({ children, expens
     [subscriptionService]
   );
 
-  const getRecentExpenses = useCallback((): Expense[] => expenses.slice(0, 5), [expenses]);
+  const getRecentExpenses = useCallback((): [string, Expense[]][] => {
+    const recentExpenses = expenses.slice(0, 5);
+    const groups: { [key: string]: Expense[] } = {};
+    recentExpenses.forEach((expense) => {
+      const date = Dates.toFormat(expense.when);
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(expense);
+    });
+    const groupedEntries = Object.entries(groups);
+
+    return groupedEntries;
+  }, [expenses]);
 
   const getNextSubscriptionDates = useCallback((): Subscription[] => {
     return subscriptions.sort(
