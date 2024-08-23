@@ -8,15 +8,11 @@ import {
 } from "react-native";
 import { Pickers } from "@/components/Pickers";
 import { useApplyFilter, useFilter } from "@/contexts";
-import { Calendar } from "react-native-calendars";
 import { Dates } from "@/datastructures";
 
 type Tab = "Since" | "Between";
 
 export const DateFilter: React.FC = () => {
-    const [initialCalendarDate] = useState(
-        Dates.toFormat(Dates.Today())
-    );
     const { start, end } = useFilter();
     const applyFilter = useApplyFilter();
     const [activeTab, setActiveTab] = useState<Tab>("Between");
@@ -48,12 +44,7 @@ export const DateFilter: React.FC = () => {
             <View style={styles.container}>
                 <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
                 <View style={styles.content}>
-                    <Calendar
-                        hideExtraDays
-                        maxDate={Dates.toFormat(Dates.Today())}
-                        initialDate={initialCalendarDate}
-                        enableSwipeMonths
-                    />
+
                 </View>
             </View>
         </View>
