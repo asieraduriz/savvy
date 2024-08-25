@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)nvjnw#z)ta2@@_h7-6039-!thws5h%j(a!45l=7wvzk!hqb7f'
+SECRET_KEY = 'django-insecure-x)#90(unw*b$)dse(z4g4r)%%dy6-mr+&h1liyuskjscx186^k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'savvy',
+    'monolith.savvy',
+    "graphene_django",
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+GRAPHENE = {
+    "SCHEMA": "monolith.schema.schema"
+}
