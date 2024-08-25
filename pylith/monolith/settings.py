@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'monolith.savvy',
-    "graphene_django",
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
